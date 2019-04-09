@@ -1,0 +1,51 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Clientes extends CI_Controller {
+
+  function __construct()
+  {
+    parent::__construct();
+    $this->load->model('clientes_model');
+    $this->_init();
+  }
+
+  private function _init()
+	{
+        if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('auth/login', 'refresh');
+		}
+		$this->output->set_template('default');
+
+		$this->load->js('assets/themes/default/js/jquery-1.11.3.min.js');
+		// $this->load->js('assets/themes/default/hero_files/bootstrap-transition.js');
+		// $this->load->js('assets/themes/default/hero_files/bootstrap-collapse.js');
+	}
+
+    public function index()
+    {
+
+    }
+
+    public function listar()
+  	{
+        $this->load->model('mascotas_model');
+
+        $datos['mascotas'] = $this->mascotas_model->obtener_mascotas();
+        $datos['clientes'] = $this->clientes_model->obtener_clientes();
+
+  		$this->load->view('usuarios/listado', $datos);
+  	}
+
+    public  function nuevo_cliente()
+
+    {
+        $this->output->set_template('modal');
+        $this->load->view('usuarios/nuevoCliente_view');
+    }
+
+}
+/* End of file ControllerName.php */
+/* Location: ./application/controllers/ControllerName.php */
+  ?>
