@@ -79,7 +79,7 @@
                                     <div class="col-md-12">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="col-md-4 control-label" for="tipo">Tipo</label>
+                                                <label class="col-md-4 control-label" for="categoria">Tipo</label>
                                                 <div class="col-md-7 ">
                                                     <select id="categoria" name="categoria" class="form-control input-sm ">
                                                         <?php 

@@ -18,7 +18,9 @@
 <div class="row">
     <hr class="hr_success">
     <div class="row col-md-9">
-
+<?php
+// var_dump($cliente);
+?>
 
     <h3>Datos del cliente:</h3>
         <form class="form-horizontal" id="form_cliente">
@@ -53,10 +55,10 @@
                         <label class="control-label" for="cli_direccion"><h4>Direccion</h4></label> 
                             <input 
                                 type="text" 
-                                name="cli_direccion" 
-                                id="cli_direccion" 
+                                name="domicilio1" 
+                                id="domicilio1" 
                                 class="form-control input-sm" 
-                                value="<?php echo (isset($cliente->cli_direccion) && $cliente->cli_direccion != '') ?  $cliente->cli_direccion : '';?>">                
+                                value="<?php echo (isset($cliente->domicilio1) && $cliente->domicilio1 != '') ?  $cliente->domicilio1 : '';?>">                
                     </div>
 
                     <div class="col-md-2">
@@ -66,7 +68,7 @@
                                 name="cli_localidad" 
                                 id="cli_localidad" 
                                 class="form-control input-sm" 
-                                value="<?php echo (isset($cliente->cli_localidad) && $cliente->cli_localidad != '') ?  $cliente->cli_localidad : '';?>">                
+                                value="<?php echo (isset($cliente->localidad1) && $cliente->localidad1 != '') ?  $cliente->localidad1 : '';?>">                
                     </div>
 
                     <div class="col-md-2">
@@ -76,7 +78,7 @@
                                 name="cli_cp" 
                                 id="cli_cp" 
                                 class="form-control input-sm" 
-                                value="<?php echo (isset($cliente->cli_cp) && $cliente->cli_cp != '') ?  $cliente->cli_cp : '';?>">                
+                                value="<?php echo (isset($cliente->cp1) && $cliente->cp1 != '') ?  $cliente->cp1 : '';?>">                
                     </div>
 
                     <div class="col-md-3"></div>
@@ -98,7 +100,7 @@
                                 name="cli_telefono" 
                                 id="cli_telefono" 
                                 class="form-control input-sm" 
-                                value="<?php echo (isset($cliente->cli_telefono) && $cliente->cli_telefono != '') ?  $cliente->cli_telefono : '';?><?php echo (isset($cliente->cli_movil) && $cliente->cli_movil != '') ?  " / ".$cliente->cli_movil : '';?>">                
+                                value="<?php echo (isset($cliente->telefono1) && $cliente->telefono1 != '') ?  $cliente->telefono1 : '';?><?php echo (isset($cliente->movil1) && $cliente->movil1 != '') ?  " / ".$cliente->movil1 : '';?>">                
                     </div>
 
                     <div class="col-md-3">
@@ -108,7 +110,7 @@
                                 name="correo" 
                                 id="correo" 
                                 class="form-control input-sm" 
-                                value="<?php echo (isset($cliente->cli_correo) && $cliente->cli_correo != '') ?  $cliente->cli_correo : '';?>">                
+                                value="<?php echo (isset($cliente->correo1) && $cliente->correo1 != '') ?  $cliente->correo1 : '';?>">                
                     </div>
                     
                 </div>

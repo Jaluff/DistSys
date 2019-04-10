@@ -161,10 +161,10 @@ class Stock extends CI_Controller {
             $row[0] = NULL;
             //$row['id_producto'] = $producto->id;
             $row['Codigo'] = $producto->codigo;
-            $row['Producto'] = $producto->producto ." - <strong>(". $producto->cantidad_medida . $producto->medida . ")</strong>";
+            $row['Producto'] = $producto->producto ." - <strong>(". $producto->cantidad_medida . " ".$producto->medida . ")</strong>";
             $row['Operacion'] = '';
-            $row['categorias'] = $producto->categorias;
-            $row['marca'] = $producto->marca;
+            $row['Categorias'] = $producto->categoria_nombre;
+            $row['marca'] = $producto->marca_nombre;
             //$row['cod_barras'] = $producto->codigo_barras;
             //$row['especie'] = $producto->especie;
             if ($stock = $this->stock->get_stock($producto->id_producto,$tpv)){
@@ -175,7 +175,7 @@ class Stock extends CI_Controller {
                 $row['Stock_minimo'] = 0;
                 $row['Stock_actual'] = 0;
             }
-            $row['cantidad'] = $producto->marca;
+            $row['cantidad'] = $producto->id_marca;
             $row['usuario'] = '';
             //echo $stock;
 //$row['id_precio'] = $producto->producto_precio_venta;

@@ -13,10 +13,10 @@
             <select id="tpv" name="tpv" class="form-control ">
 
                 <?php foreach ($tpv as $t) : ?>
-                <option value="<?php echo $t->id_tpv; ?>" <?php 
-                                                            echo (isset($tpv_active->id_tpv) && $tpv_active->id_tpv  == $t->id_tpv) ? 'selected=selected' : ''; ?>>
-                    <?= $t->tpv_nombre ?>
-                </option>
+                    <option value="<?php echo $t->id_tpv; ?>" <?php
+                                                                echo (isset($tpv_active->id_tpv) && $tpv_active->id_tpv  == $t->id_tpv) ? 'selected=selected' : ''; ?>>
+                        <?= $t->tpv_nombre ?>
+                    </option>
 
                 <?php endforeach; ?>
             </select>
@@ -29,10 +29,10 @@
     <hr class="hr_success">
     <?php
     if (isset($message)) { ?>
-    <div id="infoMessage" class="alert uk-alert-success" role="alert">
-        <?php echo $message; ?>
-    </div>
-    <?php 
+        <div id="infoMessage" class="alert uk-alert-success" role="alert">
+            <?php echo $message; ?>
+        </div>
+    <?php
 } ?>
 </div>
 
@@ -240,7 +240,7 @@
             </div> -->
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="form-group text-center h3">
@@ -425,6 +425,8 @@
             return false; // Stop the browser of loading the page defined in the form "action" parameter.
         });
 
+        
+
 
         //$("#total").val();
 
@@ -435,7 +437,8 @@
             var qty = parseFloat($(this).find('input[name=cantidad_producto]').val());
             var precio = $(this).find('input[name=precio_producto]').val();
             var stock = parseFloat($(this).find('input[name=stock_act]').val());
-            if (stock < qty || stock == ' ') {
+            
+            if (parseInt(stock) < qty || isNaN(stock) ) {
                 alert('No hay stock suficiente de este articulo');
                 return false;
             } else {
@@ -452,11 +455,11 @@
 
                             $.get(link + "tpv/show_cart", function(cart) { // Get the contents of the url cart/show_cart
                                 $("#cart_content").html(cart); // Replace the information in the div #cart_content with the retrieved data
-                                $(".precio_producto").val('0');
+                                $("#precio_producto").val('0');
                                 $("#cantidad_producto").val('0');
                             });
                         } else {
-                            alert("Hubo un problema , verifique");
+                            alert("Hubo un problema al cargar el producto , verifique");
                         }
                     });
                 var $select = $('#producto').selectize();
@@ -484,7 +487,7 @@
         searchField: ['nombre', 'domicilio'],
         options: [
             <?php
-  /* traer datos por json... sino no funciona */
+            /* traer datos por json... sino no funciona */
             foreach ($clientes as $ent) {
                 echo "{id:" . $ent->id_cliente . ", nombre: '" . $ent->cli_nombre . "', domicilio: '" . $ent->cli_direccion . "', documento: '" . $ent->cli_doc . "'},";
             }
@@ -521,7 +524,7 @@
                 }
             });
         },
-        create: true,
+        create: false,
     });
     // var control = $select[0].selectize;
     // control.setValue([186]);
@@ -533,7 +536,7 @@
         searchField: ['nombre', 'domicilio'],
         options: [
             <?php
-  /* traer datos por json... sino no funciona */
+            /* traer datos por json... sino no funciona */
             foreach ($productos as $pro) {
                 echo "{id:" . $pro->id_producto . ", nombre: '" . $pro->producto . " - " . $pro->cantidad_medida . "" . $pro->medida . "'},";
             }
@@ -593,4 +596,4 @@
         todayHighlight: true,
         format: 'dd-mm-yyyy'
     });
-</script> 
+</script>

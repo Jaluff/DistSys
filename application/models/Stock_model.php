@@ -5,6 +5,8 @@ class Stock_model extends CI_Model {
 
     var $table_productos = 'productos';
     var $table_tpv = 'tpv';
+    var $table_categorias = 'categorias';
+    var $table_marcas = 'marca'; 
     var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta` FROM `precios`  ORDER BY `id_precios` DESC  ) AS `precios`';
     var $table_stock = 'stock';
     //var $table_marcas = 'marca';
@@ -22,11 +24,13 @@ class Stock_model extends CI_Model {
     private function _get_datatables_query( $tpv = null, $fecha = null, $fecha_fin = null)
     {
 
-        $this->db->select('productos.*');
+        $this->db->select('productos.*, categoria_nombre, marca_nombre');
         $this->db->from($this->table_productos);
         //$this->db->join($this->table_precios_query,"$this->table_precios.id_producto = $this->table_productos.id_producto",'left');
         $this->db->join($this->table_stock, " $this->table_stock.id_producto = $this->table_productos.id_producto", 'left');
         //$this->db->join($this->table_tpv, " $this->table_productos.id_tpv = $this->table_tpv.id_tpv");
+        $this->db->join($this->table_categorias,"$this->table_categorias.id_categoria = $this->table_productos.id_categoria",'left');
+        $this->db->join($this->table_marcas,"$this->table_marcas.id_marca = $this->table_productos.id_marca",'left');
 
         $i = 0;
 

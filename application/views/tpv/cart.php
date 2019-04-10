@@ -7,7 +7,7 @@ else:
 $attributes = array('class' => 'form', 'id' => 'form_compra');
 $action = base_url() . "tpv/update_cart";
 echo form_open($action, $attributes); ?>
-<table class="table table-condenced table-bordered" cellspacing="0" width="100%">
+<table class="table table-condenced table-bordered table-stripped table-hover" cellspacing="0" width="100%">
     <thead>
         <tr class="active">
             <th width="20%">Cantidad</th>
@@ -15,20 +15,28 @@ echo form_open($action, $attributes); ?>
             <th width="15%">Precio</th>
             <th width="15%">Descuento</th>
             <th width="20%">Importe</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         <?php $i = 1; ?>
         <?php 
 //var_dump($this->cart->contents());
-        foreach($this->cart->contents() as $items): ?>
-         
-        <?php echo form_hidden('rowid[]', $items['rowid']); ?>
-
+        foreach($this->cart->contents() as $items): 
+            $row_data = array(
+                'type'  => 'hidden',
+                'name'  => 'rowid[]',
+                'id'    => 'rowid',
+                'value' => $items['rowid'],
+                'class' => ''
+            );
+        ?>
         <tr <?php if($i&1){ echo 'class="alt"'; }?>>
-            <td  >
+            <td>
+                
                 <div class="col-md-7 col-xs-12">
-                	<?php echo form_input(array('name' => 'qty[]', 'id' => 'qty[]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5', 'class' => 'form-control input-sm cantidad')); ?>
+                    <?php echo form_input($row_data); ?>
+                    <?php echo form_input(array('name' => 'qty[]', 'id' => 'qty[]', 'value' => $items['qty'], 'maxlength' => '3', 'size' => '5', 'class' => 'form-control input-sm cantidad')); ?>
                 </div>
             </td>
             <td>
@@ -49,6 +57,11 @@ echo form_open($action, $attributes); ?>
             <td>
             	<div class="col-md-12 col-xs-12">
             		$<?php echo number_format($items['subtotal'], 2, '.',''); ?>
+            	</div>
+            </td>
+            <td>
+            	<div class="col-md-12 col-xs-12">
+            		<button type="button" class="btn btn-danger eliminar_item" value="<?= $items['rowid']?>"  ><span class='glyphicon glyphicon-trash'></span></button>
             	</div>
             </td>
         </tr>
@@ -85,7 +98,32 @@ $(document).ready(function() {
 	$('#total').text('$<?php echo number_format($this->cart->total(), 2 , '.',''); ?>');  
     $('#total_importe').val('$<?php echo number_format($this->cart->total(), 2 , '.',''); ?>');
 	
+    $('.eliminar_item').on('click', function() {
+            idRow = $(this).val(); //alert(cliente + pago);
+            //(idRow);
+            var link = "<?php echo base_url(); ?>";
+            $.post(link + "tpv/delete_cart_item", {
+                    rowid: idRow,
+                },
+                function(data) {
+                    // Interact with returned data
+                    if (data == 'true') {
+                        alert("Operacion realizada con exito!");
+                        $.get(link + "tpv/show_cart", function(cart) { // Get the contents of the url cart/show_cart
+                            $("#cart_content").html(cart); // Replace the information in the div #cart_content with the retrieved data
+                            $("#precio_producto").val('0');
+                            $("#cantidad_producto").val('0');
+                        });
+                    } else {
+                        alert("Hubo algun problema , verifique");
+                    }
+            });
+            return false; // Stop the browser of loading the page defined in the form "action" parameter.
+        });
+
+
 });
+
 
 
 $(".cantidad").on('change',function(){

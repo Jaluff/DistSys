@@ -43,7 +43,7 @@ class Venta extends CI_Controller {
         $fecha_fin = ($this->input->post('fecha_fin') == '') ? $this->_data_last_month_day() : date('Y-m-d', strtotime($this->input->post('fecha_fin')));
         //echo $fecha;
         $list = $this->ventas->get_datatables($tpv , $fecha, $fecha_fin);
-        // var_dump($list);
+        //  var_dump($list);
         // exit();
         $data = array();
         $no = $_POST['start'];
@@ -56,8 +56,8 @@ class Venta extends CI_Controller {
             
             $row['id_venta'] = $stk->id_venta;
             $row['metodoPago'] = $stk->metodoPago;
-            if(isset($cli->cli_nombre) && $cli->cli_nombre == 0){
-                $row['cliente'] = $cli->cli_nombre;
+            if(isset($stk->cli_nombre) && $stk->cli_nombre == 0){
+                $row['cliente'] = $stk->cli_nombre;
             } else {
                 $row['cliente'] = 'Cons. final';
             }

@@ -79,7 +79,7 @@
                 
                 {"data": "Codigo", "className": "hidden-xs" },
                 {"data": "Producto" },
-                {"data": "tipo" },
+                {"data": "Categorias" },
                 {"data": "marca" },
                 {"data": "Stock_minimo" , "className": "hidden-xs" },
                 {"data": "Stock_actual" },

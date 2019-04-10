@@ -41,10 +41,26 @@ class Tpv extends CI_Controller
 
             // Check if user has javascript enabled
             if ($this->input->post('ajax') != '1') {
-                redirect('tpv'); // If javascript is not enabled, reload the page with new data
+                //redirect('tpv'); // If javascript is not enabled, reload the page with new data
             } else {
                 echo 'true'; // If javascript is enabled, return true, so the cart gets updated
             }
+        }
+    }
+
+    function delete_cart_item()
+    {
+
+        if ($this->tpvs->validate_delete_cart_item() == true) {
+
+            // Check if user has javascript enabled
+            if ($this->input->post('ajax') != '1') {
+                //echo 'false';
+                //redirect('tpv'); // If javascript is not enabled, reload the page with new data
+            } else {
+                echo 'true'; // If javascript is enabled, return true, so the cart gets updated
+            }
+            echo 'true';
         }
     }
 
@@ -83,7 +99,6 @@ class Tpv extends CI_Controller
     {
         // var_dump($this->input->post());
         // exit(0);
-        
         $tipo = $this->input->post('tipo');
         $tpv = $this->input->post('tpv');
         $importe = $this->input->post('importe');
@@ -195,12 +210,8 @@ class Tpv extends CI_Controller
                 'cobrador' => $user->first_name . ", " . $user->last_name,
             );
         }
-
-
-
         //$detalles = $this->cart->contents();
         if ($this->tpvs->update_compra($datos_pago, $id_venta)) {
-
             //echo $this->cart->destroy();
             echo 'true';
         }

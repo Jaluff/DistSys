@@ -47,7 +47,7 @@ class Tpv_model extends CI_Model {
         $id_venta = $this->db->insert_id();
         
         
-        $this->db->insert($this->table_cliente, $cliente);
+        //$this->db->insert($this->table_cliente, $cliente);
         //echo $this->db->last_query(); exit(0);
         //$this->db->where('id_venta', $id_venta);
         foreach ($detalles as $detalle) {
@@ -139,7 +139,9 @@ class Tpv_model extends CI_Model {
         $this->db->where('id_producto', $id); // Select where id matches the posted id
         $query = $this->db->get('productos', 1); // Select the products where a match is found and limit the query by 1
         // echo $this->db->last_query();
-        //echo $price;
+        // echo $price;
+        // echo $id;
+        // echo $cty; 
         // Check if a row has matched our product id
         if($query->num_rows() > 0){
          
@@ -151,7 +153,7 @@ class Tpv_model extends CI_Model {
                     'id'      => $id,
                     'qty'     => $cty,
                     'price'   => $price,
-                    'name'    => $row->producto . " " . $row->cantidad_medida . $row->medida . " - " . $row->especie,
+                    'name'    => $row->producto . " " . $row->cantidad_medida . $row->medida ,
                     'discount'   => $desc,
                 );
          //var_dump($data);
@@ -205,7 +207,18 @@ class Tpv_model extends CI_Model {
      
     }
 
-
+    function validate_delete_cart_item(){ 
+        $item = $this->input->post('rowid');         
+                $data = array(
+                   'rowid'      => $item,
+                   'qty'        => 0,
+                );
+        if($this->cart->update($data)){         
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
 
 
 }

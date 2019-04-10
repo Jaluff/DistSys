@@ -5,6 +5,7 @@ class Venta_model extends CI_Model {
 
     var $table_ventas = 'ventas';
     var $table_cliente = 'clientes';
+    var $table_contactos = 'contactos';
     //var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta` FROM `precios`  ORDER BY `id_precios` DESC  ) AS `precios`';
     //var $table_stock = 'stock';
     //var $table_marcas = 'marca';
@@ -24,7 +25,7 @@ class Venta_model extends CI_Model {
         $this->db->select('*');
         $this->db->from($this->table_ventas);
         $this->db->join($this->table_cliente, " $this->table_cliente.id_cliente = $this->table_ventas.cliente ", "left");
-        //$this->db->join($this->table_productos, " $this->table_stock.id_producto = $this->table_productos.id_producto",'left');
+        $this->db->join($this->table_contactos, " $this->table_contactos.id_cliente = $this->table_cliente.id_cliente",'left');
         // $this->db->join($this->table_tpv, " $this->table_stock.id_tpv = $this->table_tpv.id_tpv",'left');
         $i = 0;
         foreach ($this->column_search as $item) // loop column
@@ -137,6 +138,7 @@ class Venta_model extends CI_Model {
     public function get_cliente($id)
     {
         $this->db->from('clientes');
+        $this->db->join('contactos', 'contactos.id_cliente = clientes.id_cliente');
         $this->db->where('clientes.id_cliente',$id);
         $query = $this->db->get();
         return $query->row();
