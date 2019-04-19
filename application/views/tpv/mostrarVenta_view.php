@@ -22,7 +22,7 @@
 // var_dump($cliente);
 ?>
 
-    <h3>Datos del cliente:</h3>
+    <!-- <h3>Datos del cliente:</h3> -->
         <form class="form-horizontal" id="form_cliente">
             <div class="panel panel-success ">
                 <div class="panel-body">
@@ -118,7 +118,7 @@
         </form>
      
     <div class="cart_list">
-        <h3>Detalles de productos:</h3>
+        <!-- <h3>Detalles de productos:</h3> -->
         <table class="table  table-responsive table-bordered table-striped">
         	<thead >
 	        	<th>Cantidad</th>
@@ -146,7 +146,7 @@
     
 <div class="row">
     <div class="col-md-3">
-    <h3>Datos de facturacion</h4>
+    <!-- <h3>Datos de facturacion</h4> -->
         <div class="panel panel-precio">
             <div class="panel-body">
                 <div class="h4 text-center" style="color: white">Importe total</div>
@@ -230,7 +230,7 @@
             }
             //alert(cliente + pago);
             var link = "<?php echo base_url(); ?>";
-            $.post(link + "tpv/guardar_compra", {
+            $.post(link + "tpv/guardar_venta", {
                     cliente: cliente,
                     pago: pago,
                     importe: importe_total,

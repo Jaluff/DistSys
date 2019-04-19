@@ -39,7 +39,7 @@ class Tpv_model extends CI_Model {
         return $this->db->insert_id();
     }
 
-    public function save_compra($venta , $pago , $detalles, $tpv, $cliente, $tipo)
+    public function save_venta($venta , $pago , $detalles, $tpv, $cliente, $tipo)
     {
         //var_dump($cliente);
         $this->db->insert($this->table_venta, array_merge($venta, $pago));
@@ -93,7 +93,7 @@ class Tpv_model extends CI_Model {
 
     }
 
-    public function update_compra($pago , $id_venta)
+    public function update_venta($pago , $id_venta)
     {
         // var_dump($pago);
         $this->db->where('id_venta', $id_venta);

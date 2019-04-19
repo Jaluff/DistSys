@@ -18,9 +18,8 @@ class Compras extends CI_Controller
     private function _init()
     {
         if (!$this->ion_auth->logged_in()) {
-                // redirect them to the login page
-                redirect('auth/login', 'refresh');
-            }
+            redirect('auth/login', 'refresh');
+        }
     }
 
     public function index()
@@ -29,12 +28,9 @@ class Compras extends CI_Controller
         $this->data['proveedores'] = $this->proveedores->get_proveedores();
         $this->data['productos'] = $this->productos->get_productos();
         $this->data['tpv'] = $this->tpvs->get_tpv();
-
         //var_dump($this->data);
         $this->load->view('compras/compras_view', $this->data);
     }
-
-
 
     public function nueva()
     {
@@ -46,14 +42,11 @@ class Compras extends CI_Controller
         $this->load->view('compras/nueva_compra', $this->data);
     }
     
-    
-
     public function ajax_list()
     {
         $tpv = $this->input->post('tpv');
         $fecha = ($this->input->post('fecha') == '') ? $this->_data_first_month_day() : date('Y-m-d', strtotime($this->input->post('fecha')));
         $fecha_fin = ($this->input->post('fecha_fin') == '') ? $this->_data_last_month_day() : date('Y-m-d', strtotime($this->input->post('fecha_fin')));
-
         $list = $this->compras->get_datatables($tpv, $fecha, $fecha_fin);
         //echo $list['id_producto'];
         //var_dump($list); exit();
@@ -135,10 +128,6 @@ class Compras extends CI_Controller
             }
         }     
     }
-
-
-     
-    
 
     public function get_producto_stock(){
         $id = $this->input->post('id');

@@ -1,21 +1,27 @@
 <div class="row">
-    <!-- <div class="panel panel-success"> -->
-    <div class="col-md-12">
-        <div class="col-md-5">
-            <h3>Compras</h3>
-        </div>
-        <div class="col-md-2 pull-right">
-            <form name="frm_tpv" id="frm_tpv" class="form-inline">
-                <label for="tpv" class="control-label">Seleccione TPV: </label>
-                <select id="tpv" name="tpv" class="form-control ">
-                    <?php foreach ($tpv as $t) : ?>
-                    <option value="<?php echo $t->id_tpv; ?>" <?php echo (isset($tpv_active->id_tpv) && $tpv_active->id_tpv == $t->id_tpv) ? 'selected=selected' : ''; ?>>
+
+    <div class="col-md-4">
+        <h3>Nueva compra</h3>
+    </div>
+
+    <div class="col-md-8 text-right">
+
+        <form name="frm_tpv" id="tpv" class="form-inline">
+
+            <label for="tpv" class="control-label">Seleccione TPV: </label>
+
+            <select id="tpv" name="tpv" class="form-control ">
+
+                <?php foreach ($tpv as $t) : ?>
+                    <option value="<?php echo $t->id_tpv; ?>" <?php
+                                                                echo (isset($tpv_active->id_tpv) && $tpv_active->id_tpv  == $t->id_tpv) ? 'selected=selected' : ''; ?>>
                         <?= $t->tpv_nombre ?>
                     </option>
-                    <?php endforeach; ?>
-                </select>
-            </form>
-        </div>
+
+                <?php endforeach; ?>
+            </select>
+
+        </form>
     </div>
 </div>
 
@@ -23,104 +29,122 @@
     <div class="col-md-12">
         <hr class="hr_success">
         <?php if (isset($message)) { ?>
-        <div id="infoMessage" class="alert alert-success" role="alert">
-            <?php echo $message; ?>
-        </div>
-        <?php 
+            <div id="infoMessage" class="alert alert-success" role="alert">
+                <?php echo $message; ?>
+            </div>
+        <?php
     } ?>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-9">
+        <div class="panel panel-warning">
+            <div class="panel-body">
+            <!-- <h3 >Datos de la compra</h4> -->
+            <!-- <div class="row"> -->
+                    <!-- <div class="col-md-9"> -->
+                    <form action="#" class="" id="compra">
+                        <div class="col-md-12 ">
+                            <div class="form-group">
+                                
+                                <div class="col-md-3 col-xs-12 ">
+                                    <label class="control-label" for="compra_proveedor">#Compra:</label>
+                                    <input id="numero_compra" name="numero_compra" type="hidden" placeholder="" class="form-control input-sm" readonly="readonly">
+                                </div>
 
-<form action="#" class="form-horizontal" id="compra">
-    <div class="row">
-        <!-- <div class="col-md-12"> -->
-        <!-- <input type="hidden" value="" name="id_producto" id="id_producto" /> -->
+                                
+                                <div class="col-md-3 col-xs-12 ">
+                                    <label class="control-label" for="compra_proveedor">Proveedor:</label>
+                                    <input id="compra_proveedor" name="compra_proveedor" type="text" placeholder="" class="form-control input-sm">
+                                </div>
 
-        <div class="col-md-12 ">
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-1 control-label" for="compra_proveedor">#Compra:</label>
-                <div class="col-md-2 col-xs-12 ">
-                    <input id="numero_compra" name="numero_compra" type="text" placeholder="" class="form-control " readonly="readonly">
+                                
+                                <div class="col-md-2">
+                                    <label class="control-label" for="compra_fecha">Fecha:</label>
+                                    <input id="compra_fecha" name="compra_fecha" type="text" value="<?= date('d-m-Y', now()) ?>" placeholder="" class="form-control input-sm" readonly="readonly">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                
+                                <div class="col-md-3 ">
+                                    <label class="control-label" for="fact_numero">Factura numero:</label>
+                                    <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control input-sm">
+                                </div>
+
+                                
+                                <div class="col-md-3 ">
+                                    <label class="control-label" for="fact_numero">Fecha factura.:</label>
+                                    <input id="factura_fecha" name="factura_fecha" type="text" placeholder="Factura fecha" class="form-control input-sm">
+                                </div>
+
+                                
+                                <div class="col-md-2 ">
+                                    <label class="control-label" for="fact_numero">Remito:</label>
+                                    <input id="remito" name="remito" type="text" placeholder="Remito" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </form>
+            <!-- </div> -->
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-precio">
+            <div class="panel-body">
+                <div class="h2 text-center" style="color: white">Total del pedido</div>
+                <div class="h3  text-center" style="color: white">
+                    <div id="importe_total">$0.00</div>
+                    <input type="hidden" name="importe_total">
                 </div>
 
-                <label class="col-md-1 control-label" for="compra_proveedor">Proveedor:</label>
-                <div class="col-md-2 col-xs-12 ">
-                    <input id="compra_proveedor" name="compra_proveedor" type="text" placeholder="" class="form-control ">
-                </div>
-
-                <label class="col-md-1  control-label" for="compra_fecha">Fecha:</label>
-                <div class="col-md-2">
-                    <input id="compra_fecha" name="compra_fecha" type="text" value="<?= date('d-m-Y', now()) ?>" placeholder="" class="form-control " readonly="readonly">
-                </div>
             </div>
 
         </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="col-md-1 control-label" for="fact_numero">Factura numero:</label>
-                <div class="col-md-2 col-xs-12 ">
-                    <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control">
-                </div>
+    </div>
+</div>
 
-                <label class="col-md-1 control-label" for="fact_numero">Fecha factura.:</label>
-                <div class="col-md-2 ">
-                    <input id="factura_fecha" name="factura_fecha" type="text" placeholder="Factura fecha" class="form-control">
-                </div>
-
-                <label class="col-md-1 control-label" for="fact_numero">Remito:</label>
-                <div class="col-md-2 ">
-                    <input id="remito" name="remito" type="text" placeholder="Remito" class="form-control ">
-                </div>
-                <!-- <label class="col-md-1 control-label" for="fact_numero">Pedido:</label>
-                <div class="col-md-2 ">
-                    <input id="numero_pedido" name="numero_pedido" type="text" placeholder="Remito" class="form-control ">
-                </div> -->
-
-            </div>
+<div class="row">
+    <div class="col-md-9">
+        <div class="well">
+            <form name="form_productos" id="form_productos" class="form-horizontal" >
+                
+                            <div class="form-group">
+                            <div class="col-md-5">
+                                <label class="control-label" for="sel_producto">Producto</label>
+                                <input id="sel_producto" name="sel_producto" type="text" placeholder="Producto" class="form-control input-sm">
+                            </div>
+                        
+                            <div class="col-md-1">
+                                <label class="control-label" for="sel_producto">Cantidad</label>
+                                <input id="compra_cant" name="compra_cant" type="text" placeholder="Cant." class="form-control input-sm">
+                            </div>
+                            <div class="col-md-2">
+                            <label class="control-label" for="sel_producto">Costo</label>
+                                <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
+                            </div>
+                            <div class="col-md-1">
+                            <label class="control-label" for="sel_producto">Stock act.</label>
+                                <input id="stock_actual" name="stock_actual" type="text" class="form-control input-sm " readonly="readonly">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label" for="sel_producto">Costo act.</label>
+                                <input id="producto_costo" name="producto_costo" type="text" class="form-control input-sm " readonly="readonly">
+                            </div>
+                            <div class="col-md-1">
+                                
+                                <button class="btn btn-info " id="add">Agregar</button>
+                            </div>
+                            </div>
+                    
+            </form>
         </div>
     </div>
-    </div>
-</form>
-
-<div class="col-md-12">
-    <div class="well">
-        <form name="form_productos" id="form_productos">
-            <table class="table table-responsive table-hover ">
-                <thead>
-                    <th width="30%">Producto</th>
-                    <th>Cant.</th>
-                    <th>Costo</th>
-                    <th>Stock actual</th>
-                    <th>Costo actual</th>
-                    <th></th>
-
-                    <th></th>
-                </thead>
-                <tbody>
-                    <td>
-                        <input id="sel_producto" name="sel_producto" type="text" placeholder="Producto" class="form-control input-sm">
-                    </td>
-                    <td>
-                        <input id="compra_cant" name="compra_cant" type="text" placeholder="Cant." class="form-control input-sm">
-                    </td>
-                    <td>
-                        <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
-                    </td>
-                    <td>
-                        <input id="stock_actual" name="stock_actual" type="text" class="form-control input-sm " readonly="readonly">
-                    </td>
-                    <td>
-                        <input id="producto_costo" name="producto_costo" type="text" class="form-control input-sm " readonly="readonly">
-                    </td>
-                    <td>
-                        <button class="btn btn-info btn-sm" id="add">Agregar</button>
-                        <?php  ?>
-                    </td>
-                </tbody>
-            </table>
-        </form>
-    </div>
+    <div class="col-md-3"></div>
 </div>
 
 <div class="col-md-12">
@@ -128,9 +152,9 @@
 </div>
 
 
-<div class="col-md-8">
-    <form id="frm_items" name="frm_items" >
-        <h3>Items comprados</h3>
+<div class="col-md-9">
+    <form id="frm_items" name="frm_items">
+        <h3>Detalle</h3>
         <!-- <div id="cart_content"></div> -->
         <table class="table table-hover" id="items">
             <thead>
@@ -145,34 +169,22 @@
             </tbody>
         </table>
 
-        
+
     </form>
-    
+
 </div>
-<div class="col-md-4">
-    <div class="panel panel-precio">
-                <div class="panel-body">
-                    <div class="h2 text-center" style="color: white">Total del pedido</div>
-                    <div class="h3  text-center"style="color: white">
-                        <div id="importe_total">$0.00</div>
-                        <input type="hidden" name="importe_total"  >
-                    </div>
 
-                </div>
-
-            </div>
-    </div>
 <div class="row">
-            <div class="col-md-12">
-                <div class="text-center">
-                    <div class="form-group">
-                        <button type="button" id="Guardar_compra" name="Guardar_compra" class="btn btn-success">Guardar </button>
-                        <button type="button" id="vaciar" name="vaciar" class="btn btn-warning">Vaciar produtos </button>
-                        <button type="button" id="volver" name="volver" class="btn btn-danger" onclick="location.href='<?php echo base_url(); ?>compras/'">Cancelar compra </button>
-                    </div>
-                </div>
+    <div class="col-md-12">
+        <div class="text-center">
+            <div class="form-group">
+                <button type="button" id="Guardar_compra" name="Guardar_compra" class="btn btn-success">Guardar </button>
+                <button type="button" id="vaciar" name="vaciar" class="btn btn-warning">Vaciar produtos </button>
+                <button type="button" id="volver" name="volver" class="btn btn-danger" onclick="location.href='<?php echo base_url(); ?>compras/'">Cancelar compra </button>
             </div>
         </div>
+    </div>
+</div>
 </div>
 </div>
 
@@ -183,42 +195,42 @@
         var cantidad = $('#compra_cant').val();
         var precio = $('#prod_costo').val();
         var link = '<?= base_url() ?>compras/';
-        $.post(link + "add_item", {  //add_cart_item
-                 product_id: id,
-                 quantity: cantidad,
-                 price: precio,
-                 ajax: '1'
-             },
-             
-             function(data) {
+        $.post(link + "add_item", { //add_cart_item
+                product_id: id,
+                quantity: cantidad,
+                price: precio,
+                ajax: '1'
+            },
+
+            function(data) {
                 datos = $.parseJSON(data);
-               // alert(datos);
-        if (datos.id_producto) {
+                // alert(datos);
+                if (datos.id_producto) {
 
-            html = "<tr>";
-            html += "<td><input type='hidden' name='codigo[]' value='" + datos.codigo + "' class='codigo'><p class='h5'>" + datos.codigo +"</p></td>";
-            html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidades form-control input-sm'></td>";
-            html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
-            html += "<td><input type='hidden' name='precio[]' value='" + datos.precio + "' class='precio'><p class='h5'>" + parseFloat(datos.precio).toFixed(2) + "</p></td>";
-            html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
-            html += "<input type='hidden' name='idProducto[]' value='" + datos.id_producto + "' class='id_producto'>";
-            html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='glyphicon glyphicon-trash'></span></button></td>";
-            html += "</tr>";
-            $('#items tbody').append(html);
-            clear_selectize_prod();
-            $('#prod_costo').val('');
-            $('#compra_cant').val('');
-            calcula_total();
-            //con cart library 
-            /*$.get(link + "show_cart", function(cart) { // Get the contents of the url cart/show_cart
-                $("#cart_content").html(cart); // Replace the information in the div #cart_content with the retrieved data
-            });*/
+                    html = "<tr>";
+                    html += "<td><input type='hidden' name='codigo[]' value='" + datos.codigo + "' class='codigo'><p class='h5'>" + datos.codigo + "</p></td>";
+                    html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidades form-control input-sm'></td>";
+                    html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
+                    html += "<td><input type='hidden' name='precio[]' value='" + datos.precio + "' class='precio'><p class='h5'>" + parseFloat(datos.precio).toFixed(2) + "</p></td>";
+                    html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
+                    html += "<input type='hidden' name='idProducto[]' value='" + datos.id_producto + "' class='id_producto'>";
+                    html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='glyphicon glyphicon-trash'></span></button></td>";
+                    html += "</tr>";
+                    $('#items tbody').append(html);
+                    clear_selectize_prod();
+                    $('#prod_costo').val('');
+                    $('#compra_cant').val('');
+                    calcula_total();
+                    //con cart library 
+                    /*$.get(link + "show_cart", function(cart) { // Get the contents of the url cart/show_cart
+                        $("#cart_content").html(cart); // Replace the information in the div #cart_content with the retrieved data
+                    });*/
 
-        } else {
-            alert("Hubo un problema verifique!");
-        }
-        });
-    return false;
+                } else {
+                    alert("Hubo un problema verifique!");
+                }
+            });
+        return false;
     });
 
     $(document).on('click', '.btn-remove-producto', function() {
@@ -228,8 +240,8 @@
 
     $(document).on('keyup', '#items input.cantidades', function() {
         cantidad = $(this).val();
-        precio   = $(this).closest("tr").find("td:eq(3)").text();
-        importe  = cantidad * precio;
+        precio = $(this).closest("tr").find("td:eq(3)").text();
+        importe = cantidad * precio;
         importe = parseFloat(importe).toFixed(2);
         console.log('c' + cantidad + 'p' + precio);
 
@@ -240,12 +252,12 @@
 
     $(document).on('keyup', '#items input.precio', function() {
         cantidad = $(this).val();
-        precio   = $(this).closest("tr").find("td:eq(1)").children("input").val();
-        importe  = cantidad * precio;
+        precio = $(this).closest("tr").find("td:eq(1)").children("input").val();
+        importe = cantidad * precio;
         importe = parseFloat(importe).toFixed(2);
         console.log('c' + cantidad + 'p' + precio + 'i: ' + importe);
 
-        $(this).closest("tr").find("td:eq(4)").children("p").text("$"+importe);
+        $(this).closest("tr").find("td:eq(4)").children("p").text("$" + importe);
         $(this).closest("tr").find("td:eq(4)").children("input").val(importe);
         calcula_total();
     });
@@ -267,9 +279,9 @@
         return false;
     });
 
-    function calcula_total(){
+    function calcula_total() {
         total = 0;
-        $('#items tbody tr').each(function(){
+        $('#items tbody tr').each(function() {
             total = total + Number($(this).find("td:eq(4)").text());
             $("input[name=importe_total").val(total);
             $('#importe_total').text("$" + total);
@@ -278,11 +290,11 @@
 
 
     $('#Guardar_compra').on('click', function() {
-        var compra          = $('#compra').serialize();
-        var items          = $('#frm_items').serialize();
-        var tpv             = $('select#tpv').val();
-        var importe_total   = $('input[name=importe_total]').val();
-        
+        var compra = $('#compra').serialize();
+        var items = $('#frm_items').serialize();
+        var tpv = $('select#tpv').val();
+        var importe_total = $('input[name=importe_total]').val();
+
         var link = "<?php echo base_url(); ?>compras/";
         $.post(link + "guardar_compra", {
                 compra: compra,
@@ -294,7 +306,8 @@
             function(data) {
                 if (data == 'true') {
                     alert("Operacion realizada con exito!");
-                    <?php //echo $this->cart->destroy(); ?>
+                    <?php
+                    ?>
                     location.href = link;
                 } else {
                     alert("Hubo algun problema , verifique");
@@ -304,7 +317,7 @@
     });
 
 
-    
+
 
     $('#sel_producto').on('change', function() {
         var id_prod = $('#sel_producto').prop('value');
@@ -313,9 +326,9 @@
             },
             function(data) {
                 var json = $.parseJSON(data);
-                if(json != null){
+                if (json != null) {
                     $('#producto_costo').val(json.producto_costo);
-                }else{
+                } else {
                     $('#producto_costo').val('');
                 }
                 $.post("<?= base_url() ?>compras/get_producto_stock", {
@@ -323,10 +336,10 @@
                     },
                     function(data) {
                         var json = $.parseJSON(data);
-                        
-                        if(json != null ){
-                            $('#stock_actual').val(json.stock_act);    
-                        }else{
+
+                        if (json != null) {
+                            $('#stock_actual').val(json.stock_act);
+                        } else {
                             $('#stock_actual').val("Sin stock");
                         }
                     });
@@ -381,12 +394,12 @@
         searchField: ['nombre', 'contacto'],
         options: [
             <?php
-  /* traer datos por json... sino no funciona */
+            /* traer datos por json... sino no funciona */
             //var_dump($proveedores);
 
             if ($proveedores) {
                 foreach ($proveedores as $prov) {
-                    
+
                     echo "{id:" . $prov->id_proveedor . ", nombre: '" . $prov->prov_nombre . "', contacto: '" . $prov->prov_contacto . "'},";
                 }
             } else {
@@ -416,7 +429,7 @@
         searchField: ['producto', 'stock'],
         options: [
             <?php
-  /* traer datos por json... sino no funciona */
+            /* traer datos por json... sino no funciona */
             if (isset($productos)) {
                 foreach ($productos as $prod) {
                     //echo $prov->id_proveedor;
@@ -464,7 +477,7 @@
         control.clear();
     }
 
-    
+
 
 
     $('#factura_fecha').datepicker({
@@ -476,4 +489,4 @@
         todayHighlight: true,
         format: 'dd-mm-yyyy'
     });
-</script> 
+</script>

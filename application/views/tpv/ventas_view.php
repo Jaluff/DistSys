@@ -65,6 +65,8 @@
             <th>Tarjeta</th>
             <th>Cheque</th>
             <th>Total vta.</th>
+            <th>Cobrado</th>
+            <th>saldo</th>
             <th>Estado</th>
             <th>Vendedor</th>
             <th style="min-width: 90px">Action</th>
@@ -140,6 +142,12 @@
             },
             {
                 "data": "importe_total"
+            },
+            {
+                "data": "importe_recibido"
+            },
+            {
+                "data": "importe_saldo"
             },
             {
                 "data": "estado"

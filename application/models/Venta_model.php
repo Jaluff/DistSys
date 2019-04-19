@@ -10,7 +10,7 @@ class Venta_model extends CI_Model {
     //var $table_stock = 'stock';
     //var $table_marcas = 'marca';
     //var $table_tipo = 'tipo';
-    var $column_order =  array('id_venta','clientes.cli_nombre','metodoPago','tipo', 'fecha','pago_efectivo','pago_tarjeta','pago_cheque','ventas.importe_total','estado','ventas.usuario' , null); //set column field database for datatable orderable
+    var $column_order =  array('id_venta','clientes.cli_nombre','metodoPago','tipo', 'fecha','pago_efectivo','pago_tarjeta','pago_cheque','ventas.importe_total','importe_recibido', 'importe_saldo','estado','ventas.usuario' , null); //set column field database for datatable orderable
     var $column_search = array('id_venta','cliente','clientes.cli_nombre','metodoPago','tipo', 'fecha','pago_efectivo','pago_tarjeta', 'ventas.importe_total', 'estado','ventas.cobrador','ventas.usuario'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array(  'estado' => 'desc', 'fecha' => 'asc'); // default order
 

@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //$config['base_url'] = 'http://localhost/veterinaria/';
 define('SERVER_NAME_DEV', 'localhost');
-define('SERVER_NAME_EMPRESA', '192.168.0.102/distribuidora/');
+define('SERVER_NAME_EMPRESA', '192.168.1.39/distribuidora/');
 
 
 //Obtenemos el nombre actual para el servidor donde nos encontramos
@@ -37,7 +37,7 @@ switch($nombreServerActual)
             $config['base_url']    = 'http://localhost/distribuidora/';
             break;
     case SERVER_NAME_EMPRESA:
-            $config['base_url']    = "http://192.168.0.102/distribuidora/";
+            $config['base_url']    = "http://192.168.1.39/distribuidora/";
             break;
     
 //        default:

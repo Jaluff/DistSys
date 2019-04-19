@@ -87,8 +87,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .panel-warning {
-    border-color: #868686;
-    background: #868686;
+    border-color: #6d6d6d;
+    background: #6d6d6d;
     color: white;
 }
 
@@ -442,21 +442,3 @@ height: auto;
    license:GPL
 */
 
-.panel-info {
-    border-color: #009ba2;
-  }
-  .panel-info > .panel-heading {
-    color: #ffffff;
-    background-color: #009ba2;
-    border-color: #009ba2;
-  }
-  .panel-info > .panel-heading + .panel-collapse > .panel-body {
-    border-top-color: #009ba2;
-  }
-  .panel-info > .panel-heading .badge {
-    color: #ffffff;
-    background-color: #31708f;
-  }
-  .panel-info > .panel-footer + .panel-collapse > .panel-body {
-    border-bottom-color: #009ba2;
-  }

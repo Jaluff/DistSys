@@ -11,6 +11,7 @@ class Cliente extends CI_Controller {
         $this->load->library(array('form_validation', 'email'));
         $this->_init();
     }
+    
     private function _init()
   	{
           if (!$this->ion_auth->logged_in())
@@ -18,9 +19,6 @@ class Cliente extends CI_Controller {
   			// redirect them to the login page
   			redirect('auth/login', 'refresh');
   		}
-
-
-
   	}
 
     public function index()

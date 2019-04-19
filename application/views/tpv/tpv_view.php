@@ -5,22 +5,16 @@
     </div>
 
     <div class="col-md-8 text-right">
-
         <form name="frm_tpv" id="tpv" class="form-inline">
-
             <label for="tpv" class="control-label">Seleccione TPV: </label>
-
             <select id="tpv" name="tpv" class="form-control ">
-
                 <?php foreach ($tpv as $t) : ?>
                     <option value="<?php echo $t->id_tpv; ?>" <?php
                                                                 echo (isset($tpv_active->id_tpv) && $tpv_active->id_tpv  == $t->id_tpv) ? 'selected=selected' : ''; ?>>
                         <?= $t->tpv_nombre ?>
                     </option>
-
                 <?php endforeach; ?>
             </select>
-
         </form>
     </div>
 </div>
@@ -113,7 +107,7 @@
                                 <h1></h1>
                             </label>
                             <h2>
-                                <a class="btn btn-info btn-lg h2 " onclick="add_cliente();">
+                                <a class="btn btn-info  h2 " onclick="add_cliente();">
                                     <i class="glyphicon glyphicon-plus"></i>
                                 </a>
                             </h2>
@@ -121,8 +115,6 @@
                     </div>
                 </div>
             </form>
-
-
 
             <div class="panel panel-warning">
                 <div class="panel-body">
@@ -146,7 +138,7 @@
                         </div>
                         <div class="col-md-1">
 
-                            <button type="submit" class="btn btn-warning " name="agregar">Agregar</button>
+                            <button type="submit" class="btn btn-warning btn-sm " name="agregar">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -244,15 +236,13 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group text-center h3">
-                <?php echo anchor('#', 'Enviar', 'class="btn btn-success btn-lg" id="pedido"'); ?>
-                <a href="javascript:window.history.go(-1);" class="btn btn-warning btn-lg">Volver</a>
+                <?php echo anchor('#', 'Enviar', 'class="btn btn-success " id="pedido"'); ?>
+                <a href="javascript:window.history.go(-1);" class="btn btn-warning ">Volver</a>
                 <?php  ?>
             </div>
         </div>
     </div>
-
 </div>
-
 
 <?php require_once(APPPATH . 'views/usuarios/form_cliente.php'); ?>
 
@@ -406,7 +396,7 @@
 
             //alert(cliente + pago);
             var link = "<?php echo base_url(); ?>";
-            $.post(link + "tpv/guardar_compra", {
+            $.post(link + "tpv/guardar_venta", {
                     cliente: cliente,
                     pago: pago,
                     tipo: 'pedido',

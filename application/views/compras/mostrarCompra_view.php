@@ -15,7 +15,7 @@
     <hr class="hr_success">
     <div class="row col-md-9">
         <form class="form-horizontal" id="form_compra">
-            <div class="panel panel-success">
+            <div class="panel panel-warning">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
@@ -71,7 +71,7 @@
                 </div>
             </div>
         </form>
-
+<div class="row">
         <div class="col-md-12">
     <div class="well">
         <form name="form_productos" id="form_productos">
@@ -110,6 +110,7 @@
             </table>
         </form>
     </div>
+</div>
 </div>
 
         <div class="cart_list">

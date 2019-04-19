@@ -95,13 +95,13 @@ class Tpv extends CI_Controller
         redirect('tpv'); // Refresh te page
     }
 
-    public function guardar_compra()
+    public function guardar_venta()
     {
         // var_dump($this->input->post());
         // exit(0);
         $tipo = $this->input->post('tipo');
         $tpv = $this->input->post('tpv');
-        $importe = $this->input->post('importe');
+        $importe = floatval($this->input->post('importe'));
         $cliente = $this->input->post('cliente');
         parse_str($cliente, $cliente);
 
@@ -111,28 +111,33 @@ class Tpv extends CI_Controller
 
             $pago = $this->input->post('pago');
             parse_str($pago, $pago);
-            if ($pago['metodo_pago'] == 'efectivo') {
-                $vuelto = ($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo']) - $importe;
-            } else {
-                $vuelto = 0;
-            }
+            //if ($pago['metodo_pago'] == 'efectivo') {
+                $recibido = floatval(($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo'])) ;
+                $saldo = $recibido  - $importe; //- $importe;
+            // } else {
+            //     $vuelto = 0;
+            // }
 
             $datos_pago = array(
                 'metodoPago'            => $pago['metodo_pago'],
-                'pago_efectivo'         => $pago['recibido_efectivo'] - $vuelto,
+                'pago_efectivo'         => $pago['recibido_efectivo'], //- $vuelto,
                 'pago_tarjeta'          => $pago['recibido_tarjeta'],
                 'pago_cheque'           => $pago['recibido_cheque'],
                 'pago_cheque_banco'     => $pago['cheque_banco'],
                 'pago_cheque_cuenta'    => $pago['cheque_cuenta'],
                 'pago_cheque_numero'    => $pago['cheque_numero'],
                 'importe_total'         => $importe,
+                'importe_recibido'      => $recibido,
+                'importe_saldo'         => $saldo,
                 'tarjeta'               => $pago['tarjeta'],
                 'id_tpv'                => $tpv,
                 'estado'                => $cobrada,
                 'tipo'                  => $tipo,
                 'fecha_cobro'           => date('Y-m-d', now()),
             );
-            if ($this->tpvs->update_compra($datos_pago , $idVenta)) {
+           var_dump($datos_pago);
+           exit(0);
+            if ($this->tpvs->update_venta($datos_pago , $idVenta)) {
                     echo 'true';    
                 }else{
                     echo 'false';
@@ -165,7 +170,7 @@ class Tpv extends CI_Controller
                 //'dir' => $cliente['direccion'],
             );
             $detalles = $this->cart->contents();
-            if ($id_venta = $this->tpvs->save_compra($datos_venta, $datos_pago, $detalles, $tpv, $cliente, $tipo)) {
+            if ($id_venta = $this->tpvs->save_venta($datos_venta, $datos_pago, $detalles, $tpv, $cliente, $tipo)) {
                 if($id_venta){
                     echo $this->cart->destroy();
                     echo 'true';    

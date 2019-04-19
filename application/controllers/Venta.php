@@ -12,21 +12,15 @@ class Venta extends CI_Controller {
         $this->_init();
     }
     private function _init()
-
   	{
-        
           if (!$this->ion_auth->logged_in())
   		{
   			redirect('auth/login', 'refresh');
   		}
-
-        
-        
   	}
 
     public function index()
     {
-        
         $this->output->set_template('default');
         // $this->load->helper('url');
         $this->load->model('tpv_model','tpvs');
@@ -67,6 +61,8 @@ class Venta extends CI_Controller {
             $row['pago_cheque'] = ($stk->pago_cheque > 0) ? "$".$stk->pago_cheque : '';
             $row['pago_tarjeta'] = ($stk->pago_tarjeta > 0 ) ? "$".$stk->pago_tarjeta : '';
             $row['importe_total'] = $stk->importe_total;
+            $row['importe_recibido'] = $stk->importe_recibido;
+            $row['importe_saldo'] = $stk->importe_saldo;
             $row['estado'] = ($stk->estado == 'cobrada') ? '<h4><span class="label label-success">' . $stk->estado . '</span></h4>' : '<h4><span class="label label-danger">' . $stk->estado . '</span></h4>';
             $row['usuario'] = $stk->usuario;
             $row['cobrador'] = $stk->cobrador;
@@ -126,11 +122,24 @@ class Venta extends CI_Controller {
     return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     }
 
+    function add_item(){
+        $datos_producto = array(
+            "id_producto" => $_POST['product_id'],
+            "cantidad" => $_POST['quantity'],
+            "precio" => $_POST['price']
+        );
+        $articulo = $this->ventas->agregar_producto($datos_producto);
+        if($this->input->post('ajax') != '1'){
+            //redirect('compras/nueva'); // If javascript is not enabled, reload the page with new data
+        }else{
+            echo json_encode($articulo); // 'true'; // If javascript is enabled, return true, so the cart gets updated
+        }
+    }
+
     public function ver_venta($idventa){
         $this->output->set_template('default');
         $this->data['ventas'] = $ventas = $this->ventas->get_venta($idventa);
         $this->data['detalles'] = $this->ventas->get_venta_detalles($idventa);
-    
         $this->data['cliente'] = $this->ventas->get_cliente($ventas->cliente);
         $this->load->view('tpv/mostrarVenta_view',  $this->data);
 
