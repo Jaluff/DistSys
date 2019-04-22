@@ -10,9 +10,6 @@
 	        <?php echo "Vendedor: " . strtoupper($ventas->cobrador);?>
 	        </h3>   
         </div>
-       
-        
-   
 </div>
 
 <div class="row">
@@ -21,7 +18,6 @@
 <?php
 // var_dump($cliente);
 ?>
-
     <!-- <h3>Datos del cliente:</h3> -->
         <form class="form-horizontal" id="form_cliente">
             <div class="panel panel-success ">
@@ -226,7 +222,7 @@
             console.log(total_recibido + " - " + importe_total + "--");
             if (total_recibido < importe_total) {
                 confirm('El importe recibido es menos al total de la venta! VERIFIQUE');
-                return false;
+               // return false;
             }
             //alert(cliente + pago);
             var link = "<?php echo base_url(); ?>";

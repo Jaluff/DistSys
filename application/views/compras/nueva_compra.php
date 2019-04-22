@@ -47,10 +47,10 @@
                         <div class="col-md-12 ">
                             <div class="form-group">
                                 
-                                <div class="col-md-3 col-xs-12 ">
-                                    <label class="control-label" for="compra_proveedor">#Compra:</label>
+                                <!-- <div class="col-md-3 col-xs-12 "> -->
+                                    <!-- <label class="control-label" for="compra_proveedor">#Compra:</label> -->
                                     <input id="numero_compra" name="numero_compra" type="hidden" placeholder="" class="form-control input-sm" readonly="readonly">
-                                </div>
+                                <!-- </div> -->
 
                                 
                                 <div class="col-md-3 col-xs-12 ">

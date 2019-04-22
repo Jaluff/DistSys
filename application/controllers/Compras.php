@@ -110,23 +110,21 @@ class Compras extends CI_Controller
         $items = $this->input->post('detalles');
         parse_str($items, $detalles);
         //var_dump($detalles);
-        if($estado == 'Aprobada'){
-            
+        // if($estado == 'Aprobada'){
             if($this->compras->update_stock_compra($id_compra, $detalles,$total_importe, $estado)){
                 echo json_encode(true);
             }else{
                 echo json_encode(false);
             }
-        }elseif($estado == 'Arribada'){
-            $where = array('id_compra' => $id_compra );
-            $data = array('estado' => $estado, 'importe_total' => $total_importe);
-            
-            if ($this->compras->update_estado_compra($where, $data)){
-                echo json_encode(true);
-            }else{
-                echo json_encode(false);
-            }
-        }     
+        // }elseif($estado == 'Arribada'){
+            // $where = array('id_compra' => $id_compra );
+            // $data = array('estado' => $estado, 'importe_total' => $total_importe);
+            // if ($this->compras->update_estado_compra($where, $data)){
+            //     echo json_encode(true);
+            // }else{
+            //     echo json_encode(false);
+            // }
+        // }     
     }
 
     public function get_producto_stock(){
@@ -141,17 +139,40 @@ class Compras extends CI_Controller
         $precio = $this->productos->get_precio_by_id($id);
         echo json_encode($precio);
     }
+    
 
     public function guardar_compra(){
-        $estado = $this->input->post('tipo');
+        $detalles =  array();
+        $id_compra = $this->input->post('id');
+        $estado = $this->input->post('estado');
         $tpv = $this->input->post('tpv');
-        $importe = $this->input->post("importe_total");
+        $importe = $this->input->post("total");
         $compra =  $this->input->post('compra');
+        $pago = $this->input->post('pago');
+        $detalles = $this->input->post('detalles'); 
+        
         parse_str($compra, $compra);
+        parse_str($detalles, $detalles);
+        parse_str($pago, $pago);
+        // echo "detalles: ".$detalles['nombre'];
+        //  var_dump($detalles);//exit();
+        $recibido = floatval(($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo'])) ;
+        $saldo = $recibido  - $importe; 
         $user = $this->ion_auth->user()->row();    
             
             $datos_compra = array(
-                'id_proveedor'      => $compra['compra_proveedor'],
+                'metodoPago'            => $pago['metodo_pago'],
+                'pago_efectivo'         => $pago['recibido_efectivo'], //- $vuelto,
+                'pago_tarjeta'          => $pago['recibido_tarjeta'],
+                'pago_cheque'           => $pago['recibido_cheque'],
+                'pago_cheque_banco'     => $pago['cheque_banco'],
+                'pago_cheque_cuenta'    => $pago['cheque_cuenta'],
+                'pago_cheque_numero'    => $pago['cheque_numero'],
+                'importe_total'         => $importe,
+                'importe_recibido'      => $recibido,
+                'importe_saldo'         => $saldo,
+                'tarjeta'               => $pago['tarjeta'],
+                'id_proveedor'      => $compra['id_proveedor'],
                 'fecha_compra'      => $compra['compra_fecha'] ,
                 'numero_compra'     => $compra['numero_compra'],
                 'fecha_compra'      => date("Y-m-d", strtotime($compra['compra_fecha'])),
@@ -159,23 +180,26 @@ class Compras extends CI_Controller
                 //'pedido_numero'     => $compra['numero_pedido'],
                 'factura_numero'    => $compra['factura_numero'],
                 'factura_fecha'     => date("Y-m-d", strtotime($compra['factura_fecha'])),
-                'compra_id_tpv'     => $tpv,
+                'compra_id_tpv'     => $compra['tpv'],
                 'estado'            => $estado,
                 'importe_total'     => $importe,
                 'compra_created_on' => date('Y-m-d H:i', now()),
                 'usuario'           => $user->first_name. ", ".$user->last_name,
                 'id_empresa'        =>$this->session->userdata('id_empresa'),
               );
-
-        parse_str($_POST['items'], $detalles);
-        if ($numero_compra = $this->compras->save_compra($datos_compra, $detalles, $tpv)){
-            $where = array('id_compra' => $numero_compra);
+        if($this->compras->get_by_id($id_compra) != ''){
+            $this->compras->save_compra($datos_compra, $detalles, $id_compra);
+        }else{
+            // $this->compras->update_compra($where);
+        }
+        // if ($numero_compra = ){
+        //     $where = array('id_compra' => $numero_compra);
              
-            if($this->compras->update_compra($where)){
+        //     if(){
                 echo 'true';
-            }
+            // }
             
-        }     
+        // }     
     }
 
     public function ajax_edit($id, $tpv)
@@ -264,7 +288,7 @@ class Compras extends CI_Controller
     function ver_compra($idcompra){
         $this->output->set_template('default');
 
-        $this->data['compras'] = $compras = $this->compras->get_compra($idcompra);
+        $this->data['compras'] = $compras = $this->compras->get_by_id($idcompra);
         $this->data['detalles'] = $this->compras->get_compras_detalles($idcompra);
         $this->data['proveedor'] =  $this->compras->get_proveedores($compras->id_proveedor);
         $this->data['productos'] = $this->productos->get_productos();

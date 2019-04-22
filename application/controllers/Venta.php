@@ -138,7 +138,7 @@ class Venta extends CI_Controller {
 
     public function ver_venta($idventa){
         $this->output->set_template('default');
-        $this->data['ventas'] = $ventas = $this->ventas->get_venta($idventa);
+        $this->data['operacion'] = $ventas = $this->ventas->get_venta($idventa);
         $this->data['detalles'] = $this->ventas->get_venta_detalles($idventa);
         $this->data['cliente'] = $this->ventas->get_cliente($ventas->cliente);
         $this->load->view('tpv/mostrarVenta_view',  $this->data);

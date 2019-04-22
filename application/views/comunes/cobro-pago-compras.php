@@ -4,10 +4,10 @@
                 <form name="form_pago" id="form_pago" method="post">
                     <div class="form-group">
                         <label for="metodo_pago" ><h4 style="color: white" class="text-center">Forma de pago</h4></label>
-                        <?php if ($ventas->metodoPago != ''){?>
+                        <?php if ($compras->metodoPago != ''){?>
 
-                        	<input type="text" name="metodo_pago" id="metodo_pago" value="<?php echo strtoupper($ventas->metodoPago);?>"  class="form-control" readonly="readonly">
-								<?php //echo ($ventas->estado == 'cobrada') ? 'readonly="readonly"': '' ?>
+                        	<input type="text" name="metodo_pago" id="metodo_pago" value="<?php echo strtoupper($compras->metodoPago);?>"  class="form-control" readonly="readonly">
+								<?php //echo ($compras->estado == 'cobrada') ? 'readonly="readonly"': '' ?>
                         <?php }else{ ?>
                         	<select name="metodo_pago" id="metodo_pago" class="form-control">
                                 <option value='ninguno'>Ninguno</option>
@@ -24,8 +24,8 @@
                     <label for="recibido_efectivo">Efectivo</label>
                         <div class="input-group" id="div_efectivo">
                             <div class="input-group-addon">$</div>
-                            <input type="text" name="recibido_efectivo" id="recibido_efectivo" value="<?php echo $ventas->pago_efectivo;?>"  class="form-control "
-								<?php echo ($ventas->estado == 'cobrada') ? 'readonly="readonly"': '' ?>
+                            <input type="text" name="recibido_efectivo" id="recibido_efectivo" value="<?php echo $compras->pago_efectivo;?>"  class="form-control "
+								<?php echo ($compras->estado == 'cobrada') ? 'readonly="readonly"': '' ?>
                             >
                         </div>
                     </div>
@@ -33,8 +33,8 @@
                     <div id="div_tarjeta" style="display:none">
                         <div class="form-group">
                             <label for="tarjeta">Tarjeta</label>
-                                <?php if ($ventas->estado == 'cobrada'){?>    
-                                <input type="text" name="tarjeta" id="tarjeta" value="<?php echo strtoupper($ventas->tarjeta);?>"  class="form-control " readonly="readonly">
+                                <?php if ($compras->estado == 'cobrada'){?>    
+                                <input type="text" name="tarjeta" id="tarjeta" value="<?php echo strtoupper($compras->tarjeta);?>"  class="form-control " readonly="readonly">
                                 <?php }else{ ?>
                                     <select name="tarjeta" id="tarjeta" class="form-control " >
                                         <option value="">Seleccione tarjeta</option>
@@ -52,8 +52,8 @@
                             <div class="input-group" >
                                 <div class="input-group-addon">$</div>
                                 <label for="recibido_tarjeta"></label>
-                                <input type="text" name="recibido_tarjeta" id="recibido_tarjeta" value="<?php echo $ventas->pago_tarjeta;?>" class="form-control " 
-                                <?php echo ($ventas->estado == 'cobrada') ? 'readonly="readonly"': '' ?>
+                                <input type="text" name="recibido_tarjeta" id="recibido_tarjeta" value="<?php echo $compras->pago_tarjeta;?>" class="form-control " 
+                                <?php echo ($compras->estado == 'cobrada') ? 'readonly="readonly"': '' ?>
                                 >
                             </div>
                         </div>
@@ -62,19 +62,19 @@
                     <div id="div_cheque" style="display:none">
                         <div class="form-group">
                             <label for="cheque">Cheque</label>
-                        	    <?php if ($ventas->estado == 'cobrada'){?>
+                        	    <?php if ($compras->estado == 'cobrada'){?>
                                     <div class="input-group" >
                                         <div class="input-group-addon">$</div>
                                         <label for="recibido_cheque"></label>
-                                            <input type="text" name="recibido_cheque" id="recibido_cheque" value="<?php echo strtoupper($ventas->pago_cheque);?>" 
-                                            <?php echo ($ventas->estado == 'cobrada') ? 'readonly="readonly"': '' ?> placeholder="Recibido cheque" class="form-control ">
+                                            <input type="text" name="recibido_cheque" id="recibido_cheque" value="<?php echo strtoupper($compras->pago_cheque);?>" 
+                                            <?php echo ($compras->estado == 'cobrada') ? 'readonly="readonly"': '' ?> placeholder="Recibido cheque" class="form-control ">
                                     </div>    
                                     <label for="cheque_numero">Cheque Numero:</label> 
-                                        <input type="text" name="cheque_numero" id="cheque_numero" value="<?php echo strtoupper($ventas->pago_cheque_numero);?>"  class="form-control " readonly="readonly">
+                                        <input type="text" name="cheque_numero" id="cheque_numero" value="<?php echo strtoupper($compras->pago_cheque_numero);?>"  class="form-control " readonly="readonly">
                                     <label for="cheque_banco">Banco:</label>    
-                                        <input type="text" name="cheque_banco" id="cheque_banco" value="<?php echo strtoupper($ventas->pago_cheque_banco);?>"  class="form-control " readonly="readonly">
+                                        <input type="text" name="cheque_banco" id="cheque_banco" value="<?php echo strtoupper($compras->pago_cheque_banco);?>"  class="form-control " readonly="readonly">
                                     <label for="cheque_cuenta">Cuenta:</label>    
-                                        <input type="text" name="cheque_cuenta" id="cheque_cuenta" value="<?php echo strtoupper($ventas->pago_cheque_cuenta);?>"  class="form-control " readonly="readonly">
+                                        <input type="text" name="cheque_cuenta" id="cheque_cuenta" value="<?php echo strtoupper($compras->pago_cheque_cuenta);?>"  class="form-control " readonly="readonly">
                         	    <?php }else{ ?>
                                     <div class="input-group" >
                                         <div class="input-group-addon">$</div>
@@ -104,6 +104,7 @@
         <script type="text/javascript">
 $(document).ready(function() {
         var mp = $('#metodo_pago').val().toLowerCase(); 
+        alert (mp);
     	if(mp == 'efectivo'){
             $("#div_tarjeta").hide();
             $("#div_cheque").hide();

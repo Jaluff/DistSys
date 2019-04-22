@@ -42,6 +42,7 @@
                         <input type="text" name="compra_proveedor" id="compra_proveedor" class="form-control input-sm" value="<?php echo $proveedor[0]->prov_nombre; ?>">
                         <input type="hidden" name="id_proveedor" id="id_proveedor" class="form-control input-sm" value="<?php echo $compras->id_proveedor; ?>"> 
                         <input type="hidden" name="id_compra" id="id_compra" value="<?php echo $compras->id_compra; ?>">
+                        <input type="hidden" name="tpv" id="tpv" value="<?php echo $compras->compra_id_tpv; ?>">
                     </div>
 
                     <div class="col-md-2">
@@ -60,7 +61,12 @@
                     <div class="col-md-12">
                     <div class="col-md-3">
                         <label class="control-label" for="direccion">Estado de la compra:</label>
-                        <input type="text" name="compra_estado" id="compra_estado" class="form-control input-sm" value="<?php echo $compras->estado; ?>">
+                        <select name="compra_estado" id="compra_estado" class="form-control input-sm">
+                            <option value="Aprobada" <?= ($compras->estado == 'Aprobada') ? 'Selected' : ''?>>Aprobada</option>
+                            <option value="Arribada" <?= ($compras->estado == 'Arribada') ? 'Selected' : ''?>>Arribada</option>
+                            <option value="En espera" <?= ($compras->estado == 'En espera') ? 'Selected' : ''?>>En espera</option>
+                        </select>
+                        <!-- <input type="text" name="compra_estado" id="compra_estado" class="form-control input-sm" value="<?php echo $compras->estado; ?>"> -->
                     </div>
                     <div class="col-md-2">
                         <label class="control-label" for="direccion">Compra n°:</label>
@@ -176,18 +182,19 @@
                     <input type="hidden" name="importe_total"  value="<?php echo $total; ?>">
                 </div>
 
-            </div>
+            </div><?php require_once (APPPATH.'views/comunes/cobro-pago-compras.php'); ?>
         </div>
     </div>
-        <hr>
+                
+    <hr>
 
     <div class="row">
         <div class="col-md-12">
             <div class="text-center">
                 <a href="javascript:window.history.go(-1);" class="btn btn-info ">Imprimir</a>
-                <!-- <button type="button" id="arribar" name="arribar" class="btn btn-success">Arribar</button> -->
-                <button type="butoon" id="aprobar" name="aprobar" class="btn btn-success ">Aprobar</button>
-                <!-- <button type="button" id="Guardar_compra" name="Guardar_compra" class="btn btn-info">Guardar </button> -->
+                <button type="button" id="finalizar" name="finalizar" class="btn btn-success">Finalizar</button>
+                <!-- <button type="butoon" id="aprobar" name="aprobar" class="btn btn-success ">Aprobar</button> -->
+                <button type="button" id="guardar" name="guardar" class="btn btn-info">Guardar</button>
                 <a href="javascript:window.history.go(-1);" class="btn btn-warning ">Volver</a>
             </div>
         </div>
@@ -196,9 +203,9 @@
 
 
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function() {
         var estadoCompra = $('#compra_estado').val(); 
-        //alert (estadoCompra);
+            // alert (estadoCompra);
         if(estadoCompra == 'Arribada'){
             $("#arribar").prop('disabled', true);
             $("#arribar").hide();
@@ -207,76 +214,98 @@ $(document).ready(function() {
             $("#aprobar").hide();
             $("#arribar").hide();
         }
-    });
-$('#add').on('click', function() {
+        if(estadoCompra == 'En espera'){
+            $("#aprobar").hide();
+            $("#finalizar").show();
+        }   
 
-    var id = $('#sel_producto').val();
-    var cantidad = $('#compra_cant').val();
-    var precio = $('#prod_costo').val();
-    var link = '<?= base_url() ?>compras/';
-    $.post(link + "add_item", {  //add_cart_item
-            product_id: id,
-            quantity: cantidad,
-            price: precio,
-            ajax: '1'
-        },
         
-        function(data) {
-            datos = $.parseJSON(data);
-            //alert(datos);
-    if (datos.id_producto) {
 
-        html = "<tr>";
-        html += "<td><input type='hidden' name='codigo[]' value='" + datos.codigo + "' class='codigo'><p class='h5'>" + datos.codigo +"</p></td>";
-        html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidades form-control input-sm'></td>";
-        html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
-        html += "<td><input type='text' name='precio[]' value='" + parseFloat(datos.precio).toFixed(2) + "' class='precio form-control input-sm'></td>";
-        html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
-        html += "<input type='hidden' name='id_producto[]' value='" + datos.id_producto + "' class='id_producto'> "+ datos.id_producto;
-        html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='glyphicon glyphicon-trash'></span></button></td>";
-        html += "</tr>";
-        $('#tbl_items tbody').append(html);
-        clear_selectize_prod();
-        $('#prod_costo').val('');
-        $('#compra_cant').val('');
-        calcula_total();
-        //con cart library 
-        /*$.get(link + "show_cart", function(cart) { // Get the contents of the url cart/show_cart
-            $("#cart_content").html(cart); // Replace the information in the div #cart_content with the retrieved data
-        });*/
-
-    } else {
-        alert("Hubo un problema verifique!");
-    }
-    });
-    return false;
+ 
     });
 
-    // $('#arribar').on('click', function() {
-    //     var estado = 'Arribada';
-    //     var idCompra = $('#id_compra').val();
-    //     var link = '<?= base_url() ?>compras/';
-    //     $.post(link + "actualizar_estado", {estado: estado, id: idCompra},
-    //         function(data) {
-    //             if (data) {
-    //                 alert('Compra actualizada');
-    //                 location.href = link ;
-    //             } else {
-    //                alert("La compra no se pudo actualizar.");
-    //              }
-    //         });
-    //     return false;
-    // });
+    $('#compra_estado').on('change', function(){
+        var estadoCompra = $('#compra_estado').val(); 
+        if(estadoCompra == 'Arribada'){
+            // $("#arribar").prop('disabled', true);
+            // $("#aprobar").show();
+            $("#finalizar").show();
+        }
+        if(estadoCompra == 'Aprobada'){
+            $("#aprobar").hide();
+            $("#arribar").hide();
+        }
+        if(estadoCompra == 'En espera'){
+            $("#aprobar").hide();
+            $("#arribar").show();
+        }   
+    });
 
-    $('#aprobar').on('click', function() {
+    $('#add').on('click', function() {
+
+        var id = $('#sel_producto').val();
+        var cantidad = $('#compra_cant').val();
+        var precio = $('#prod_costo').val();
+        var link = '<?= base_url() ?>compras/';
+        $.post(link + "add_item", {  //add_cart_item
+                product_id: id,
+                quantity: cantidad,
+                price: precio,
+                ajax: '1'
+            },
+            function(data) {
+                datos = $.parseJSON(data);
+                //alert(datos);
+        if (datos.id_producto) {
+            html = "<tr>";
+            html += "<td><input type='hidden' name='codigo[]' value='" + datos.codigo + "' class='codigo'><p class='h5'>" + datos.codigo +"</p></td>";
+            html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidades form-control input-sm'></td>";
+            html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
+            html += "<td><input type='text' name='precio[]' value='" + parseFloat(datos.precio).toFixed(2) + "' class='precio form-control input-sm'></td>";
+            html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
+            html += "<input type='hidden' name='id_producto[]' value='" + datos.id_producto + "' class='id_producto'> "+ datos.id_producto;
+            html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='glyphicon glyphicon-trash'></span></button></td>";
+            html += "</tr>";
+            $('#tbl_items tbody').append(html);
+            clear_selectize_prod();
+            $('#prod_costo').val('');
+            $('#compra_cant').val('');
+            calcula_total();
+        } else {
+            alert("Hubo un problema verifique!");
+        }
+        });
+        return false;
+    });
+
+    $('#finalizar').on('click', function() {
+        var estado = 'Arribada';
+        var idCompra = $('#id_compra').val();
+        var link = '<?= base_url() ?>compras/';
+        $.post(link + "actualizar_estado", {estado: estado, id: idCompra},
+            function(data) {
+                if (data) {
+                    alert('Compra actualizada');
+                    location.href = link ;
+                } else {
+                   alert("La compra no se pudo actualizar.");
+                 }
+            });
+        return false;
+    });
+
+    $('#guardar').on('click', function() {
         //calcula_total();
-        var estado = 'Aprobada';
+        var estado = $('#compra_estado').val();//'Aprobada';
         var idCompra = $('#id_compra').val();
         var total_importe = $("input[name=importe_total").val();
-        var link = '<?= base_url() ?>compras/';
+        
+        var pago = $('#form_pago').serialize();
         var items = $('#frm_items').serialize();
-        //alert(total_importe);
-        $.post(link + "actualizar_estado", {estado: estado, id: idCompra, detalles: items, total: total_importe},
+        var compra = $('#form_compra').serialize();
+        
+        var link = '<?= base_url() ?>compras/';
+        $.post(link + "guardar_compra", {estado: estado , id: idCompra , compra: compra,  detalles: items , total: total_importe , pago: pago},
             function(data) {
                 if (data) {
                     alert('Compra actualizada');
@@ -289,13 +318,6 @@ $('#add').on('click', function() {
         return false;
     });
 
-
-
-
-
-
-    
-
     $(document).on('click', '.btn-remove-producto', function() {
         $(this).closest("tr").remove();
         calcula_total();
@@ -306,8 +328,6 @@ $('#add').on('click', function() {
         precio   = $(this).closest("tr").find("td:eq(3)").children("input").val();
         importe  = cantidad * precio;
         importe = parseFloat(importe).toFixed(2);
-        //console.log('c' + cantidad + 'p' + precio + 'i: ' + importe);
-
         $(this).closest("tr").find("td:eq(4)").children("p").text("$" + importe);
         $(this).closest("tr").find("td:eq(4)").children("input").val(importe);
         calcula_total();
@@ -318,27 +338,20 @@ $('#add').on('click', function() {
         precio   = $(this).closest("tr").find("td:eq(1)").children("input").val();
         importe  = cantidad * precio;
         importe = parseFloat(importe).toFixed(2);
-        //console.log('c' + cantidad + 'p' + precio + 'i: ' + importe);
-
         $(this).closest("tr").find("td:eq(4)").children("p").text("$"+importe);
         $(this).closest("tr").find("td:eq(4)").children("input").val(importe);
         calcula_total();
     });
     
-
     function calcula_total(){
         total = 0;
         $('#tbl_items tbody tr').each(function(){
             total = total + Number($(this).find("td:eq(4)").children("input").val());
-        
-        });
-        //alert("total: " + total);     
+        });   
         $("input[name=importe_total").val(total);
         $('#importe_total').text("$" + total);
         
     }  
-
-    
 
     $('#sel_producto').on('change', function() {
         var id_prod = $('#sel_producto').prop('value');
@@ -379,7 +392,6 @@ $('#add').on('click', function() {
         searchField: ['producto', 'stock'],
         options: [
             <?php
-  /* traer datos por json... sino no funciona */
             if (isset($productos)) {
                 foreach ($productos as $prod) {
                     //echo $prov->id_proveedor;
@@ -426,6 +438,4 @@ $('#add').on('click', function() {
         var control = prod[0].selectize;
         control.clear();
     }
-
-    
 </script> 
