@@ -54,8 +54,8 @@
 
                                 
                                 <div class="col-md-3 col-xs-12 ">
-                                    <label class="control-label" for="compra_proveedor">Proveedor:</label>
-                                    <input id="compra_proveedor" name="compra_proveedor" type="text" placeholder="" class="form-control input-sm">
+                                    <label class="control-label" for="id_proveedor  ">Proveedor:</label>
+                                    <input id="id_proveedor" name="id_proveedor" type="text" placeholder="" class="form-control input-sm">
                                 </div>
 
                                 
@@ -104,7 +104,7 @@
 
             </div>
 
-        </div>
+        </div><?php //require_once (APPPATH.'views/comunes/cobro-pago-compras.php'); ?>
     </div>
 </div>
 
@@ -179,7 +179,7 @@
         <div class="text-center">
             <div class="form-group">
                 <button type="button" id="Guardar_compra" name="Guardar_compra" class="btn btn-success">Guardar </button>
-                <button type="button" id="vaciar" name="vaciar" class="btn btn-warning">Vaciar produtos </button>
+                <!-- <button type="button" id="vaciar" name="vaciar" class="btn btn-warning">Vaciar produtos </button> -->
                 <button type="button" id="volver" name="volver" class="btn btn-danger" onclick="location.href='<?php echo base_url(); ?>compras/'">Cancelar compra </button>
             </div>
         </div>
@@ -213,7 +213,7 @@
                     html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
                     html += "<td><input type='hidden' name='precio[]' value='" + datos.precio + "' class='precio'><p class='h5'>" + parseFloat(datos.precio).toFixed(2) + "</p></td>";
                     html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
-                    html += "<input type='hidden' name='idProducto[]' value='" + datos.id_producto + "' class='id_producto'>";
+                    html += "<input type='hidden' name='id_producto[]' value='" + datos.id_producto + "' class='id_producto'>";
                     html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='glyphicon glyphicon-trash'></span></button></td>";
                     html += "</tr>";
                     $('#items tbody').append(html);
@@ -293,15 +293,17 @@
         var compra = $('#compra').serialize();
         var items = $('#frm_items').serialize();
         var tpv = $('select#tpv').val();
+        var pago = $('#form_pago').serialize();
         var importe_total = $('input[name=importe_total]').val();
 
         var link = "<?php echo base_url(); ?>compras/";
         $.post(link + "guardar_compra", {
                 compra: compra,
-                tipo: 'En espera ',
+                estado: 'En espera ',
                 tpv: tpv,
-                items: items,
-                importe_total: importe_total
+                detalles: items,
+                pago: pago,
+                total: importe_total
             },
             function(data) {
                 if (data == 'true') {
@@ -387,7 +389,7 @@
         return $.trim((item.producto));
     };
 
-    var $selec = $('#compra_proveedor').selectize({
+    var $selec = $('#id_proveedor').selectize({
         maxItems: 1,
         valueField: 'id',
         labelField: 'nombre',

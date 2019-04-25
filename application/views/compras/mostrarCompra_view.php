@@ -29,7 +29,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label class="control-label" for="fact_numero">Factura numero:</label>
-                                        <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control input-sm">
+                                        <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control input-sm" value="<?php echo $compras->factura_numero; ?>">
                             </div>
                             <div class="col-md-2">
                                 <label class="control-label" for="fact_numero">Fecha factura.:</label>
@@ -192,9 +192,9 @@
         <div class="col-md-12">
             <div class="text-center">
                 <a href="javascript:window.history.go(-1);" class="btn btn-info ">Imprimir</a>
-                <button type="button" id="finalizar" name="finalizar" class="btn btn-success">Finalizar</button>
+                <!-- <button type="button" id="finalizar" name="finalizar" class="btn btn-success">Finalizar</button> -->
                 <!-- <button type="butoon" id="aprobar" name="aprobar" class="btn btn-success ">Aprobar</button> -->
-                <button type="button" id="guardar" name="guardar" class="btn btn-info">Guardar</button>
+                <button type="button" id="guardar" name="guardar" class="btn btn-success">Guardar</button>
                 <a href="javascript:window.history.go(-1);" class="btn btn-warning ">Volver</a>
             </div>
         </div>
@@ -213,6 +213,8 @@
         if(estadoCompra == 'Aprobada'){
             $("#aprobar").hide();
             $("#arribar").hide();
+            $("#guardar").hide();
+            $('.btn-remove-producto').hide();
         }
         if(estadoCompra == 'En espera'){
             $("#aprobar").hide();
@@ -279,7 +281,7 @@
     });
 
     $('#finalizar').on('click', function() {
-        var estado = 'Arribada';
+        var estado = 'Aprobada';
         var idCompra = $('#id_compra').val();
         var link = '<?= base_url() ?>compras/';
         $.post(link + "actualizar_estado", {estado: estado, id: idCompra},

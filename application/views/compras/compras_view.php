@@ -73,6 +73,8 @@
                 <th>Pedido n°</th>
                 <th class="hidden-xs">Fecha</th>
                 <th>Importe</th>
+                <th>Imp. rec.</th>
+                <th>Saldo</th>
                 <th>Responsable</th>
                 <th style="min-width: 90px">Action</th>
             </tr>
@@ -105,6 +107,8 @@
                 {"data": "numero_compra"},
                 {"data": "compra_created_on", "className": "hidden-xs" },
                 {"data": "importe" },
+                {"data": "importe_recibido" },
+                {"data": "saldo" },
                 {"data": "usuario" },
                 {"data": "Acciones" }
         ]

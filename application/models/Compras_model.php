@@ -173,14 +173,20 @@ class Compras_model extends CI_Model
     // }
 
 
-    public function save_compra($datos_compra , $detalles, $id_compra = null)
+    public function save_compra($datos_compra , $datos_pago = null , $detalles, $id_compra = null, $estado, $tpv, $numero_compra)
     {
         if(isset($id_compra) && $id_compra != ''){
             $this->db->where('id_compra', $id_compra);
             $this->db->update($this->table_compras, $datos_compra);
         }else{
+            $datos_compra['numero_compra'] = $numero_compra; 
             $this->db->insert($this->table_compras, $datos_compra);
             $id_compra = $this->db->insert_id();
+        }
+
+        if($datos_pago){
+            $this->db->where('id_compra', $id_compra);
+            $this->db->update($this->table_compras, $datos_pago);
         }
 
         $this->db->delete('compras_detalle', array( 'id_compra' => $id_compra));
@@ -193,85 +199,86 @@ class Compras_model extends CI_Model
             $carrito['precio']      = $detalles['precio'][$i];
             $carrito['sub_total']   = $detalles['importe'][$i];
             $this->db->insert('compras_detalle', $carrito);
+            if($estado == 'Aprobada'){
+                // echo "entro"; exit();
+                $this->update_stock_compra( $detalles['cantidad'][$i] , $tpv , $detalles['id_producto'][$i] );
+            }
+            
             $where = array('id_producto' => $detalles['id_producto'][$i], 'id_proveedor' => $datos_compra['id_proveedor']);
             $this->db->select('id');
-            $query = $this->db->get('proveedor-producto', $where);
-            $id = $query->row();
-            if($id->id){
+            $this->db->where($where);
+            $query = $this->db->get('proveedor-producto');
+            // echo $this->db->last_query();
+            if ($query->num_rows() > 0) {
+                $id = $query->row();
                 $this->db->where('id', $id->id );
                 $this->db->update(
                     'proveedor-producto', 
-                    array(  'id_producto' => $detalles['id_producto'][$i], 'id_proveedor' => $datos_compra['id_proveedor'], 'created_on' => date("Y-m-d", now()) )
+                    array(  'id_producto' => $detalles['id_producto'][$i], 'id_proveedor' => $datos_compra['id_proveedor'], 'created_on' => date("Y-m-d H:i", now()) )
                 );
             }else{
                 $this->db->insert(
                     'proveedor-producto', 
-                    array(  'id_producto' => $detalles['id_producto'][$i], 'id_proveedor' => $datos_compra['id_proveedor'], 'created_on' => date("Y-m-d", now()) )
+                    array(  'id_producto' => $detalles['id_producto'][$i], 'id_proveedor' => $datos_compra['id_proveedor'], 'created_on' => date("Y-m-d H:i", now()) )
                 );
             }
+              
+// echo $id->id. "dsfdsfasfsaf";
         }
         return $id_compra;
     }
 
-    
 
-    // public function update_estado_compra($where, $data)
-    // {
-    //     $this->db->update($this->table_compras, $data, $where);
-    //     // echo $this->db->last_query();
-    //     return $this->db->affected_rows();
-    // }
+    private function update_stock_compra($cantidad, $id_tpv, $id_producto){//$id_compra, $detalles, $total, $estado){
+        // $compra = $this->get_by_id($id_compra);
+        // $id_tpv = $compra->compra_id_tpv;
+        // $count_detalles =  count($detalles['id_producto']);
+        // /* actualica la compra */
+        // $this->db->set('estado', $estado);
+        // $this->db->set('importe_total', $total);
+        // $this->db->where('id_compra', $id_compra);
+        // $this->db->update('compras');
+        // //echo $this->db->last_query(). "\n";
+        // $this->db->delete('compras_detalle', array( 'id_compra' => $id_compra));
+        // //var_dump($detalles);
+        // for ($i=0;$i<$count_detalles; $i++){
+        //     $data['cantidad']    = $detalles['cantidad'][$i];
+        //     $data['id_producto'] = $detalles['id_producto'][$i];
+        //     $data['precio']      = $detalles['precio'][$i];
+        //     $data['importe']     = $detalles['importe'][$i];
 
-    public function update_stock_compra($id_compra, $detalles, $total, $estado){
-        $compra = $this->get_by_id($id_compra);
-        $id_tpv = $compra->compra_id_tpv;
-        $count_detalles =  count($detalles['id_producto']);
-        /* actualica la compra */
-        $this->db->set('estado', $estado);
-        $this->db->set('importe_total', $total);
-        $this->db->where('id_compra', $id_compra);
-        $this->db->update('compras');
-        //echo $this->db->last_query(). "\n";
-        $this->db->delete('compras_detalle', array( 'id_compra' => $id_compra));
-        //var_dump($detalles);
-        for ($i=0;$i<$count_detalles; $i++){
-            $data['cantidad']    = $detalles['cantidad'][$i];
-            $data['id_producto'] = $detalles['id_producto'][$i];
-            $data['precio']      = $detalles['precio'][$i];
-            $data['importe']     = $detalles['importe'][$i];
-
-            $this->db->set('cantidad',  $data['cantidad'], false);
-            $this->db->set('precio', $data['precio']);
-            $this->db->set('sub_total' ,$data['importe']);
-            $this->db->set('id_producto', $data['id_producto']);
-            $this->db->set('id_compra', $id_compra);
-            $this->db->insert('compras_detalle');
+        //     $this->db->set('cantidad',  $data['cantidad'], false);
+        //     $this->db->set('precio', $data['precio']);
+        //     $this->db->set('sub_total' ,$data['importe']);
+        //     $this->db->set('id_producto', $data['id_producto']);
+        //     $this->db->set('id_compra', $id_compra);
+        //     $this->db->insert('compras_detalle');
             //echo $this->db->last_query(). "\n";
            // $lastId = $this->db->insert_id();
 
-            if($estado == 'Aprobada'){
-                    $this->db->set('stock_act', 'stock_act + '. $data['cantidad'], false);
+            // if($estado == 'Aprobada'){
+                    $this->db->set('stock_act', 'stock_act + '. $cantidad, false);
                     $this->db->set('stock.created_on', date("Y-m-d", now()));
                     $this->db->set('id_empresa', $this->session->userdata('id_empresa'));
                     $this->db->where('stock.id_tpv', $id_tpv);
-                    $this->db->where('stock.id_producto', $data['id_producto']);                    
+                    $this->db->where('stock.id_producto', $id_producto);                    
                     $this->db->update('stock');
                     $row_cantidad =  $this->db->affected_rows();
                     if($row_cantidad == 0){
-                        $this->db->set('stock_act',  $data['cantidad']);
+                        $this->db->set('stock_act',  $cantidad);
                         $this->db->set('stock_min',  '0' );
                         $this->db->set('stock.created_on', date("Y-m-d", now()));
-                        $this->db->set('stock.id_producto', $data['id_producto']);
+                        $this->db->set('stock.id_producto', $id_producto);
                         $this->db->set('stock.id_tpv', $id_tpv);
                         $this->db->set('id_empresa', $this->session->userdata('id_empresa'));
                         $this->db->insert('stock');
                     }
-                    $this->db->insert('proveedor-producto', array(  'id_producto'  => $data['id_producto'],
-                                                                    'id_proveedor' => $compra->id_proveedor,
-                                                                    'created_on'   => date("Y-m-d", now()) )
-                                                            );
-            }
-        }   
+                    // $this->db->insert('proveedor-producto', array(  'id_producto'  => $data['id_producto'],
+                    //                                                 'id_proveedor' => $compra->id_proveedor,
+                    //                                                 'created_on'   => date("Y-m-d", now()) )
+                    //                                         );
+            // }
+        // }   
         return true; 
     }
 
@@ -280,27 +287,23 @@ class Compras_model extends CI_Model
     //     $this->db->where('id_cliente', $id);
     //     $this->db->delete($this->table);
     // }
-    public function update_compra($where, $data = null)
+    // public function update_compra($where, $data = null)
+    public function numero_compra($numero = null )
     {
+        if($numero){
+            $this->db->where('numero_compra', $numero);
+        }
         $this->db->select('numero_compra');
         $this->db->order_by('numero_compra', 'desc');
         $query = $this->db->get('compras', 1);
-        //echo $this->db->last_query();
-        $numero_compra = $query->row();
-        $numeroCompra = $numero_compra->numero_compra;
-        if(isset($numeroCompra) && $numeroCompra !=''){
-            $data = array('numero_compra' => ++$numeroCompra);    
+        if ($query->num_rows() > 0) {
+            $numero_compra = $query->row();
+            $numeroCompra = $numero_compra->numero_compra;
+            $data = ++$numeroCompra;
         }else{
-            $data = array('numero_compra' => 1000);
+            $data = '1000';
         }
-        $this->db->update($this->table_compras, $data, $where);
-        //$this->db->update($this->table_contacto, $data_contacto, $where);
-        
-        if( $this->db->affected_rows() == 1){
-            return true;
-        }else{
-            return false;
-        }
+        return $data;
     }
 
     public function agrega_stock_tpv($id_producto, $cant, $tpv_o, $tpv_d, $stock_o, $stock_d, $stock_m, $usr)
