@@ -72,8 +72,8 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-            <li><a href="<?=base_url()?>tpv">Nueva venta</a></li>           
-                <li><a href="<?=base_url()?>venta">Listado de Ventas</a></li>
+            <li><a href="<?=base_url()?>ventas/nueva">Nueva venta</a></li>           
+                <li><a href="<?=base_url()?>ventas">Listado de Ventas</a></li>
                 
                 <!-- <li><a href="#">Estadisticas</a></li> --> 
             </ul>

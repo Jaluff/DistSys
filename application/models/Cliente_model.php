@@ -92,7 +92,7 @@ class Cliente_model extends CI_Model {
         $this->db->from($this->table_clientes);
         $this->db->join($this->table_contacto, "$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
         $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
-        // $this->db->where('clientes.id_cliente',$id);
+        $this->db->where('clientes.id_cliente',$id);
         $query = $this->db->get();
         //echo $this->db->last_query();exit();
         return $query->row();
@@ -101,6 +101,8 @@ class Cliente_model extends CI_Model {
     public function get_clientes()
     {
         $this->db->from($this->table_clientes);
+        $this->db->join($this->table_contacto, "$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
+        $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
         //this->db->where('clientes.id_cliente',$id);
         $query = $this->db->get();
         return $query->result();

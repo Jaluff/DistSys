@@ -1,7 +1,7 @@
 <div class="row">
 
     <div class="col-md-4">
-        <h3>Nueva compra</h3>
+        <h3>Nueva venta</h3>
     </div>
 
     <div class="col-md-8 text-right">
@@ -40,151 +40,184 @@
     <div class="col-md-9">
         <div class="panel panel-warning">
             <div class="panel-body">
-            <!-- <h3 >Datos de la compra</h4> -->
-            <!-- <div class="row"> -->
-                    <!-- <div class="col-md-9"> -->
-                    <form action="#" class="" id="compra">
-                        <div class="col-md-12 ">
-                            <div class="form-group">
-                                
-                                <!-- <div class="col-md-3 col-xs-12 "> -->
-                                    <!-- <label class="control-label" for="compra_proveedor">#Compra:</label> -->
-                                    <input id="numero_compra" name="numero_compra" type="hidden" placeholder="" class="form-control input-sm" readonly="readonly">
-                                <!-- </div> -->
+                <!-- <h3 >Datos de la compra</h4> -->
+                <!-- <div class="row"> -->
+                <!-- <div class="col-md-9"> -->
+                <form action="#" class="" id="cliente">
+                    <div class="col-md-12 ">
+                        <div class="form-group">
+                            <input type="hidden" name="cli_estado" id="cli_estado" class="form-control input-sm" value="1">
+                            <input type="hidden" name="cli_tipo" id="cli_tipo" class="form-control input-sm" value="No frecuente">
+                            <input type="hidden" name="id_cliente" id="id_cliente"  value="">
 
-                                
-                                <div class="col-md-3 col-xs-12 ">
-                                    <label class="control-label" for="id_proveedor  ">Proveedor:</label>
-                                    <input id="id_proveedor" name="id_proveedor" type="text" placeholder="" class="form-control input-sm">
-                                </div>
+                            <input type="hidden" name="cli_created_on" id="cli_created_on" class="form-control input-sm" value="<?php echo date('Y-m-d', now()); ?>">
 
-                                
-                                <div class="col-md-2">
-                                    <label class="control-label" for="compra_fecha">Fecha:</label>
-                                    <input id="compra_fecha" name="compra_fecha" type="text" value="<?= date('d-m-Y', now()) ?>" placeholder="" class="form-control input-sm" readonly="readonly">
-                                </div>
+                            <div class="col-md-3">
+                                <label class="control-label" for="cliente_nombre">
+                                    Cliente
+                                </label>
+                                <input type="text" name="cli_nombre" id="cli_nombre" class="form-control input-sm" value="">
                             </div>
 
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                
-                                <div class="col-md-3 ">
-                                    <label class="control-label" for="fact_numero">Factura numero:</label>
-                                    <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control input-sm">
-                                </div>
+                            <div class="col-md-2">
+                                <label class="control-label" for="cli_direccion">
+                                    Direccion
+                                </label>
+                                <input type="text" name="cli_direccion" id="cli_direccion" class="form-control input-sm" value="">
+                            </div>
 
-                                
-                                <div class="col-md-3 ">
-                                    <label class="control-label" for="fact_numero">Fecha factura.:</label>
-                                    <input id="factura_fecha" name="factura_fecha" type="text" placeholder="Factura fecha" class="form-control input-sm">
-                                </div>
+                            <div class="col-md-2">
+                                <label class="control-label" for="cli_localidad">
+                                    Localidad
+                                </label>
+                                <input type="text" name="cli_localidad" id="cli_localidad" class="form-control input-sm" value="">
+                            </div>
 
-                                
-                                <div class="col-md-2 ">
-                                    <label class="control-label" for="fact_numero">Remito:</label>
-                                    <input id="remito" name="remito" type="text" placeholder="Remito" class="form-control input-sm">
-                                </div>
+                            <div class="col-md-2">
+                                <label class="control-label" for="cli_cp">
+                                    Cod. Postal
+                                </label>
+                                <input type="text" name="cli_cp" id="cli_cp" class="form-control input-sm" value="">
+                            </div>
+
+                            <div class="col-md-3"></div>
+
+                            <div class="col-md-2">
+                                <label class="control-label" for="cli_doc">
+                                    Documento
+                                </label>
+                                <input type="text" name="cli_doc" id="cli_doc" class="form-control input-sm" value="">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label" for="direccion">
+                                    Telefonos
+                                </label>
+                                <input type="text" name="cli_telefono" id="cli_telefono" class="form-control input-sm" value="">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label" for="cli_movil">
+                                    Celular
+                                </label>
+                                <input type="text" name="cli_movil" id="cli_movil" class="form-control input-sm" value="">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="control-label" for="correo">
+                                    Correo electronico
+                                </label>
+                                <input type="text" name="cli_correo" id="cli_correo" class="form-control input-sm" value="">
+                            </div>
+                            <div class="col-md-1 ">
+                                <label class="control-label" for="">
+                                    <h1></h1>
+                                </label>
+                                <h2>
+                                    <a class="btn btn-info  h2 " onclick="add_cliente();">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </a>
+                                </h2>
                             </div>
                         </div>
-                </div>
+                    </div>
                 </form>
-            <!-- </div> -->
+                <!-- </div> -->
+            </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="panel panel-precio">
-            <div class="panel-body">
-                <div class="h2 text-center" style="color: white">Total del pedido</div>
-                <div class="h3  text-center" style="color: white">
-                    <div id="importe_total">$0.00</div>
-                    <input type="hidden" name="importe_total">
+        <div class="col-md-3">
+            <div class="panel panel-precio">
+                <div class="panel-body">
+                    <div class="h2 text-center" style="color: white">Total del pedido</div>
+                    <div class="h3  text-center" style="color: white">
+                        <div id="importe_total">$0.00</div>
+                        <input type="hidden" name="importe_total">
+                    </div>
                 </div>
-
             </div>
-
-        </div><?php //require_once (APPPATH.'views/comunes/cobro-pago-compras.php'); ?>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-9">
-        <div class="well">
-            <form name="form_productos" id="form_productos" class="form-horizontal" >
-                
-                            <div class="form-group">
-                            <div class="col-md-5">
-                                <label class="control-label" for="sel_producto">Producto</label>
-                                <input id="sel_producto" name="sel_producto" type="text" placeholder="Producto" class="form-control input-sm">
-                            </div>
-                        
-                            <div class="col-md-1">
-                                <label class="control-label" for="sel_producto">Cantidad</label>
-                                <input id="compra_cant" name="compra_cant" type="text" placeholder="Cant." class="form-control input-sm">
-                            </div>
-                            <div class="col-md-2">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="well">
+                <form name="form_productos" id="form_productos" class="form-horizontal">
+
+                    <div class="form-group">
+                        <div class="col-md-5">
+                            <label class="control-label" for="sel_producto">Producto</label>
+                            <input id="sel_producto" name="sel_producto" type="text" placeholder="Producto" class="form-control input-sm">
+                        </div>
+
+                        <div class="col-md-1">
+                            <label class="control-label" for="sel_producto">Cantidad</label>
+                            <input id="venta_cant" name="venta_cant" type="text" placeholder="Cant." class="form-control input-sm">
+                        </div>
+                        <div class="col-md-2">
                             <label class="control-label" for="sel_producto">Costo</label>
-                                <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
-                            </div>
-                            <div class="col-md-1">
+                            <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
+                        </div>
+                        <div class="col-md-1">
                             <label class="control-label" for="sel_producto">Stock act.</label>
-                                <input id="stock_actual" name="stock_actual" type="text" class="form-control input-sm " readonly="readonly">
-                            </div>
-                            <div class="col-md-2">
-                                <label class="control-label" for="sel_producto">Costo act.</label>
-                                <input id="producto_costo" name="producto_costo" type="text" class="form-control input-sm " readonly="readonly">
-                            </div>
-                            <div class="col-md-1">
-                                
-                                <button class="btn btn-info " id="add">Agregar</button>
-                            </div>
-                            </div>
-                    
-            </form>
+                            <input id="stock_actual" name="stock_actual" type="text" class="form-control input-sm " readonly="readonly">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="control-label" for="sel_producto">Costo act.</label>
+                            <input id="producto_costo" name="producto_costo" type="text" class="form-control input-sm " readonly="readonly">
+                        </div>
+                        <div class="col-md-1">
+
+                            <button class="btn btn-info " id="add">Agregar</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
+        <div class="col-md-3"></div>
     </div>
-    <div class="col-md-3"></div>
-</div>
-
-<div class="col-md-12">
-    <hr class="hr_success">
-</div>
-
-
-<div class="col-md-9">
-    <form id="frm_items" name="frm_items">
-        <h3>Detalle</h3>
-        <!-- <div id="cart_content"></div> -->
-        <table class="table table-hover" id="items">
-            <thead>
-                <th>Codigo</th>
-                <th style='width:10%'>Cantidad</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Importe</th>
-                <th>Acciones</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-
-    </form>
-
-</div>
-
-<div class="row">
+    <div class="row">
     <div class="col-md-12">
-        <div class="text-center">
-            <div class="form-group">
-                <button type="button" id="Guardar_compra" name="Guardar_compra" class="btn btn-success">Guardar </button>
-                <!-- <button type="button" id="vaciar" name="vaciar" class="btn btn-warning">Vaciar produtos </button> -->
-                <button type="button" id="volver" name="volver" class="btn btn-danger" onclick="location.href='<?php echo base_url(); ?>compras/'">Cancelar compra </button>
+        <hr class="hr_success">
+    </div>
+    </div>
+
+
+    <div class="col-md-9">
+        <form id="frm_items" name="frm_items">
+            <!-- <h4>Detalle</h4> -->
+            <!-- <div id="cart_content"></div> -->
+            <table class="table table-hover" id="items">
+                <thead>
+                    <th>Codigo</th>
+                    <th style='width:10%'>Cantidad</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Importe</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+
+        </form>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-center">
+                <div class="form-group">
+                    <button type="button" id="Guardar_venta" name="Guardar_venta" class="btn btn-success">Guardar </button>
+                    <!-- <button type="button" id="vaciar" name="vaciar" class="btn btn-warning">Vaciar produtos </button> -->
+                    <button type="button" id="volver" name="volver" class="btn btn-danger" onclick="location.href='<?php echo base_url(); ?>ventas/'">Cancelar venta </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 
@@ -192,9 +225,9 @@
     $('#add').on('click', function() {
 
         var id = $('#sel_producto').val();
-        var cantidad = $('#compra_cant').val();
+        var cantidad = $('#venta_cant').val();
         var precio = $('#prod_costo').val();
-        var link = '<?= base_url() ?>compras/';
+        var link = '<?= base_url() ?>ventas/';
         $.post(link + "add_item", { //add_cart_item
                 product_id: id,
                 quantity: cantidad,
@@ -209,7 +242,7 @@
 
                     html = "<tr>";
                     html += "<td><input type='hidden' name='codigo[]' value='" + datos.codigo + "' class='codigo'><p class='h5'>" + datos.codigo + "</p></td>";
-                    html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidades form-control input-sm'></td>";
+                    html += "<td><input type='hidden' name='cantidad[]' value='" + datos.cantidad + "' class='cantidad'><p class='h5'>" + datos.cantidad + "</p></td>";
                     html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
                     html += "<td><input type='hidden' name='precio[]' value='" + datos.precio + "' class='precio'><p class='h5'>" + parseFloat(datos.precio).toFixed(2) + "</p></td>";
                     html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
@@ -263,7 +296,7 @@
     });
 
     $('#vaciar').on('click', function() {
-        var link = '<?= base_url() ?>compras/';
+        var link = '<?= base_url() ?>ventas/';
         $.post(link + "empty_cart",
             function(data) {
                 //alert (data);
@@ -289,26 +322,25 @@
     }
 
 
-    $('#Guardar_compra').on('click', function() {
-        var compra = $('#compra').serialize();
-        var proveedor = $('#id_proveedor').val();
-       
-        if(proveedor == ''){
-            alert('Debe elegir un proveedor');
+    $('#Guardar_venta').on('click', function() {
+        var cliente = $('#cliente').serialize();
+        var cli = $('#cli_nombre').val();
+        if (cli == ''){
+            alert("Debe seleccionar un cliente...!");
             return false;
         }
         var items = $('#frm_items').serialize();
         var tpv = $('select#tpv').val();
-        var pago = $('#form_pago').serialize();
+        // var pago = $('#form_pago').serialize();
         var importe_total = $('input[name=importe_total]').val();
 
-        var link = "<?php echo base_url(); ?>compras/";
-        $.post(link + "guardar_compra", {
-                compra: compra,
-                estado: 'Pedido',
+        var link = "<?php echo base_url(); ?>ventas/";
+        $.post(link + "guardar_venta", {
+                cliente: cliente,
+                tipo: 'pedido',
                 tpv: tpv,
                 detalles: items,
-                pago: pago,
+                // pago: pago,
                 total: importe_total
             },
             function(data) {
@@ -329,7 +361,7 @@
 
     $('#sel_producto').on('change', function() {
         var id_prod = $('#sel_producto').prop('value');
-        $.post("<?= base_url() ?>compras/get_producto_precio", {
+        $.post("<?= base_url() ?>ventas/get_producto_precio", {
                 id: id_prod
             },
             function(data) {
@@ -339,7 +371,7 @@
                 } else {
                     $('#producto_costo').val('');
                 }
-                $.post("<?= base_url() ?>compras/get_producto_stock", {
+                $.post("<?= base_url() ?>ventas/get_producto_stock", {
                         id: id_prod
                     },
                     function(data) {
@@ -395,37 +427,52 @@
         return $.trim((item.producto));
     };
 
-    var $selec = $('#id_proveedor').selectize({
+    var $select = $('#cli_nombre').selectize({
         maxItems: 1,
+        closeAfterSelect: true,
         valueField: 'id',
         labelField: 'nombre',
-        searchField: ['nombre', 'contacto'],
+        searchField: ['nombre', 'domicilio'],
         options: [
             <?php
             /* traer datos por json... sino no funciona */
-            //var_dump($proveedores);
-
-            if ($proveedores) {
-                foreach ($proveedores as $prov) {
-
-                    echo "{id:" . $prov->id_proveedor . ", nombre: '" . $prov->prov_nombre . "', contacto: '" . $prov->prov_contacto . "'},";
-                }
-            } else {
-                echo "Ningun proveedor";
+            foreach ($clientes as $ent) {
+                echo "{id:" . $ent->id_cliente . ", nombre: '" . $ent->cli_nombre . "', domicilio: '" . $ent->cli_direccion . "', documento: '" . $ent->cli_doc . "'},";
             }
-
-
             ?>
         ],
         render: {
             option: function(item, escape) {
                 var nombre = formatName(item);
-                var label = nombre || item.contacto;
-                var caption = nombre ? item.contacto : null;
-                return '<div>' + 'Nombre: <span class=""> ' + escape(label) + '</span> ' + (caption ? ' <span>(' + escape(caption) + ') </span>' : '') + '</div>';
-            }
-        },
+                var label = nombre || item.nombre;
+                var caption = nombre ? item.nombre : null;
 
+                return '<div>' +
+                    'Nombre: <span class=""> ' + escape(label) + '</span> ' + '</div>';
+            },
+        },
+        onChange: function(value) {
+            $.ajax({
+                url: "<?php echo base_url(); ?>cliente/ajax_get_cliente/" + value,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    console.log(data);
+                    $('#id_cliente').val(data.id_cliente);
+                    $('#cli_doc').val(data.cli_doc);
+                    $('#cli_direccion').val(data.domicilio1);
+                    $('#cli_telefono').val(data.telefono1);
+                    $('#cli_correo').val(data.correo1);
+                    $('#cli_cp').val(data.cp1);
+                    $('#cli_localidad').val(data.localidad1);
+                    $('#cli_movil').val(data.movil1);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error get data from ajax');
+                }
+            });
+        },
         create: false,
     });
 

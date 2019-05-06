@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-4">
-        <h3>Mostrar Compra </h3>
+        <h3>Mostrar venta </h3>
     </div>
 
     <div class="col-md-8 text-right">
         <h3>
-            <?php  //var_dump($compras); //exit(); 
-            echo "Responsable: " . strtoupper($compras->usuario); ?>
+            <?php  //var_dump($ventas); //exit(); 
+            echo "Responsable: " . strtoupper($ventas->usuario); ?>
         </h3>
     </div>
 </div>
@@ -14,64 +14,68 @@
 <div class="row">
     <hr class="hr_success">
     <div class="row col-md-9">
-        <form class="form-horizontal" id="form_compra">
+        <form class="form-horizontal" id="form_cliente">
             <div class="panel panel-warning">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-3">
-                                <label class="  control-label" for="compra_fecha">Fecha:</label>
-                                        <input id="compra_fecha" name="compra_fecha" type="text" value="<?php echo $compras->fecha_compra; ?>" placeholder="" class="form-control input-sm " readonly="readonly">
-                            </div>
                             <div class="col-md-2">
+                                <label class="control-label" for="direccion">venta n°:</label>
+                                <input type="text" name="numero_venta" id="numero_venta" class="form-control input-sm" value="<?php echo $ventas->id_venta; ?>">
+                            </div>
+                            <div class="col-md-7">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="  control-label" for="venta_fecha">Fecha:</label>
+                                        <input id="venta_fecha" name="venta_fecha" type="text" value="<?php echo $ventas->fecha; ?>" placeholder="" class="form-control input-sm " readonly="readonly">
+                            </div>
+                            
+                            <!-- <div class="col-md-2">
                                 <label class="control-label" for="remito">Remito:</label>                                
-                                        <input id="remito" name="remito" type="text" placeholder="Remito" class="form-control input-sm" value="<?php echo $compras->remito; ?>">
+                                        <input id="remito" name="remito" type="text" placeholder="Remito" class="form-control input-sm" value="<?php //echo $ventas->remito; ?>">
                             </div>
                             <div class="col-md-2">
                                 <label class="control-label" for="fact_numero">Factura numero:</label>
-                                        <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control input-sm" value="<?php echo $compras->factura_numero; ?>">
+                                        <input id="factura_numero" name="factura_numero" type="text" placeholder="Fectura numero" class="form-control input-sm" value="<?php //echo $ventas->factura_numero; ?>">
                             </div>
                             <div class="col-md-2">
                                 <label class="control-label" for="fact_numero">Fecha factura.:</label>
                                         <input id="factura_fecha" name="factura_fecha" type="text" placeholder="Factura fecha" class="form-control input-sm">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label class="control-label" for="compra_proveedor">Proveedor</label>
-                        <input type="text" name="compra_proveedor" id="compra_proveedor" class="form-control input-sm" value="<?php echo $proveedor[0]->prov_nombre; ?>">
-                        <input type="hidden" name="id_proveedor" id="id_proveedor" class="form-control input-sm" value="<?php echo $compras->id_proveedor; ?>"> 
-                        <input type="hidden" name="id_compra" id="id_compra" value="<?php echo $compras->id_compra; ?>">
-                        <input type="hidden" name="tpv" id="tpv" value="<?php echo $compras->compra_id_tpv; ?>">
+                        <label class="control-label" for="venta_cliente">Cliente</label>
+                        <input type="text" name="venta_cliente" id="venta_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->cli_nombre; ?>">
+                        <input type="hidden" name="id_cliente" id="id_cliente" class="form-control input-sm" value="<?php echo $ventas->cliente; ?>"> 
+                        <input type="hidden" name="id_venta" id="id_venta" value="<?php echo $ventas->id_venta; ?>">
+                        <input type="hidden" name="tpv" id="tpv" value="<?php echo $ventas->id_tpv; ?>">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="control-label" for="doc">Telefono:</label>
-                        <input type="text" name="doc" id="doc" class="form-control input-sm" value="<?php echo $proveedor[0]->prov_telefono; ?>">
+                        <label class="control-label" for="telefono_cliente">Telefono:</label>
+                        <input type="text" name="telefono_cliente" id="telefono_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->telefono1; ?>">
                     </div>
                     <div class="col-md-4">
                         <label class="control-label" for="direccion">Direccion:</label>
-                        <input type="text" name="direccion" id="direccion" class="form-control input-sm" value="<?php echo $proveedor[0]->prov_direccion . " - " . $proveedor[0]->prov_localidad . " - ". $proveedor[0]->nombre; ?>">
+                        <input type="text" name="direccion" id="direccion" class="form-control input-sm" value="<?php echo $cliente[0]->domicilio1 . " - " . $cliente[0]->localidad1 ; ?>">
                     </div>
                     <div class="col-md-3">
-                        <label class="control-label" for="direccion">Correo Electronico:</label>
-                        <input type="text" name="direccion" id="direccion" class="form-control input-sm" value="<?php echo $proveedor[0]->prov_correo; ?>">
+                        <label class="control-label" for="correo_cliente">Correo Electronico:</label>
+                        <input type="text" name="correo_cliente" id="correo_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->correo1; ?>">
                     </div>
                     <div class="row">
                     <div class="col-md-12">
                     <div class="col-md-3">
-                        <label class="control-label" for="direccion">Estado de la compra:</label>
-                        <!-- <select name="compra_estado" id="compra_estado" class="form-control input-sm">
-                            <option value="Aprobada" <?= ($compras->estado == 'Aprobada') ? 'Selected' : ''?>>Aprobada</option>
-                            <option value="Arribada" <?= ($compras->estado == 'Arribada') ? 'Selected' : ''?>>Arribada</option>
-                            <option value="En espera" <?= ($compras->estado == 'En espera') ? 'Selected' : ''?>>En espera</option>
-                        </select> -->
-                        <input type="text" name="compra_estado" id="compra_estado" class="form-control input-sm" value="<?php echo $compras->estado; ?>">
+                        <!-- <label class="control-label" for="direccion">Estado de la venta:</label>
+                        <select name="venta_estado" id="venta_estado" class="form-control input-sm">
+                            <option value="cobrada" <?php echo ($ventas->estado == 'cobrada') ? 'selected' : ''?>>Cobrada</option>
+                            <option value="No cobrada" <?php echo ($ventas->estado == 'no cobrada') ? 'selected' : ''?>>No cobrada</option>
+                            - <option value="En espera" <?php //($ventas->estado == 'En espera') ? 'Selected' : ''?>>En espera</option> -->
+                        <!-- </select>
+                        <input type="text" name="venta_estado" id="venta_estado" class="form-control input-sm" value="<?php echo $ventas->estado; ?>"> --> 
                     </div>
-                    <div class="col-md-2">
-                        <label class="control-label" for="direccion">Compra n°:</label>
-                        <input type="text" name="numero_compra" id="numero_compra" class="form-control input-sm" value="<?php echo $compras->numero_compra; ?>">
-                    </div></div>
+                    </div>
                     </div>
 
                 </div>
@@ -97,7 +101,7 @@
                         <input id="sel_producto" name="sel_producto" type="text" placeholder="Producto" class="form-control input-sm">
                     </td>
                     <td>
-                        <input id="compra_cant" name="compra_cant" type="text" placeholder="Cant." class="form-control input-sm">
+                        <input id="venta_cant" name="venta_cant" type="text" placeholder="Cant." class="form-control input-sm">
                     </td>
                     <td>
                         <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
@@ -125,11 +129,11 @@
             <table class="table  table-responsive table-bordered table-striped" id="tbl_items">
                 <thead>
                     <th>Codigo</th>
-                    <th style="width: 10%">Cantidad</th>
+                    <th>Cantidad</th>
                     <th>Producto</th>
-                    <th style="width: 10%">Precio</th>
+                    <th>Precio</th>
                     <th>Importe</th>
-                    <th class="btn-remove-producto"></th>
+                    <th></th>
                 </thead>
                 <tbody>
                     <?php 
@@ -141,23 +145,23 @@
                             <input type='hidden' name='id_producto[]' value='<?php echo $value->id_producto; ?>' class='id_producto'>
                         </td>
                         <td>
-                            <input type='text' name='cantidad[]' value='<?php echo $value->cantidad; ?>' class='cantidad form-control input-sm'  >
+                            <input type='text' name='cantidad[]' value='<?php echo $value->cant_producto; ?>' class='cantidades form-control input-sm'>
                         </td>
                         <td>
                             <input type='hidden' name='nombre[]' value='<?php echo $value->producto . " - " . $value->cantidad_medida . $value->medida; ?>' class='nombre'><p class='h5'><?php echo $value->producto . " - " . $value->cantidad_medida . $value->medida; ?></p>
                         </td>
                         <td>
-                            <input type='text' name='precio[]' value='<?php echo $value->precio; ?>' class='precio form-control input-sm' >
+                            <input type='text' name='precio[]' value='<?php echo $value->precio; ?>' class='precio form-control input-sm'>
                         </td>
                         <td>
-                            <input type='hidden' name='importe[]' value='<?php echo $value->sub_total; ?>' class='importe'><p class='h5'>$<?php echo $value->sub_total; ?></p>
+                            <input type='hidden' name='importe[]' value='<?php echo $value->importe; ?>' class='importe'><p class='h5'>$<?php echo $value->importe; ?></p>
                         </td>
-                        <td class="btn-remove-producto">
-                            <button type='button' class='btn btn-danger '><span class='glyphicon glyphicon-trash'></span></button>
+                        <td>
+                            <button type='button' class='btn btn-danger btn-remove-producto'><span class='glyphicon glyphicon-trash'></span></button>
                         </td>
                         
                     </tr>
-                    <?php $total += $value->sub_total; ?>
+                    <?php $total += $value->importe; ?>
                     <?php 
                 } ?>
 
@@ -182,7 +186,7 @@
                     <input type="hidden" name="importe_total"  value="<?php echo $total; ?>">
                 </div>
 
-            </div><?php require_once (APPPATH.'views/comunes/cobro-pago-compras.php'); ?>
+            </div><?php require_once (APPPATH.'views/comunes/cobro-pago.php'); ?>
         </div>
     </div>
                 
@@ -192,9 +196,12 @@
         <div class="col-md-12">
             <div class="text-center">
                 <a href="javascript:window.history.go(-1);" class="btn btn-info ">Imprimir</a>
-                <button type="button" id="finalizar" name="finalizar" value="Aprobada" class="btn btn-success">Finalizar</button>
+                
                 <!-- <button type="butoon" id="aprobar" name="aprobar" class="btn btn-success ">Aprobar</button> -->
-                <button type="button" id="arribar" name="arribar" value="Arribada" class="btn btn-success">Arribado</button>
+                <?php if( $ventas->tipo != 'Venta') { ?>
+                    <button type="button" id="guardar" name="guardar" class="btn btn-success" value="Pedido">Guardar</button>
+                    <button type="button" id="finalizar" name="finalizar" value="Venta" class="btn btn-success">Finalizar</button>
+                <?php }?>
                 <a href="javascript:window.history.go(-1);" class="btn btn-warning ">Volver</a>
             </div>
         </div>
@@ -204,39 +211,36 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var estadoCompra = $('#compra_estado').val(); 
-            // alert (estadoCompra);
-        if(estadoCompra == 'Arribada'){
-            //$("#arribar").prop('disabled', true);
+        var estadoventa = $('#venta_estado').val(); 
+            // alert (estadoventa);
+        if(estadoventa == 'Arribada'){
+            $("#arribar").prop('disabled', true);
             $("#arribar").hide();
-            $("#finalizar").show();
         }
-        if(estadoCompra == 'Aprobada'){
+        if(estadoventa == 'Aprobada'){
             $("#aprobar").hide();
             $("#arribar").hide();
             $("#guardar").hide();
-            $("#finalizar").hide();
             $('.btn-remove-producto').hide();
         }
-        if(estadoCompra == 'Pedido'){
-            $("#arribar").show();
+        if(estadoventa == 'En espera'){
             $("#aprobar").hide();
-            $("#finalizar").hide();
+            $("#finalizar").show();
         }   
     });
 
-    $('#compra_estado').on('change', function(){
-        var estadoCompra = $('#compra_estado').val(); 
-        if(estadoCompra == 'Arribada'){
+    $('#venta_estado').on('change', function(){
+        var estadoventa = $('#venta_estado').val(); 
+        if(estadoventa == 'Arribada'){
             // $("#arribar").prop('disabled', true);
             // $("#aprobar").show();
             $("#finalizar").show();
         }
-        if(estadoCompra == 'Aprobada'){
+        if(estadoventa == 'Aprobada'){
             $("#aprobar").hide();
             $("#arribar").hide();
         }
-        if(estadoCompra == 'Pedido'){
+        if(estadoventa == 'En espera'){
             $("#aprobar").hide();
             $("#arribar").show();
         }   
@@ -245,9 +249,9 @@
     $('#add').on('click', function() {
 
         var id = $('#sel_producto').val();
-        var cantidad = $('#compra_cant').val();
+        var cantidad = $('#venta_cant').val();
         var precio = $('#prod_costo').val();
-        var link = '<?= base_url() ?>compras/';
+        var link = '<?= base_url() ?>ventas/';
         $.post(link + "add_item", {  //add_cart_item
                 product_id: id,
                 quantity: cantidad,
@@ -260,7 +264,7 @@
         if (datos.id_producto) {
             html = "<tr>";
             html += "<td><input type='hidden' name='codigo[]' value='" + datos.codigo + "' class='codigo'><p class='h5'>" + datos.codigo +"</p></td>";
-            html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidad form-control input-sm'></td>";
+            html += "<td><input type='text' name='cantidad[]' value='" + datos.cantidad + "' class='cantidades form-control input-sm'></td>";
             html += "<td><input type='hidden' name='nombre[]' value='" + datos.nombre + "' class='nombre'><p class='h5'>" + datos.nombre + "</p></td>";
             html += "<td><input type='text' name='precio[]' value='" + parseFloat(datos.precio).toFixed(2) + "' class='precio form-control input-sm'></td>";
             html += "<td><input type='hidden' name='importe[]' value='" + datos.sub_total + "' class='importe'><p class='h5'>" + parseFloat(datos.sub_total).toFixed(2) + "</p></td>";
@@ -270,7 +274,7 @@
             $('#tbl_items tbody').append(html);
             clear_selectize_prod();
             $('#prod_costo').val('');
-            $('#compra_cant').val('');
+            $('#venta_cant').val('');
             calcula_total();
         } else {
             alert("Hubo un problema verifique!");
@@ -280,46 +284,46 @@
     });
 
     // $('#finalizar').on('click', function() {
-    //     var estado = this.val();
-    //     var idCompra = $('#id_compra').val();
-    //     var items = $('#frm_items').serialize();
-    //     var link = '<?= base_url() ?>compras/';
-    //     $.post(link + "actualizar_estado", {estado: estado, id: idCompra, detalles: items},
+    //     var estado = 'Aprobada';
+    //     var idventa = $('#id_venta').val();
+    //     var link = '<?= base_url() ?>ventas/';
+    //     $.post(link + "actualizar_estado", {estado: estado, id: idventa},
     //         function(data) {
     //             if (data) {
-    //                 alert('Compra actualizada');
+    //                 alert('venta actualizada');
     //                 location.href = link ;
     //             } else {
-    //                alert("La compra no se pudo actualizar.");
+    //                alert("La venta no se pudo actualizar.");
     //              }
     //         });
     //     return false;
     // });
 
-    $('#arribar, #finalizar').on('click', function() {
+    $('#guardar, #finalizar').on('click', function() {
         //calcula_total();
+        // var estado = $('#venta_estado').val();//'Aprobada';
         var estado = $(this).val();//$('#compra_estado').val();//'Aprobada';
-        if(estado == 'Aprobada'){
-            var confirmar = confirm("Seguro desea finalizar la compra?")
+        if(estado == 'Venta'){
+            var confirmar = confirm("Seguro desea finalizar la venta?")
             if (!confirmar){
                 return false;
             }
         }
-        var idCompra = $('#id_compra').val();
+        var idVenta = $('#id_venta').val();
+        var tpv = $('#tpv').val();
         var total_importe = $("input[name=importe_total").val();
-        
-        var pago = $('#form_pago').serialize();
+        //var pago = $('#form_pago').serialize();
         var items = $('#frm_items').serialize();
-        var compra = $('#form_compra').serialize();
+        var cliente = $('#form_cliente').serialize();
         
-        var link = '<?= base_url() ?>compras/';
-        $.post(link + "guardar_compra", {estado: estado , id: idCompra , compra: compra,  detalles: items , total: total_importe , pago: pago},
+        var link = '<?= base_url() ?>ventas/';
+        $.post(link + "guardar_venta", { id: idVenta , cliente: cliente,  detalles: items , total: total_importe ,  tpv: tpv, tipo: estado},
             function(data) {
                 if (data) {
-                    alert('Compra actualizada');
+                    alert('venta actualizada');
                     location.href = link ;
                 } else {
-                   alert("La compra no se pudo actualizar.");
+                   alert("La venta no se pudo actualizar.");
                  }
             });
         calcula_total();
@@ -331,7 +335,7 @@
         calcula_total();
     });
 
-    $(document).on('keyup', '#frm_items input.cantidad', function() {
+    $(document).on('keyup', '#frm_items input.cantidades', function() {
         cantidad = $(this).val();
         precio   = $(this).closest("tr").find("td:eq(3)").children("input").val();
         importe  = cantidad * precio;
@@ -363,7 +367,7 @@
 
     $('#sel_producto').on('change', function() {
         var id_prod = $('#sel_producto').prop('value');
-        $.post("<?= base_url() ?>compras/get_producto_precio", {
+        $.post("<?= base_url() ?>ventas/get_producto_precio", {
                 id: id_prod
             },
             function(data) {
@@ -373,7 +377,7 @@
                 }else{
                     $('#producto_costo').val('');
                 }
-                $.post("<?= base_url() ?>compras/get_producto_stock", {
+                $.post("<?= base_url() ?>ventas/get_producto_stock", {
                         id: id_prod
                     },
                     function(data) {
@@ -446,21 +450,4 @@
         var control = prod[0].selectize;
         control.clear();
     }
-
-    function getFormattedDate(d) {
-        //console.log(d);
-        var d = new Date(d);
-        d = ('0' + (d.getDate() + 1)).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear(); //d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds()).slice(-2);
-        return d;
-    }
-
-    $('#factura_fecha').datepicker({
-        todayBtn: "linked",
-        clearBtn: true,
-        language: "es",
-        orientation: "bottom right",
-        autoclose: true,
-        todayHighlight: true,
-        format: 'dd-mm-yyyy'
-    });
 </script> 

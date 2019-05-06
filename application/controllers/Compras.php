@@ -105,29 +105,29 @@ class Compras extends CI_Controller
     return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     }
     
-    public function actualizar_estado(){
-        $estado = $this->input->post('estado');
-        $id_compra = $this->input->post('id');
-        $total_importe = $this->input->post('total');
-        $items = $this->input->post('detalles');
-        parse_str($items, $detalles);
-        var_dump($detalles);
-        // if($estado == 'Aprobada'){
-            if($this->compras->update_stock_compra($id_compra, $detalles,$total_importe, $estado)){
-                echo json_encode(true);
-            }else{
-                echo json_encode(false);
-            }
-        // }elseif($estado == 'Arribada'){
-            // $where = array('id_compra' => $id_compra );
-            // $data = array('estado' => $estado, 'importe_total' => $total_importe);
-            // if ($this->compras->update_estado_compra($where, $data)){
-            //     echo json_encode(true);
-            // }else{
-            //     echo json_encode(false);
-            // }
-        // }     
-    }
+    // public function actualizar_estado(){
+    //     $estado = $this->input->post('estado');
+    //     $id_compra = $this->input->post('id');
+    //     $total_importe = $this->input->post('total');
+    //     $items = $this->input->post('detalles');
+    //     parse_str($items, $detalles);
+    //     //var_dump($detalles);
+    //     // if($estado == 'Aprobada'){
+    //         if($this->compras->update_stock_compra($id_compra, $detalles,$total_importe, $estado)){
+    //             echo json_encode(true);
+    //         }else{
+    //             echo json_encode(false);
+    //         }
+    //     // }elseif($estado == 'Arribada'){
+    //         // $where = array('id_compra' => $id_compra );
+    //         // $data = array('estado' => $estado, 'importe_total' => $total_importe);
+    //         // if ($this->compras->update_estado_compra($where, $data)){
+    //         //     echo json_encode(true);
+    //         // }else{
+    //         //     echo json_encode(false);
+    //         // }
+    //     // }     
+    // }
 
     public function get_producto_stock(){
         $id = $this->input->post('id');
@@ -141,32 +141,13 @@ class Compras extends CI_Controller
         $precio = $this->productos->get_precio_by_id($id);
         echo json_encode($precio);
     }
-    
 
-    public function guardar_compra(){
-        $detalles =  array();
-        $datos_pago = '';
-        $factura_fecha = '';
+    public function pago_compra(){
+        
         $id_compra = $this->input->post('id');
-        $estado = $this->input->post('estado');
-        $tpv = $this->input->post('tpv');
-        // echo "tpv". $tpv; exit();
-        $importe = $this->input->post("total");
-        $compra =  $this->input->post('compra');
+        $importe = $this->input->post("importe");
         $pago = $this->input->post('pago');
-        $detalles = $this->input->post('detalles'); 
-        
-        parse_str($compra, $compra);
-        parse_str($detalles, $detalles);
-        
-        if(isset($tpv) && $tpv != ''){
-            $id_tpv = $tpv;
-        }else{
-            $id_tpv = $compra['tpv'];
-        }
-        $compra_numero = strval($this->compras->numero_compra($compra['numero_compra']));
-        // echo "detalles: ".$detalles['nombre'];
-        //  var_dump($detalles);//exit();
+
         if($pago){
             parse_str($pago, $pago);
             $recibido = floatval(($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo'])) ;
@@ -185,6 +166,59 @@ class Compras extends CI_Controller
                 'tarjeta'               => $pago['tarjeta'],
             );
         }
+
+        if ($id_compra = $this->compras->update_pago_compra($id_compra, $datos_pago)) {
+            if($id_compra > 0){
+                echo 'true';    
+            }else{
+                echo 'false';
+            }
+        }
+    }
+    
+
+    public function guardar_compra(){
+        $detalles =  array();
+        $datos_pago = '';
+        $factura_fecha = '';
+        $id_compra = $this->input->post('id');
+        $estado = $this->input->post('estado');
+        $tpv = $this->input->post('tpv');
+        // echo "tpv". $tpv; exit();
+        $importe = $this->input->post("total");
+        $compra =  $this->input->post('compra');
+        // $pago = $this->input->post('pago');
+        $detalles = $this->input->post('detalles'); 
+        
+        parse_str($compra, $compra);
+        parse_str($detalles, $detalles);
+        
+        if(isset($tpv) && $tpv != ''){
+            $id_tpv = $tpv;
+        }else{
+            $id_tpv = $compra['tpv'];
+        }
+        $compra_numero = strval($this->compras->numero_compra($compra['numero_compra']));
+        // echo "detalles: ".$detalles['nombre'];
+        //  var_dump($detalles);//exit();
+        // if($pago){
+        //     parse_str($pago, $pago);
+        //     $recibido = floatval(($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo'])) ;
+        //     $saldo = $recibido  - $importe;
+        //     $datos_pago = array(
+        //         'metodoPago'            => $pago['metodo_pago'],
+        //         'pago_efectivo'         => $pago['recibido_efectivo'], //- $vuelto,
+        //         'pago_tarjeta'          => $pago['recibido_tarjeta'],
+        //         'pago_cheque'           => $pago['recibido_cheque'],
+        //         'pago_cheque_banco'     => $pago['cheque_banco'],
+        //         'pago_cheque_cuenta'    => $pago['cheque_cuenta'],
+        //         'pago_cheque_numero'    => $pago['cheque_numero'],
+        //         'importe_total'         => $importe,
+        //         'importe_recibido'      => $recibido,
+        //         'importe_saldo'         => $saldo,
+        //         'tarjeta'               => $pago['tarjeta'],
+        //     );
+        // }
         $user = $this->ion_auth->user()->row();    
         
         $factura_fecha = ($compra['factura_fecha']) ? date("Y-m-d", strtotime($compra['factura_fecha'])) : '';
@@ -207,7 +241,7 @@ class Compras extends CI_Controller
             );
               //print_r($datos_compra);
        // if($this->compras->get_by_id($id_compra) != ''){
-            if( $this->compras->save_compra($datos_compra, $datos_pago, $detalles, $id_compra, $estado, $id_tpv, $compra_numero)){
+            if( $this->compras->save_compra($datos_compra, $detalles, $id_compra, $estado, $id_tpv, $compra_numero)){
             echo 'true';
         }else{
             

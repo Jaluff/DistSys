@@ -229,7 +229,7 @@ class Compras_model extends CI_Model
     }
 
 
-    private function update_stock_compra($cantidad, $id_tpv, $id_producto){//$id_compra, $detalles, $total, $estado){
+    public function update_stock_compra($cantidad, $id_tpv, $id_producto){//$id_compra, $detalles, $total, $estado){
         // $compra = $this->get_by_id($id_compra);
         // $id_tpv = $compra->compra_id_tpv;
         // $count_detalles =  count($detalles['id_producto']);
@@ -448,6 +448,12 @@ class Compras_model extends CI_Model
         } else { 
             return false;
         }
+    }
+
+    public function update_pago_compra($id_compra, $pago){//$id_compra, $detalles, $total, $estado){
+        $this->db->where('id_compra', $id_compra);
+        $this->db->update($this->table_compras, $pago);
+        return $this->db->affected_rows();
     }
 
     // Updated the shopping cart
