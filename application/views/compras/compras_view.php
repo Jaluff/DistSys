@@ -134,15 +134,15 @@
         , ]
     });
 
+    $(document).ready(function() {
+        $('#tpv').change( function() {
+            table.draw();
+        } );
 
-    $('#tpv').change( function() {
-        table.draw();
-    } );
-
-    $('#fecha_mov').change( function() {
-        table.draw();
-    } );
-
+        $('#fecha_mov').change( function() {
+            table.draw();
+        } );
+    });
     function reload_table() {
         table.ajax.reload(null, false); //reload datatable ajax
     }

@@ -24,9 +24,11 @@
                                         </div>
                                         <!-- Text input-->
                                         <div class="form-group">
-                                            <label class="col-md-5 control-label" for="cli_documento">Documento unico</label>
+                                            <label class="col-md-5 control-label" for="cli_cuit">Cuit/Cuil</label>
                                             <div class="col-md-7 ">
-                                                <input id="cli_documento" name="cli_documento" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese su documento de identidad</span> </div>
+                                                <input id="cli_cuit" name="cli_cuit" type="text" placeholder="" class="form-control input-sm"> 
+                                                    <span class="help-block">Ingrese su documento de identidad</span> 
+                                                </div>
                                         </div>
                                         <!-- Select Basic -->
                                         <!-- <div class="form-group">
@@ -43,7 +45,7 @@
                                             <label class="col-md-5 control-label" for="sexo">Sexo</label>
                                             <div class="col-md-7 ">
                                                 <label class="radio-inline" for="sexo-0">  Masc. </label>
-                                                    <input type="radio" name="sexo" id="sexo-0" value="Masculino"  >
+                                                    <input type="radio" name="sexo" id="sexo-0" value="Masculino" checked >
                                                 <label class="radio-inline" for="sexo-1"> Fem. </label>
                                                     <input type="radio" name="sexo" id="sexo-1" value="Femenino" >   <span class="help-block">Seleccione un genero </span> </div>
                                         </div>
@@ -66,11 +68,11 @@
                                         </div> -->
                                         <!-- Multiple Checkboxes -->
                                         <div class="form-group">
-                                            <label class="col-md-5 control-label" for="Activo">Estado</label>
+                                            <label class="col-md-5 control-label" for="cli_estado">Estado</label>
                                             <div class="col-md-7 ">
                                                 <div class="checkbox">
-                                                    <label for="Activo"> </label>
-                                                        <input type="checkbox" name="Activo" id="Activo" value="1" > Activo 
+                                                    <label for="cli_estado"> </label>
+                                                        <input type="checkbox" name="cli_estado" id="cli_estado" value="1"  > Activo 
                                                 </div> <span class="help-block">Estado del cliente</span> </div>
                                         </div>
                                     </div>
@@ -79,96 +81,111 @@
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#datos_principales" aria-controls="datos_principales" role="tab" data-toggle="tab">Contacto principal</a></li>
-                                    <li role="presentation"><a href="#datos_alternativos" aria-controls="datos_alternativos" role="tab" data-toggle="tab">Contacto alternativo</a></li>
+                                    <!-- <li role="presentation"><a href="#datos_alternativos" aria-controls="datos_alternativos" role="tab" data-toggle="tab">Contacto alternativo</a></li> -->
                                 </ul>
                                 <div class="tab-content form-horizontal">
                                     <div role="tabpanel" class="tab-pane active" id="datos_principales">
                                         <div class="col-md-6">
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="direccion1">Dirección</label>
+                                                <label class="col-md-5 control-label" for="cli_direccion">Dirección</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="direccion1" name="direccion1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la calle y n°</span> </div>
+                                                    <input id="cli_direccion" name="cli_direccion" type="text" placeholder="" class="form-control input-sm"> 
+                                                        <span class="help-block">Ingrese la calle y n°</span> 
+                                                    </div>
                                             </div>
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="telefono1">Telefono</label>
+                                                <label class="col-md-5 control-label" for="cli_telefono">Telefono</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="telefono1" name="telefono1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el telefono fijo</span> </div>
+                                                    <input id="cli_telefono" name="cli_telefono" type="text" placeholder="" class="form-control input-sm"> 
+                                                    <span class="help-block">Ingrese el telefono fijo</span> 
+                                                </div>
                                             </div>
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="telefono_movil1">Telefono movil</label>
+                                                <label class="col-md-5 control-label" for="cli_movil">Telefono movil</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="telefono_movil1" name="telefono_movil1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el telefono movil</span> </div>
+                                                    <input id="cli_movil" name="cli_movil" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el telefono movil</span> </div>
                                             </div>
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="correo1">Correo electronico</label>
+                                                <label class="col-md-5 control-label" for="cli_correo">Correo electronico</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="correo1" name="correo1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la direccino de correo electronico</span> </div>
+                                                    <input id="cli_correo" name="cli_correo" type="text" placeholder="" class="form-control input-sm"> 
+                                                    <span class="help-block">Ingrese la direccino de correo electronico</span> 
+                                                </div>
                                             </div>
                                             <!-- Multiple Checkboxes -->
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label class="col-md-5 control-label" for="infomail1">Info por mail?</label>
                                                 <div class="col-md-7 ">
                                                     <input type="checkbox" class="checkbox" name="infomail1" id="infomail1" value="1"> <span class="help-block">El cliente desea recibir info por mail?</span> </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="col-md-6">
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="provincia1">Provincia</label>
+                                                <label class="col-md-5 control-label" for="cli_provincia">Provincia</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="provincia1" name="provincia1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la provincia</span> </div>
+                                                    <!-- <input id="cli_provincia" name="cli_provincia" type="text" placeholder="" class="form-control input-sm">  -->
+                                                    <select id="cli_provincia" name="cli_provincia" class="form-control input-sm">
+                                                        
+                                                    </select>
+                                                    
+                                                    <span class="help-block">Ingrese la provincia</span> 
+                                                </div>
                                             </div>
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="localidad1">Localidad</label>
+                                                <label class="col-md-5 control-label" for="cli_localidad">Localidad</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="localidad1" name="localidad1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el telefono fijo</span> </div>
+                                                    <input id="cli_localidad" name="cli_localidad" type="text" placeholder="" class="form-control input-sm"> 
+                                                    <span class="help-block">Ingrese el telefono fijo</span> 
+                                                </div>
                                             </div>
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="pais1">Pais</label>
+                                                <label class="col-md-5 control-label" for="cli_pais">Pais</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="pais1" name="pais1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el pais</span> </div>
+                                                    <input id="cli_pais" name="cli_pais" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el pais</span> </div>
                                             </div>
                                             <!-- Text input-->
                                             <div class="form-group">
-                                                <label class="col-md-5 control-label" for="cp1">CP</label>
+                                                <label class="col-md-5 control-label" for="cli_cp">Codigo Postal</label>
                                                 <div class="col-md-7 ">
-                                                    <input id="cp1" name="cp1" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el código postal</span> </div>
+                                                    <input id="cli_cp" name="cli_cp" type="text" placeholder="" class="form-control input-sm"> 
+                                                    <span class="help-block">Ingrese el código postal</span> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="datos_alternativos">
+                                    <!-- <div role="tabpanel" class="tab-pane" id="datos_alternativos">
                                         <div class="col-md-6">
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="direccion2">Dirección</label>
                                                 <div class="col-md-7 ">
                                                     <input id="direccion2" name="direccion2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la calle y n°</span> </div>
                                             </div>
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="telefono2">Telefono</label>
                                                 <div class="col-md-7 ">
                                                     <input id="telefono2" name="telefono2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el telefono fijo</span> </div>
                                             </div>
-                                            <!-- Text input-->
-                                            <div class="form-group">
+                                                                                        <div class="form-group">
                                                 <label class="col-md-5 control-label" for="telefono_movil2">Telefono movil</label>
                                                 <div class="col-md-7 ">
                                                     <input id="telefono_movil2" name="telefono_movil2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el telefono movil</span> </div>
                                             </div>
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="correo2">Correo electronico</label>
                                                 <div class="col-md-7 ">
                                                     <input id="correo2" name="correo2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la dirección de correo electrónico</span> </div>
                                             </div>
-                                            <!-- Multiple Checkboxes -->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="infomail2">Info por mail?</label>
                                                 <div class="col-md-7 ">
@@ -176,25 +193,25 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="provincia2">Provincia</label>
                                                 <div class="col-md-7 ">
                                                     <input id="provincia2" name="provincia2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la provincia</span> </div>
                                             </div>
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="localidad2">Localidad</label>
                                                 <div class="col-md-7 ">
                                                     <input id="localidad2" name="localidad2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese la localidad</span> </div>
                                             </div>
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="pais2">Pais</label>
                                                 <div class="col-md-7 ">
                                                     <input id="pais2" name="pais2" type="text" placeholder="" class="form-control input-sm"> <span class="help-block">Ingrese el pais</span> </div>
                                             </div>
-                                            <!-- Text input-->
+                                            
                                             <div class="form-group">
                                                 <label class="col-md-5 control-label" for="cp2">CP</label>
                                                 <div class="col-md-7 ">
@@ -202,7 +219,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 
                             <!-- Button (Double) -->
                             <div class="row">
@@ -250,55 +267,67 @@
                 , success: function (data) {
                     $('[name="id_cliente"]').val(data.id_cliente);
                     $('[name="cli_nombre"]').val(data.cli_nombre);
-                    $('[name="telefono1"]').val(data.telefono1);
-                    $('[name="telefono2"]').val(data.telefono2);
-
+                    $('[name="cli_telefono"]').val(data.cli_telefono);
+                    // $('[name="telefono2"]').val(data.telefono2);
+                    // $('[name="cli_estado"]').val(data.cli_estado);
                     $('[name="cli_tipo"]').val(data.cli_tipo);
-                    $('[name="direccion1"]').val(data.domicilio1);
-                    $('[name="direccion2"]').val(data.domicilio2);
-                    $('[name="localidad1"]').val(data.localidad1);
-                    $('[name="localidad2"]').val(data.localidad2);
-                    $('[name="provincia1"]').val(data.provincia1);
-                    $('[name="provincia2"]').val(data.provincia2);
-                    $('[name="pais1"]').val(data.pais1);
-                    $('[name="pais2"]').val(data.pais2);
-                    $('[name="cp1"]').val(data.cp1);
-                    $('[name="cp2"]').val(data.cp2);
-                    $('[name="correo1"]').val(data.correo1);
-                    $('[name="correo2"]').val(data.correo2);
-                    $('[name="telefono_movil1"]').val(data.movil1);
-                    $('[name="telefono_movil2"]').val(data.movil2);
-                    $('[name="cli_documento"]').val(data.cli_doc);
+                    $('[name="cli_direccion"]').val(data.cli_direccion);
+                    // $('[name="direccion2"]').val(data.domicilio2);
+                    $('[name="cli_localidad"]').val(data.cli_localidad);
+                    // $('[name="localidad2"]').val(data.localidad2);
+                    // $('[name="cli_provincia"]').val(data.nombre);
+                    // $('[name="provincia2"]').val(data.provincia2);
+                    $('[name="cli_pais"]').val(data.pais);
+                    // $('[name="pais2"]').val(data.pais2);
+                    $('[name="cli_cp"]').val(data.cli_cp);
+                    // $('[name="cp2"]').val(data.cp2);
+                    $('[name="cli_correo"]').val(data.cli_correo);
+                    // $('[name="correo2"]').val(data.correo2);
+                    $('[name="cli_movil"]').val(data.cli_movil);
+                    // $('[name="telefono_movil2"]').val(data.movil2);
+                    $('[name="cli_cuit"]').val(data.cli_cuit);
 
                     if (data.cli_sexo === 'Masculino') {
-                        $('#sexo-0').prop('checked', true);
+                        $('#sexo-0').attr('checked', true);
                     }
-                    else if (data.cli_sexo === 'Femenino') {
-                        $('#sexo-1').prop('checked', true);
+                    if (data.cli_sexo === 'Femenino') {
+                        $('#sexo-1').attr('checked', true);
                     }
                     $('[name="cli_lista_precios"]').val(data.cli_lista_precios);
 
                     if (data.cli_estado == '1') {
-                        $('[name="Activo"]').attr('checked', true);
+                        $('[name="cli_estado"]').attr('checked', true);
                     }
                     else {
-                        $('[name="Activo"]').attr('checked', false);
+                        $('[name="cli_estado"]').attr('checked', false);
+                    }
+                    
+                    for( var i  in data){   //console.log(data[i].nombre);
+                        if(data[i].id_provincia != null){
+                            if(data.nombre !== data[i].nombre ){
+                                $("#cli_provincia").append("<option value='"+data[i].id_provincia+"'>"+data[i].nombre+"</option>"); 
+                            }else{
+                                $("#cli_provincia").append("<option value='"+data[i].id_provincia+"' selected='selected'>"+data[i].nombre+"</option>"); 
+                            }
+                        }
                     }
 
-                    if (data.infomail1 === '1') {
-                        $('#infomail1').attr('checked', true);
-                    }else{
-                        $('#infomail1').attr('checked', false);
-                    }
+                    
 
-                    if(data.infomail2 === '1'){
-                        $('#infomail2').attr('checked', true);
-                    }else{
-                        $('#infomail2').attr('checked', false);
-                    }
+                    // if (data.infomail1 === '1') {
+                    //     $('#infomail1').attr('checked', true);
+                    // }else{
+                    //     $('#infomail1').attr('checked', false);
+                    // }
+
+                    // if(data.infomail2 === '1'){
+                    //     $('#infomail2').attr('checked', true);
+                    // }else{
+                    //     $('#infomail2').attr('checked', false);
+                    // }
 
                     // $('[name="Activo"]').val(data.cli_estado);
-                    $('[name="cli_fecha_nacimiento"]').val(getFormattedDate(data.cli_fecha_nac));
+                    $('[name="cli_fecha_creacion"]').val(getFormattedDate(data.cli_created_on));
                     //$('[name="dob"]').datepicker('update', data.dob);
                     $('#cliente_modal').modal('show'); // show bootstrap modal when complete loaded
                     $('.modal-title').text('Editar cliente'); // Set title to Bootstrap modal title
@@ -310,8 +339,9 @@
         }
 
         function save_cliente() {
-            $('#Guardar_cliente').text('guardando...'); //change button text
-            $('#Guardar_cliente').attr('disabled', true); //set button disable
+            event.preventDefault()
+            // $('#Guardar_cliente').text('guardando...'); //change button text
+            // $('#Guardar_cliente').attr('disabled', true); //set button disable
             var url;
             if (save_method == 'add') {
                 url = "<?php echo site_url('cliente/ajax_add');?>";
@@ -320,6 +350,7 @@
                 url = "<?php echo site_url('cliente/ajax_update');?>";
             }
             // ajax adding data to database
+            //console.log( $('#cliente').serialize());return false;
             $.ajax({
                 url: url
                 , type: "POST"
@@ -328,20 +359,23 @@
                 , success: function (datos) {
                     if (datos.status) //if success close modal and reload ajax table
                     {
+                    //   alert(datos.status);
                         console.log('datos: ' + datos);
+                        // clear_selectize_cli();
                         $('#cliente_modal').modal('hide');
                         //reload_table();
                         location.reload();
                     }
-                    $('#Guardar_cliente').text('Guardar'); //change button text
-                    $('#Guardar_cliente').attr('disabled', false); //set button enable
+                    // $('#Guardar_cliente').text('Guardar'); //change button text
+                    // $('#Guardar_cliente').attr('disabled', false); //set button enable
                 }
                 , error: function (jqXHR, textStatus, errorThrown) {
                     alert('Error al guardar los cambios del cliente');
-                    $('#Guardar_cliente').text('Guardar'); //change button text
-                    $('#Guardar_cliente').attr('disabled', false); //set button enable
+                    // $('#Guardar_cliente').text('Guardar'); //change button text
+                    // $('#Guardar_cliente').attr('disabled', false); //set button enable
                 }
             });
+            return false;
         }
 
         function delete_cliente(id) {
@@ -365,6 +399,8 @@
         /**
          *   Fin funciones de clientes
          */
+
+
         function getFormattedDate(d) {
             console.log(d);
             var d = new Date(d);

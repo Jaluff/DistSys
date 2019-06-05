@@ -129,7 +129,9 @@ class Proveedor extends CI_Controller {
     public function ajax_edit($id)
     {
         $data_datos =  $this->proveedores->get_by_id($id);
-        $data =  (object)(array)$data_datos;
+        $provincias = $this->proveedores->get_provincias();
+        $data['datos'] =  (object)(array)$data_datos;
+        $data['provincias'] = (object)(array)$provincias;
         echo json_encode($data);
     }
 
@@ -151,21 +153,18 @@ class Proveedor extends CI_Controller {
     {     
         $provinciaId = $this->input->post('provinciaId');
         $dep = $this->input->post('dep');
-            //obtenemos las poblaciones de esa provincia
-        if($provinciaId && $dep){
-            $localidades = $this->proveedores->getDepartamentos($provinciaId);
-            echo "<option value='0'>Departamento</option> ";
-            //var_dump($localidades);
+        $localidades = $this->proveedores->getDepartamentos($provinciaId);    
+        //obtenemos las poblaciones de esa provincia
+        if($provinciaId != ''){
             foreach ($localidades as $value) {
-                if ($dep == $value->nombre){
+                if (isset($dep) && $dep == $value->nombre){
                     echo "<option value='".$value->nombre."' selected>".$value->nombre."</option> ";
                 }else{
                     echo "<option value='".$value->nombre."'>".$value->nombre."</option> ";    
-                }
-                
+                }    
             }
         }else{
-            echo "<option value='0'>Departamentoss</option> ";
+            echo "<option value='0'>Departamentos</option> ";
         }    
     }
 

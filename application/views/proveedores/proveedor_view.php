@@ -29,7 +29,7 @@
 <!--                        <th></th>-->
                         <th class="hidden-xs">Codigo</th>
                         <th>Nombre</th>
-                        <th>Contacto</th>
+                        <!-- <th>Contacto</th> -->
                         <th class="hidden-xs">Telefono</th>
                         <th class="hidden-xs">Movil</th>
                         <th class="hidden-xs">Cuit</th>
@@ -56,7 +56,7 @@ table = $('#clientes').DataTable({
     "columns": [
          {"data": "id_proveedor", "className": "hidden-xs" },
          {"data": "prov_nombre" },
-         {"data": "prov_contacto" },
+        //  {"data": "prov_contacto" },
          {"data": "prov_telefono" , "className": "hidden-xs" },
          {"data": "prov_movil" , "className": "hidden-xs" },
          {"data": "prov_cuit", "className": "hidden-xs" },

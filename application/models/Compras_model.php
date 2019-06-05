@@ -150,7 +150,7 @@ class Compras_model extends CI_Model
     public function get_proveedores($id = null)
     {
         $this->db->from('proveedores');
-        $this->db->join('provincias', " proveedores.prov_provincia = provincias.id");
+        $this->db->join('provincias', " proveedores.prov_provincia = provincias.id_provincia");
         $this->db->where('proveedores.id_empresa', $this->session->userdata('id_empresa'));
         $this->db->where('proveedores.prov_estado', 'Activo');
         if(isset($id) && $id != ''){
@@ -173,7 +173,7 @@ class Compras_model extends CI_Model
     // }
 
 
-    public function save_compra($datos_compra , $datos_pago = null , $detalles, $id_compra = null, $estado, $tpv, $numero_compra)
+    public function save_compra($datos_compra ,  $detalles, $id_compra = null, $estado, $tpv, $numero_compra)
     {
         if(isset($id_compra) && $id_compra != ''){
             $this->db->where('id_compra', $id_compra);
@@ -182,11 +182,6 @@ class Compras_model extends CI_Model
             $datos_compra['numero_compra'] = $numero_compra; 
             $this->db->insert($this->table_compras, $datos_compra);
             $id_compra = $this->db->insert_id();
-        }
-
-        if($datos_pago){
-            $this->db->where('id_compra', $id_compra);
-            $this->db->update($this->table_compras, $datos_pago);
         }
 
         $this->db->delete('compras_detalle', array( 'id_compra' => $id_compra));

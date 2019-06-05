@@ -125,16 +125,16 @@ label {
     margin-bottom: 5px;
     margin-top: 4px;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 1.1em;
     vertical-align: text-bottom;
 }
 
 table{
-    font-size: 14px;
+    font-size: 1.3em;
 }
 
 table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
-    padding-right: 30px;
+    padding-right: 20px;
     background: #ededed;
 }
 
@@ -211,14 +211,14 @@ table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_des
 table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
     padding-right: 30px;
     background: #ededed;
-    font-size: 14px;
+    font-size: 1.1em;
     font-weight: inherit;
 }
-table.dataTable td, table.dataTable th {
+table.dataTable td {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
-
+    /* text-align: left; */
 }
 
 table.dataTable {
@@ -460,3 +460,4 @@ height: auto;
   .panel-info > .panel-footer + .panel-collapse > .panel-body {
     border-bottom-color: #009ba2;
   }
+

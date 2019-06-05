@@ -25,7 +25,7 @@
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#datos_producto" aria-controls="datos_producto" role="tab" data-toggle="tab">Datos del producto</a></li>
                                 <li role="presentation" class=""><a href="#datos_precios" aria-controls="datos_precios" role="tab" data-toggle="tab">Precios</a></li>
-                                <li role="presentation"><a href="#datos_imagenes" aria-controls="datos_imagenes" role="tab" data-toggle="tab">Imagenes</a></li>
+                                <!-- <li role="presentation"><a href="#datos_imagenes" aria-controls="datos_imagenes" role="tab" data-toggle="tab">Imagenes</a></li> -->
                             </ul>
                             <div class="tab-content form-horizontal">
 
@@ -111,7 +111,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="col-md-4 control-label" for="medida">Tipo empaque</label>
-                                                <div class="col-md-3 ">
+                                                <div class="col-md-7 ">
                                                     <select id="medida" name="medida" class="form-control input-sm ">
                                                         <?php 
                                                         //var_dump($medida);
@@ -124,15 +124,37 @@
                                                 </div>
                                             </div>
 
+                                            
+
                                             <div class="form-group">
                                                 <label class="col-md-4 control-label" for="cantidad">Cantidad por empaque</label>
-                                                <div class="col-md-3 ">
+                                                <div class="col-md-7 ">
                                                     <input id="cantidad" name="cantidad" type="text" class="form-control input-sm">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+
+
+
+
+                                    <div class="col-md-12">
+                                    <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label" for="id_proveedor">Proveedor</label>
+                                                    <div class="col-md-7 ">
+                                                        <select id="id_proveedor" name="id_proveedor" class="form-control input-sm ">
+                                                            <?php 
+                                                            foreach ($proveedores as $value) { ?>
+                                                            <option value="<?= $value->id_proveedor ?>"><?= $value->prov_nombre ?></option>
+                                                            <?php 
+                                                        } ?>
+                                                        </select>
+                                                        <span class="help-block">¿De qué tipo de producto se trata?</span> </div>
+                                                </div>
+                                            </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -227,8 +249,8 @@
 </div>
 
 <script>
-    $("#costo").on("keyup", calcular_precio);
-    $("#pv_iva").on("keyup", calcular_precio);
+    $("#costo").on("keyup", calcular_precio());
+    $("#pv_iva").on("keyup", calcular_precio());
 
     function calcular_precio() {
         var valor = 0;
@@ -284,6 +306,7 @@
                 $('[name="codigo_barras"]').val(data.codigo_barras);
                 $('[name="categoria"]').val(data.id_categoria);
                 $('[name="marca"]').val(data.id_marca);
+                $('[name="proveedor"]').val(data.id_proveedor);
                 $('[name="descripcion"]').val(data.descripcion);
                 $('[name="stock_minimo"]').val(data.stock_minimo);
                 $('[name="stock_actual"]').val(data.stock_actual);
@@ -337,16 +360,10 @@
             cache: false,
             async: false,
             success: function(datos) {
-                alert('se guardo');
-                //if (datos >= 1) //if success close modal and reload ajax table
-                //{
-                //console.log('datos: ' + datos);
-                $('#producto_modal').modal('hide');
-                $('#producto')[0].reset();
                 reload_table();
-                // window.location.reload(true); 
-
-                // }
+                alert('se guardo');
+                
+                $('#producto_modal').modal('hide');
                 $('#Guardar_producto').text('Guardar'); //change button text
                 $('#Guardar_producto').attr('disabled', false); //set button enable
             },
@@ -355,9 +372,12 @@
                 $('#Guardar_producto').text('Guardar'); //change button text
                 $('#Guardar_producto').attr('disabled', false); //set button enable
             }
-
         });
     });
+
+    function reload_table() {
+                    table.ajax.reload(null, false); //reload datatable ajax
+                }
 
 
     function delete_producto(id) {

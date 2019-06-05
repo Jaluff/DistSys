@@ -32,6 +32,8 @@
     </form> -->
 </div>
 
+
+
 <div class="row">
     <hr class="hr_success">
     <?php echo lang('index_subheading'); ?>
@@ -46,18 +48,22 @@
         <table class="table table-bordered table-condensed " cellspacing="0" width="100%" id="productos">
             <thead>
                 <tr>
+                    <th>id</th>
                     <th class="hidden-xs">Codigo</th>
+                    <th>Proveedor</th>
                     <th>Producto</th>
                     <th class="hidden-xs">Categoria</th>
                     <th class="hidden-xs">Marca</th>
-                    <th>Precio compra</th>
-                    <th>Precio Vta</th>
-                    <th class="imageGallery">Imagen</th>
+                    <th>Precio venta</th>
+                    <!-- <th>Precio Vta</th> -->
+                    <th class="">Imagen</th>
                     <th style="min-width: 90px">Action</th>
                 </tr>
             </thead>
         </table>
     </div>
+</div>
+
 
 
     <div class="modal fade" id="modal-default">
@@ -107,87 +113,115 @@
     <!-- /.modal -->
 
 
+<div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="image-gallery-title"></h4>
+            </div>
+            <div class="modal-body">
+                <img id="image-gallery-image" class="img-responsive" src="">
+            </div>
+            <div class="modal-footer">
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" id="show-previous-image">Previous</button>
+                </div>
+
+                <div class="col-md-8 text-justify" id="image-gallery-caption">
+                    
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" id="show-next-image" class="btn btn-default">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <?php require_once(APPPATH . 'views/productos/form_producto.php'); ?>
+
     <script type="text/javascript">
-        table = $('#productos').DataTable({
-            "processing": true, //Feature control the processing indicator.
-            "serverSide": true, //Feature control DataTables' server-side processing mode.
-            "columns": [
 
-                {
-                    "data": "Codigo",
-                    "className": "hidden-xs"
-                },
-                {
-                    "data": "Producto",
-                    "className": "h5"
-                },
-                {
-                    "data": "Categoria",
-                    "className": " hidden-xs"
-                },
-                {
-                    "data": "marca",
-                    "className": "hidden-xs"
-                },
-                {
-                    "data": "precio_compra"
-                },
-                {
-                    "data": "precio_venta",
-                    "className": "hidden-xs"
-                },
-                {
-                    "data": "foto_producto[ ]",
-                    "className": "imageGallery"
-                },
-                {
-                    "data": "Acciones"
-                }
+    table = $('#productos').DataTable({
+        "processing": true, //Feature control the processing indicator.
+        "serverSide": true, //Feature control DataTables' server-side processing mode.
+        "columns": [
+            {
+                "data": "id",
+                "className": "hidden-xs"
+            },
+            {
+                "data": "Codigo",
+                "className": "hidden-xs"
+            },
+            {
+                "data": "proveedor",
+                "className": "hidden-xs"
+            },
+            {
+                "data": "Producto",
+                "className": "h5"
+            },
+            {
+                "data": "Categoria",
+                "className": " hidden-xs"
+            },
+            {
+                "data": "marca",
+                "className": "hidden-xs"
+            },
+            {
+                "data": "precio_venta"
+            },
+            // {
+            //     "data": "precio_venta",
+            //     "className": "hidden-xs"
+            // },
+            {
+                "data": "foto_producto",
+                // "className": "imageGallery"
+            },
+            {
+                "data": "Acciones"
+            }
 
-            ],
+        ],
 
-            "order": [], //Initial no order.
-            // Load data for the table's content from an Ajax source
-            "ajax": {
-                "url": "<?php echo base_url() ?>producto/ajax_list",
-                "type": "POST",
-                "data": function(d) {
-                    d.tpv = $('#tpv select').val();
-                }
-            }, //Set column definition initialisation properties.
+        "order": [], //Initial no order.
+        // Load data for the table's content from an Ajax source
+        "ajax": {
+            "url": "<?php echo base_url() ?>producto/ajax_list",
+            "type": "POST",
+            "data": function(d) {
+                d.tpv = $('#tpv select').val();
+            }
+        }, //Set column definition initialisation properties.
 
-            "columnDefs": [{
-                "targets": [-1], //last column
-                "orderable": false, //set not orderable
-            }]
-        });
+        "columnDefs": [{
+            "targets": [-1], //last column
+            "orderable": false, //set not orderable
+        }]
+    });
 
-        $('#tpv').change(function() {
-            table.dra-w();
-        });
+    $('#tpv').change(function() {
+        table.dra-w();
+    });
 
-        function reload_table() {
-            table.ajax.reload(null, false); //reload datatable ajax
-        }
-    </script>
-    <?php 
-    require_once(APPPATH . 'views/productos/form_producto.php');
-    //require_once (APPPATH.'views/form_compras.php');
-    ?>
-    <script type="text/javascript">
-    $('.imageGallery td').simpleLightbox();
+    function reload_table() {
+        table.ajax.reload(null, false); //reload datatable ajax
+    }
     
-    // $('.imageGallery').on('click', function() {
-
-    //     SimpleLightbox.open({
-    //         items: ['demo/images/1big.jpg', 'demo/images/2big.jpg', 'demo/images/3big.jpg']
-    //     });
-    // });
-
-
+//     $('.imageGallery td').simpleLightbox({
+//     items: ['images/uploads/256-40.jpg', 'images/uploads/212-9.jpg']
+// });
+    
     $(document).on("click",".btn-view-barcode", function(){
         codigo_barra = $(this).val();
-        cantidad = $(this).closest("tr").find("td:eq(5)").text();
+        cantidad = prompt('Cuantas etiquetas desea imprimir?');//$(this).closest("tr").find("td:eq(5)").text();
         html = "<div class='row'>";
         for (var i = 1; i <= Number(cantidad); i++) {
             html += "<div class='col-xs-5'>";
@@ -257,44 +291,9 @@
             downloadCallback:function(filename,pd)
                 {
                     location.href="<?= base_url() ?>producto/download?filename="+filename;
-                }
-            
-        });
-        
+                } 
+        });        
     });
-    //     id_producto = $(this).val();
-    //     // cantidad = $(this).closest("tr").find("td:eq(5)").text();
-    //     html = "<div class='row'>";
-    //     // html += "<div class='content'>";
-    //     html += "<form action='<?= base_url() ?>producto/fileupload/"+ id_producto +"' enctype='multipart/form-data' class='dropzone dz-clickable' id='fileupload'>";
-    //     html += '<div class="dz-default dz-message"><h3>Arrastre las imagens aqui o (Haga click)</h3></div></form>';
-    //     // html += "</div>";
-    //     html += "</div>";
-    //     console.log(html);
-    //     $("#modal-imagen .modal-body").html(html);
-       
-    //     Dropzone.autoDiscover = false;
-    //     try {
-    //         var myDropzone = new Dropzone("#fileupload" , {
-    //             paramName: "file", // The name that will be used to transfer the file
-    //             maxFilesize: 2, // MB
-    //             acceptedFiles: ".jpeg,.jpg,.png,.gif",
-    //             addRemoveLinks : true,
-    //             dictDefaultMessage :
-    //                 '<span class="bigger-150 bolder">Drop files</span> to upload <span class="smaller-80 grey">(or click)</span>'
-    //             ,
-    //             dictResponseError: 'Error while uploading file!',
-
-    //             //change the previewTemplate to use Bootstrap progress bars
-
-    //         });
-    //     } catch(e) {
-    //         alert('Dropzone.js does not support older browsers!');
-    //     }
-    // });
-    
-
-    
 
     $(document).on("click",".btn-print-barcode",function(){
         
@@ -312,30 +311,38 @@
             title: "  ",
             doctype: '<!doctype html>'
         });
-
-
     });
         $.validate({
             lang: 'es'
         });
 
-        // $('#cli_fecha_nacimiento').datepicker({
-        //     todayBtn: "linked"
-        //     , clearBtn: true
-        //     , language: "es"
-        //     , orientation: "bottom right"
-        //     , autoclose: true
-        //     , todayHighlight: true
-        //     , format: 'dd-mm-yyyy'
-        // }); 
+ 
+    $(document).on('click','.showGalleryFromArray', function() {
+        var id_producto = $(this).data('value');
+        var val = [];
+        var path = "images/uploads/";
+        $.ajax({
+            
+            // console.log(id_producto);
+            url: "<?= base_url() ?>producto/ajax_get_imagenes_producto", 
+            data: {id: id_producto},
+            type: "POST",
+            dataType: "json",
+            success: function( data ) {
+                    // JSON.parse(data);
+                    // console.log(data);
+                    $.each(data, function( index, value ) {
+                        val.push(path+value.nombre);
+                        
+                    });
+                    console.log(val);
+                   SimpleLightbox.open({
+                            items: val
+                    });
+                }
+        }); 
+});
+    
 
-        // $('#fecha_nacimiento').datepicker({
-        //     todayBtn: "linked"
-        //     , clearBtn: true
-        //     , language: "es"
-        //     , orientation: "bottom right"
-        //     , autoclose: true
-        //     , todayHighlight: true
-        //     , format: 'dd-mm-yyyy'
-        // });
+    
     </script> 

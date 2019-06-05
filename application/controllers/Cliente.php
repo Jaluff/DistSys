@@ -7,7 +7,7 @@ class Cliente extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('cliente_model','clientes');
-        $this->load->model('mascotas_model','mascota');
+        // $this->load->model('mascotas_model','mascota');
         $this->load->library(array('form_validation', 'email'));
         $this->_init();
     }
@@ -39,16 +39,16 @@ class Cliente extends CI_Controller {
             $no++;
             $row = array();
             $row[0] = NULL;
-            $row['Codigo']      = $cliente->idcliente;
+            $row['Codigo']      = $cliente->id_cliente;
             $row['Nombre']      = $cliente->cli_nombre;
-            $row['Telefono']    = $cliente->telefono1;
-            $row['Movil']       = $cliente->movil1;
-            $row['Documento']   = $cliente->cli_doc;
-            $row['Correo']      = $cliente->correo1;
+            $row['Telefono']    = $cliente->cli_telefono;
+            $row['Movil']       = $cliente->cli_movil;
+            $row['Cuit']        = $cliente->cli_cuit;
+            $row['Correo']      = $cliente->cli_correo;
             $row['Tipo']        = $cliente->cli_tipo;
-            $row['Direccion']   = $cliente->domicilio1;
-            $row['Localidad']   = $cliente->localidad1;
-            $row['Provincia']   = $cliente->provincia1;
+            $row['Direccion']   = $cliente->cli_direccion;
+            $row['Localidad']   = $cliente->cli_localidad;
+            $row['Provincia']   = $cliente->cli_provincia;
             $row['Desde']       = date("d-m-Y", strtotime($cliente->cli_created_on));
 
 
@@ -56,20 +56,16 @@ class Cliente extends CI_Controller {
             if ($this->ion_auth->is_admin()){
                 $row['Acciones'] = '
                     <div class="btn-group btn-group-sm">
-                    <a class="btn btn-md btn-warning" href="javascript:void(0)" title="Edit" onclick="editar_cliente('."'".$cliente->idcliente."'".')"><i class="glyphicon glyphicon-pencil"></i> </a>
-                    <a class="btn btn-md btn-danger" href="javascript:void(0)" title="Eliminar" onclick="delete_cliente('."'".$cliente->idcliente."'".')"><i class="glyphicon glyphicon-trash"></i> </a>
+                    <a class="btn btn-md btn-warning" href="javascript:void(0)" title="Edit" onclick="editar_cliente('."'".$cliente->id_cliente."'".')"><i class="glyphicon glyphicon-pencil"></i> </a>
+                    <a class="btn btn-md btn-danger" href="javascript:void(0)" title="Eliminar" onclick="delete_cliente('."'".$cliente->id_cliente."'".')"><i class="glyphicon glyphicon-trash"></i> </a>
                     </div>
                     ';
                     // <a class="btn btn-md btn-info" title="Agregar mascota" onclick="add_mascota('.$cliente->idcliente.')"><i class="glyphicon glyphicon-plus"></i> </a>
                     // </div>
                     // ';
             }else{
-                $row['Acciones'] = '
+                $row['Acciones'] = '';
                     
-                    
-                    <a class="btn btn-sm btn-info" title="Agregar mascota" onclick="add_mascota('.$cliente->idcliente.')"><i class="glyphicon glyphicon-plus"></i> </a>
-                    
-                    ';
             }
 
             $data[] = $row;
@@ -87,14 +83,9 @@ class Cliente extends CI_Controller {
 
     public function ajax_edit($id)
     {
-        //$data = [];
-
         $data_datos =  $this->clientes->get_by_id($id);
-
-        $data_contactos = $this->clientes->get_con_by_id($id);
-
-        $data =  (object)array_merge((array)$data_datos, (array)$data_contactos);
-
+        $provincias = $this->clientes->get_provincias();
+        $data =  (object)array_merge((array)$data_datos, (array)$provincias);
         echo json_encode($data);
 
     }
@@ -113,49 +104,52 @@ class Cliente extends CI_Controller {
             'id_cliente' => '',
             'id_empresa' => $this->session->userdata('id_empresa'),
             'cli_sexo' => $this->input->post('sexo'),
-            'cli_fecha_nac' => date("Y-m-d", strtotime($this->input->post('cli_fecha_nacimiento'))) ,
-            'cli_lista_precios' => $this->input->post('cli_lista_precios'),
-            'cli_doc' => $this->input->post('cli_documento'),
+            // 'cli_created_on' => date("Y-m-d", strtotime($this->input->post('cli_created_on'))) ,
+            // 'cli_lista_precios' => $this->input->post('cli_lista_precios'),
+            'cli_cuit' => $this->input->post('cli_cuit'),
             'cli_nombre' => $this->input->post('cli_nombre'),
             'cli_tipo' => $this->input->post('cli_tipo'),
-            'cli_estado' => $this->input->post('Activo'),
+            'cli_estado' => $this->input->post('cli_estado'),
             'cli_created_on' => date("Y-m-d", now()),
 
             );
 
-        $data_contacto = array(
-            'telefono1' => $this->input->post('telefono1'),
-            'telefono2' => $this->input->post('telefono2'),
+            $data_contacto = array(
+                'cli_telefono' => $this->input->post('cli_telefono'),
+                // 'telefono2' => $this->input->post('telefono2'),
 
-            'domicilio1' => $this->input->post('direccion1'),
-            'domicilio2' => $this->input->post('direccion2'),
+                'cli_direccion' => $this->input->post('cli_direccion'),
+                // 'domicilio2' => $this->input->post('direccion2'),
 
-            'localidad1' => $this->input->post('localidad1'),
-            'localidad2' => $this->input->post('localidad2'),
+                'cli_localidad' => $this->input->post('cli_localidad'),
+                // 'localidad2' => $this->input->post('localidad2'),
 
-            'pais1' => $this->input->post('pais1'),
-            'pais2' => $this->input->post('pais2'),
+                'cli_pais' => $this->input->post('cli_pais'),
+                // 'pais2' => $this->input->post('pais2'),
 
-            'provincia1' => $this->input->post('provincia1'),
-            'provincia2' => $this->input->post('provincia2'),
+                'cli_provincia' => $this->input->post('cli_provincia'),
+                // 'provincia2' => $this->input->post('provincia2'),
 
-            'cp1' => $this->input->post('cp1'),
-            'cp2' => $this->input->post('cp2'),
+                'cli_cp' => $this->input->post('cli_cp'),
+                // 'cp2' => $this->input->post('cp2'),
 
 
-            'movil1' => $this->input->post('telefono_movil1'),
-            'movil2' => $this->input->post('telefono_movil2'),
+                'cli_movil' => $this->input->post('cli_movil'),
+                // 'movil2' => $this->input->post('telefono_movil2'),
 
-            'correo1' => $this->input->post('correo1'),
-            'correo2' => $this->input->post('correo2'),
+                'cli_correo' => $this->input->post('cli_correo'),
+                // 'correo2' => $this->input->post('correo2'),
 
-            'infomail1' => $this->input->post('infomail1'),
-            'infomail2' => $this->input->post('infomail2'),
-        );
-        //var_dump($data_contacto);
+                // 'infomail1' => $this->input->post('infomail1'),
+                // 'infomail2' => $this->input->post('infomail2'),
+            );
+        // var_dump($data_contacto); exit();
 
-        $insert = $this->clientes->save($data,$data_contacto);
-        echo json_encode(array("status" => TRUE));
+        if($this->clientes->save($data,$data_contacto)){
+            echo json_encode(array("status" => true));
+        }else{
+            echo json_encode(array("status" => false));
+        }
     }
     
     
@@ -168,42 +162,42 @@ class Cliente extends CI_Controller {
                 'cli_movil' => $this->input->post('cli_movil'),
                 'cli_correo' => $this->input->post('cli_correo'),
                 'cli_sexo' => $this->input->post('sexo'),
-                'cli_fecha_nac' => date("Y-m-d", strtotime($this->input->post('cli_fecha_nacimiento'))) ,
-                'cli_lista_precios' => $this->input->post('cli_lista_precios'),
-                'cli_doc' => $this->input->post('cli_documento'),
+                // 'cli_fecha_nac' => date("Y-m-d", strtotime($this->input->post('cli_fecha_nacimiento'))) ,
+                // 'cli_lista_precios' => $this->input->post('cli_lista_precios'),
+                'cli_cuit' => $this->input->post('cli_cuit'),
                 'cli_nombre' => $this->input->post('cli_nombre'),
                 'cli_tipo' => $this->input->post('cli_tipo'),
                 'cli_estado' => $this->input->post('Activo'),
             );
         
             $data_contacto = array(
-                'telefono1' => $this->input->post('telefono1'),
-                'telefono2' => $this->input->post('telefono2'),
+                'cli_telefono' => $this->input->post('cli_telefono'),
+                // 'telefono2' => $this->input->post('telefono2'),
 
-                'domicilio1' => $this->input->post('direccion1'),
-                'domicilio2' => $this->input->post('direccion2'),
+                'cli_direccion' => $this->input->post('cli_direccion'),
+                // 'domicilio2' => $this->input->post('direccion2'),
 
-                'localidad1' => $this->input->post('localidad1'),
-                'localidad2' => $this->input->post('localidad2'),
+                'cli_localidad' => $this->input->post('cli_localidad'),
+                // 'localidad2' => $this->input->post('localidad2'),
 
-                'pais1' => $this->input->post('pais1'),
-                'pais2' => $this->input->post('pais2'),
+                'cli_pais' => $this->input->post('cli_pais'),
+                // 'pais2' => $this->input->post('pais2'),
 
-                'provincia1' => $this->input->post('provincia1'),
-                'provincia2' => $this->input->post('provincia2'),
+                'cli_provincia' => $this->input->post('cli_provincia'),
+                // 'provincia2' => $this->input->post('provincia2'),
 
-                'cp1' => $this->input->post('cp1'),
-                'cp2' => $this->input->post('cp2'),
+                'cli_cp' => $this->input->post('cli_cp'),
+                // 'cp2' => $this->input->post('cp2'),
 
 
-                'movil1' => $this->input->post('telefono_movil1'),
-                'movil2' => $this->input->post('telefono_movil2'),
+                'cli_movil' => $this->input->post('cli_movil'),
+                // 'movil2' => $this->input->post('telefono_movil2'),
 
-                'correo1' => $this->input->post('correo1'),
-                'correo2' => $this->input->post('correo2'),
+                'cli_correo' => $this->input->post('cli_correo'),
+                // 'correo2' => $this->input->post('correo2'),
 
-                'infomail1' => $this->input->post('infomail1'),
-                'infomail2' => $this->input->post('infomail2'),
+                // 'infomail1' => $this->input->post('infomail1'),
+                // 'infomail2' => $this->input->post('infomail2'),
             );
 
         $data = $this->clientes->update(array('id_cliente' => $this->input->post('id_cliente')), $data, $data_contacto);

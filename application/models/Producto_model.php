@@ -4,15 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Producto_model extends CI_Model {
 
     var $table_productos = 'productos';
+    var $table_proveedores = 'proveedores';
     var $table_precios = 'precios';
+    var $table_stock ="stock";
     var $table_imagenes = 'imagenes';
-    var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta` FROM `precios`  ORDER BY `id_precios`   ) AS `precios`';
+    var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta`, producto_margen FROM `precios`  ORDER BY `id_precios`   ) AS `precios`';
     //var $table_estimacion = 'estimacion';
     var $table_marcas = 'marca';
     var $table_categorias = 'categorias';
-    var $column_order =  array( 'codigo', 'producto','categorias', 'marca','precios.producto_precio_venta', null); //set column field database for datatable orderable
-    var $column_search = array('producto','codigo','categorias', 'marca','cantidad_medida'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('producto, cantidad_medida' => 'asc'); // default order
+    var $column_order =  array( null, 'productos.id_producto','codigo', 'producto','prov_nombre','categoria_nombre', 'marca_nombre','producto_costo', 'precios.producto_precio_venta', 'producto_margen'); //set column field database for datatable orderable
+    var $column_search = array('productos.id_producto','codigo', 'producto','prov_nombre', 'categoria_nombre', 'marca_nombre', null, null); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('id_precios' => 'asc' ); // default order
 
     public function __construct()
     {
@@ -22,32 +24,37 @@ class Producto_model extends CI_Model {
 
     private function _get_datatables_query()
     {
-        $this->db->select('productos.id_producto as id,productos.*, precios.*, categoria_nombre, marca_nombre');
+        $this->db->select('productos.id_producto as id,productos.*, precios.*, categoria_nombre, marca_nombre, productos.id_proveedor, prov_nombre');
         $this->db->from($this->table_productos);
         $this->db->join($this->table_precios_query,"$this->table_precios.id_producto = $this->table_productos.id_producto",'left');
         $this->db->join($this->table_categorias,"$this->table_categorias.id_categoria = $this->table_productos.id_categoria",'left');
         $this->db->join($this->table_marcas,"$this->table_marcas.id_marca = $this->table_productos.id_marca",'left');
+        $this->db->join($this->table_proveedores,"$this->table_proveedores.id_proveedor = $this->table_productos.id_proveedor",'left');
 
         $i = 0;
-
+        
         foreach ($this->column_search as $item) // loop column
         {
-            if($_POST['search']['value']) // if datatable send POST for search
+             if($_POST['columns'][$i]['search']['value'] != ''  ) // if datatable send POST for search
             {
 
                 if($i===0) // first loop
                 {
                     $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
-                    $this->db->like($item, $_POST['search']['value']);
+                    $this->db->like($item, $_POST['columns'][$i]['search']['value']);
                 }
                 else
                 {
-                    $this->db->or_like($item, $_POST['search']['value']);
+                    $this->db->like($item, $_POST['columns'][$i]['search']['value']);
                 }
 
-                if(count($this->column_search) - 1 == $i) //last loop
+                if(count($this->column_search) == $i) //last loop
                     $this->db->group_end(); //close bracket
+           
             }
+
+
+
             $i++;
         }
         $this->db->where('productos.id_empresa', $this->session->userdata('id_empresa'));
@@ -70,7 +77,7 @@ class Producto_model extends CI_Model {
         $this->db->group_by('productos.id_producto');
        // $this->db->order_by('id_precios', 'asc');
         $query = $this->db->get();
-        //echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
+            //  echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->result();
     }
 
@@ -97,6 +104,16 @@ class Producto_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_image_by_id($id)
+    {
+        $this->db->select('nombre');
+        $this->db->from('imagenes');
+        $this->db->where('id_producto',$id);
+        $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function get_precio_by_id($id)
     {
         $this->db->from($this->table_precios);
@@ -119,7 +136,7 @@ class Producto_model extends CI_Model {
             $this->db->where('id_tpv',$tpv);
         }
 
-        $this->db->order_by('id_stock','desc');
+        // $this->db->order_by('id_stock','desc');
         $query = $this->db->get();
         return $query->row();
     }
@@ -158,14 +175,19 @@ class Producto_model extends CI_Model {
         return $query->result();
     }
 
-    public function get_productos()
+    public function get_productos($id=null)
     {
-        $this->db->select('id_producto, producto,  cantidad_medida, medida');
+        $this->db->select('productos.id_producto, producto,  cantidad_medida, medida, id_proveedor, stock_act');
         $this->db->from($this->table_productos);
-        $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
+        $this->db->join($this->table_stock,"$this->table_stock.id_producto = $this->table_productos.id_producto",'left');
+        if($id){
+            $this->db->where('id_proveedor',$id);
+        }
+        $this->db->where($this->table_productos.'.id_empresa', $this->session->userdata('id_empresa'));
         $this->db->where('productos.estado', 'Activo');
-        $this->db->order_by('producto, cantidad_medida');
+        $this->db->order_by('producto, stock_act desc');
         $query = $this->db->get();
+        //  echo $this->db->last_query();
         return $query->result();
     }
 

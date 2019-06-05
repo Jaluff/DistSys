@@ -80,6 +80,24 @@
 
 </div>
 <script type="text/javascript">
+$(document).ready(function() {
+    $('#tpv').on('change', function() {
+        //alert("hola")
+        reload_table();
+    });
+
+    $('#fecha, #fecha_fin').change(function() {
+        reload_table();
+    });
+
+    
+});
+
+    function reload_table() {
+        //table.draw();
+         table.ajax.reload(null, false); //reload datatable ajax
+    }
+
     var newDate = new Date();
 
     var f = new Date();
@@ -173,17 +191,7 @@
     // table.buttons().container()
     //   .appendTo( '#ventas_wrapper .col-sm-6:eq(5) '  );
 
-    $('#tpv').change(function() {
-        table.draw();
-    });
-
-    $('#fecha, #fecha_fin').change(function() {
-        table.draw();
-    });
-
-    function reload_table() {
-        table.ajax.reload(null, false); //reload datatable ajax
-    }
+    
     /*
      *   funciones para la gestion de productos
      */

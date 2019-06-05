@@ -407,7 +407,7 @@
             if (isset($productos)) {
                 foreach ($productos as $prod) {
                     //echo $prov->id_proveedor;
-                    echo "{id:" . $prod->id_producto . ", producto: '" . $prod->producto . " - " . $prod->cantidad_medida . $prod->medida . "'},";
+                    echo "{id:" . $prod->id_producto . ", producto: '" . addslashes($prod->producto) . " - " . $prod->cantidad_medida . $prod->medida . "'},";
                 }
             } else {
                 echo "Ningun producto";

@@ -116,7 +116,7 @@
                             <div class="form-group">
                             <div class="col-md-5">
                                 <label class="control-label" for="sel_producto">Producto</label>
-                                <input id="sel_producto" name="sel_producto" type="text" placeholder="Producto" class="form-control input-sm">
+                                <select id="sel_producto" name="sel_producto" placeholder="Producto" class="form-control input-sm"></select>
                             </div>
                         
                             <div class="col-md-1">
@@ -137,7 +137,8 @@
                             </div>
                             <div class="col-md-1">
                                 
-                                <button class="btn btn-info " id="add">Agregar</button>
+                                <button class="btn btn-info " id="add" disabled>Agregar</button>
+                                <!-- <a class="btn btn-md btn-warning" href="javascript:void(0)" title="Edit" onclick="add_producto()"> Agregar </a> -->
                             </div>
                             </div>
                     
@@ -187,7 +188,7 @@
 </div>
 </div>
 </div>
-
+<?php require_once(APPPATH . 'views/productos/form_producto.php');?>
 <script>
     $('#add').on('click', function() {
 
@@ -328,6 +329,7 @@
 
 
     $('#sel_producto').on('change', function() {
+        //
         var id_prod = $('#sel_producto').prop('value');
         $.post("<?= base_url() ?>compras/get_producto_precio", {
                 id: id_prod
@@ -337,7 +339,7 @@
                 if (json != null) {
                     $('#producto_costo').val(json.producto_costo);
                 } else {
-                    $('#producto_costo').val('');
+                    $('#producto_costo').val('0.00');
                 }
                 $.post("<?= base_url() ?>compras/get_producto_stock", {
                         id: id_prod
@@ -380,12 +382,7 @@
     /**
      *   Fin funciones de clientes
      */
-    function getFormattedDate(d) {
-        //console.log(d);
-        var d = new Date(d);
-        d = ('0' + (d.getDate() + 1)).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear(); //d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds()).slice(-2);
-        return d;
-    }
+    
 
 
     var formatName = function(item) {
@@ -395,98 +392,135 @@
         return $.trim((item.producto));
     };
 
-    var $selec = $('#id_proveedor').selectize({
+    var xhr;
+    var select_proveedor, $select_proveedor;
+    var select_producto, $select_producto;
+
+    $select_proveedor = $('#id_proveedor').selectize({
         maxItems: 1,
         valueField: 'id',
         labelField: 'nombre',
         searchField: ['nombre', 'contacto'],
         options: [
             <?php
-            /* traer datos por json... sino no funciona */
-            //var_dump($proveedores);
-
+         
             if ($proveedores) {
                 foreach ($proveedores as $prov) {
 
                     echo "{id:" . $prov->id_proveedor . ", nombre: '" . $prov->prov_nombre . "', contacto: '" . $prov->prov_contacto . "'},";
                 }
             } else {
-                echo "Ningun proveedor";
+                echo "{id: 0, nombre: 'Sin proveedor', contacto: 'Sin proveedor'},";
             }
-
-
             ?>
         ],
-        render: {
-            option: function(item, escape) {
-                var nombre = formatName(item);
-                var label = nombre || item.contacto;
-                var caption = nombre ? item.contacto : null;
-                return '<div>' + 'Nombre: <span class=""> ' + escape(label) + '</span> ' + (caption ? ' <span>(' + escape(caption) + ') </span>' : '') + '</div>';
-            }
-        },
-
-        create: false,
+        // render: {
+        //     option: function(item, escape) {
+        //         var nombre = formatName(item);
+        //         var label = nombre || item.contacto;
+        //         var caption = nombre ? item.contacto : null;
+        //         return '<div>' + 'Nombre: <span class=""> ' + escape(label) + '</span> ' + (caption ? ' <span>(' + escape(caption) + ') </span>' : '') + '</div>';
+        //     }
+        // },
+        onChange: function(value) {
+         
+            if (!value.length) return;
+            // select_producto.selectize.disable();
+            select_producto.disable();
+            select_producto.clearOptions();
+            select_producto.load(function(callback) {
+                xhr && xhr.abort();
+                xhr = $.ajax({
+                    url: '<?php echo base_url(); ?>compras/get_producto_json/' + value ,
+                    success: function(results) {
+                        console.log(value);
+                        if(value > 0 ){
+                        select_producto.enable();
+                        
+                        callback(results);
+                        }else{
+                            alert("Ingrese un proveedor para seleccionar productos!")
+                        }
+                    },
+                    error: function() {
+                        callback();
+                    }
+                })
+            });
+        }
+        // ,create: false,
     });
 
 
-    var prod = $('#sel_producto').selectize({
-        maxItems: 1,
-        valueField: 'id',
+    $select_producto = $('#sel_producto').selectize({
+        // maxItems: 1,
+        // valueField: 'producto',
+        // labelField: 'producto',
+        // searchField: ['producto'],
+        valueField: 'id_producto',
         labelField: 'producto',
-        searchField: ['producto', 'stock'],
-        options: [
-            <?php
-            /* traer datos por json... sino no funciona */
-            if (isset($productos)) {
-                foreach ($productos as $prod) {
-                    //echo $prov->id_proveedor;
-                    echo "{id:" . $prod->id_producto . ", producto: '" . $prod->producto . " - " . $prod->cantidad_medida . $prod->medida . "'},";
-                }
-            } else {
-                echo "Ningun producto";
-            }
-            ?>
-        ],
+        searchField: ['producto','stock_act'],
+        // options: [
+        //     <?php
+        //     if (isset($productos)) {
+        //         foreach ($productos as $prod) {
+        //             echo "{id:" . $prod->id_producto . ", producto: '" . $prod->producto . " - " . $prod->cantidad_medida . $prod->medida . "'},";
+        //         }
+        //     } else {
+        //         echo "Ningun producto";
+        //     }
+        //     ?>
+        // ],
         render: {
             option: function(item, escape) {
                 var producto = formatProducto(item);
-                var label = producto || item.stock;
-                var caption = producto ? item.stock : null;
-                return '<div>' + '<span class=""> ' + escape(label) + '</span> ' + (caption ? ' <span>( Stock: ' + escape(caption) + ') </span>' : '') + '</div>';
+                var label = producto || item.stock_act;
+                var caption = producto ? item.stock_act : null;
+                return '<div>' + '<span class="text-left"> ' + escape(label) + '</span> ' + (caption ? ' <span class="text-success h5">(Stock: ' + escape(caption) + ') </span>' : ' <span class="text-danger h5">(Stock: 0) </span>') + '</div>';
             }
         },
         onChange: function(value) {
+            $('#add').prop('disabled', false);
+        }
+        //     var tpv_sel = $('select#tpv').val();
+        //     if (value) {
+        //         $.ajax({
 
-            var tpv_sel = $('select#tpv').val();
-            if (value) {
-                $.ajax({
-
-                    url: "<?php echo base_url(); ?>producto/ajax_edit/" + value,
-                    type: "GET",
-                    dataType: "JSON",
-                    success: function(data) {
-                        //console.log(data);
-                        //$('#stock_act').val(data.stock_act);
-                        $('#producto_costo').val(data.producto_costo);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert('Error get data from ajax');
-                    }
-                });
-            }
-        },
-        create: false,
+        //             url: "<?php //echo base_url(); ?>producto/ajax_edit/" + value,
+        //             type: "GET",
+        //             dataType: "JSON",
+        //             success: function(data) {
+        //                 //console.log(data);
+        //                 //$('#stock_act').val(data.stock_act);
+        //                 $('#producto_costo').val(data.producto_costo);
+        //             },
+        //             error: function(jqXHR, textStatus, errorThrown) {
+        //                 alert('Error get data from ajax');
+        //             }
+        //         });
+        //     }
+        // },
+        //create: false,
     });
 
-    function clear_selectize_prod() {
-        var prod = $('#sel_producto').selectize();
-        var control = prod[0].selectize;
-        control.clear();
+
+    function clear_selectize_prod() {    
+        // var prod = $('#sel_producto').selectize();
+        select_producto.refreshItems();
+        // var control = prod[0].selectize;
+        select_producto.clear(true);
     }
 
+    select_proveedor  = $select_proveedor[0].selectize;
+	select_producto = $select_producto[0].selectize;
+	select_producto.disable();
 
-
+    function getFormattedDate(d) {
+        //console.log(d);
+        var d = new Date(d);
+        d = ('0' + (d.getDate() + 1)).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear(); //d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds()).slice(-2);
+        return d;
+    }
 
     $('#factura_fecha').datepicker({
         todayBtn: "linked",

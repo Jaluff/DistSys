@@ -149,11 +149,12 @@ margin: 20px 0 0 0;
             /*-webkit-box-shadow: 0 0 8px #D0D0D0;*/
         }
     </style>
-    
+
     <script type="text/javascript"></script>
 </head>
 
 <body id="body">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-6">
@@ -172,14 +173,22 @@ margin: 20px 0 0 0;
     </div>
     <div class="row">
         <div class="col-md-12">
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
+            
+                <nav class="navbar navbar-default">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#"><img class="" src="<?php echo base_url(); ?>assets/themes/default/images/home.png"></a> </div>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> 
+                            <span class="sr-only">Toggle navigation</span> 
+                            <span class="icon-bar"></span> 
+                            <span class="icon-bar"></span> 
+                            <span class="icon-bar"></span> 
+                        </button> 
+                        <a class="navbar-brand" href="#">
+                            <img class="" src="<?php echo base_url(); ?>assets/themes/default/images/home.png">
+                        </a> 
+                    </div>
                     <?php
                     if ($this->ion_auth->is_admin()) {
-
                         require_once APPPATH . 'views/navs/admin_nav.php';
                     } elseif ($this->ion_auth->in_group('Vendedores')) {
 
@@ -189,11 +198,11 @@ margin: 20px 0 0 0;
                         //require_once APPPATH.'views/navs/delivery_nav.php';
                     }
                     ?>
-                </div>
-                <!-- /.container-fluid -->
-            </nav>
+                </nav>
+            
         </div>
     </div>
+
     <div class="container-fluid" id="container">
         <?php if ($this->load->get_section('text_header') != '') { ?>
             <h1><?php echo $this->load->get_section('text_header'); ?></h1>
@@ -214,6 +223,8 @@ margin: 20px 0 0 0;
         </footer>
     </div>
     <!-- /container -->
+    </div>
+            <!-- /.container-fluid -->
 </body>
 
 </html>

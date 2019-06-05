@@ -43,7 +43,7 @@
                 <!-- <h3 >Datos de la compra</h4> -->
                 <!-- <div class="row"> -->
                 <!-- <div class="col-md-9"> -->
-                <form action="#" class="" id="cliente">
+                <form action="#" class="" id="vta_cliente">
                     <div class="col-md-12 ">
                         <div class="form-group">
                             <input type="hidden" name="cli_estado" id="cli_estado" class="form-control input-sm" value="1">
@@ -140,7 +140,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="prod" style="display:none;">
         <div class="col-md-9">
             <div class="well">
                 <form name="form_productos" id="form_productos" class="form-horizontal">
@@ -152,19 +152,19 @@
                         </div>
 
                         <div class="col-md-1">
-                            <label class="control-label" for="sel_producto">Cantidad</label>
+                            <label class="control-label" for="venta_cantidad">Cantidad</label>
                             <input id="venta_cant" name="venta_cant" type="text" placeholder="Cant." class="form-control input-sm">
                         </div>
                         <div class="col-md-2">
-                            <label class="control-label" for="sel_producto">Costo</label>
+                            <label class="control-label" for="prod_costo">Costo</label>
                             <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
                         </div>
                         <div class="col-md-1">
-                            <label class="control-label" for="sel_producto">Stock act.</label>
+                            <label class="control-label" for="stock_actual">Stock act.</label>
                             <input id="stock_actual" name="stock_actual" type="text" class="form-control input-sm " readonly="readonly">
                         </div>
                         <div class="col-md-2">
-                            <label class="control-label" for="sel_producto">Costo act.</label>
+                            <label class="control-label" for="producto_costo">Costo act.</label>
                             <input id="producto_costo" name="producto_costo" type="text" class="form-control input-sm " readonly="readonly">
                         </div>
                         <div class="col-md-1">
@@ -220,7 +220,7 @@
     </div>
 </div>
 </div>
-
+<?php require_once(APPPATH . 'views/usuarios/form_cliente.php'); ?>
 <script>
     $('#add').on('click', function() {
 
@@ -323,7 +323,7 @@
 
 
     $('#Guardar_venta').on('click', function() {
-        var cliente = $('#cliente').serialize();
+        var cliente = $('#vta_cliente').serialize();
         var cli = $('#cli_nombre').val();
         if (cli == ''){
             alert("Debe seleccionar un cliente...!");
@@ -355,9 +355,6 @@
             });
         return false; // Stop the browser of loading the page defined in the form "action" parameter.
     });
-
-
-
 
     $('#sel_producto').on('change', function() {
         var id_prod = $('#sel_producto').prop('value');
@@ -427,7 +424,8 @@
         return $.trim((item.producto));
     };
 
-    var $select = $('#cli_nombre').selectize({
+    var select = $('#cli_nombre').selectize({
+        
         maxItems: 1,
         closeAfterSelect: true,
         valueField: 'id',
@@ -458,14 +456,15 @@
                 dataType: "JSON",
                 success: function(data) {
                     console.log(data);
+                    $( "#prod").show();
                     $('#id_cliente').val(data.id_cliente);
-                    $('#cli_doc').val(data.cli_doc);
-                    $('#cli_direccion').val(data.domicilio1);
-                    $('#cli_telefono').val(data.telefono1);
-                    $('#cli_correo').val(data.correo1);
-                    $('#cli_cp').val(data.cp1);
-                    $('#cli_localidad').val(data.localidad1);
-                    $('#cli_movil').val(data.movil1);
+                    $('#cli_doc').val(data.cli_cuit);
+                    $('#cli_direccion').val(data.cli_direccion);
+                    $('#cli_telefono').val(data.cli_telefono);
+                    $('#cli_correo').val(data.cli_correo);
+                    $('#cli_cp').val(data.cli_cp);
+                    $('#cli_localidad').val(data.cli_localidad);
+                    $('#cli_movil').val(data.cli_movil);
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -475,37 +474,40 @@
         },
         create: false,
     });
-
+    
+   
 
     var prod = $('#sel_producto').selectize({
         maxItems: 1,
         valueField: 'id',
         labelField: 'producto',
-        searchField: ['producto', 'stock'],
+        searchField: ['producto', 'stock_act'],
         options: [
             <?php
             /* traer datos por json... sino no funciona */
+            //  var_dump($productos);
             if (isset($productos)) {
                 foreach ($productos as $prod) {
                     //echo $prov->id_proveedor;
-                    echo "{id:" . $prod->id_producto . ", producto: '" . $prod->producto . " - " . $prod->cantidad_medida . $prod->medida . "'},";
+                    echo "{id:" . $prod->id_producto . ",  producto: '" . addslashes($prod->producto) . " - " . addslashes($prod->cantidad_medida) . $prod->medida . "'},";
                 }
             } else {
-                echo "Ningun producto";
+                echo "{ producto: 'Ningun producto'},";
             }
             ?>
         ],
         render: {
             option: function(item, escape) {
                 var producto = formatProducto(item);
-                var label = producto || item.stock;
-                var caption = producto ? item.stock : null;
-                return '<div>' + '<span class=""> ' + escape(label) + '</span> ' + (caption ? ' <span>( Stock: ' + escape(caption) + ') </span>' : '') + '</div>';
+                var label = producto || item.stock_act;
+                var caption = producto ? item.stock_act : null;
+                return '<div>' + '<span class="text-left"> ' + escape(label) + '</span> ' + (caption ? ' <span class="text-success h5">(Stock: ' + escape(caption) + ') </span>' : ' <span class="text-danger h5">(Stock: 0) </span>') + '</div>';
             }
         },
         onChange: function(value) {
-
+           
             var tpv_sel = $('select#tpv').val();
+            
             if (value) {
                 $.ajax({
 
@@ -513,8 +515,8 @@
                     type: "GET",
                     dataType: "JSON",
                     success: function(data) {
-                        //console.log(data);
-                        //$('#stock_act').val(data.stock_act);
+                        console.log(data);
+                        $('#stock_act').val(data.stock_act);
                         $('#producto_costo').val(data.producto_costo);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -526,14 +528,11 @@
         create: false,
     });
 
-    function clear_selectize_prod() {
-        var prod = $('#sel_producto').selectize();
-        var control = prod[0].selectize;
-        control.clear();
-    }
-
-
-
+    // function clear_selectize_prod() {
+    //     var prod = $('#sel_producto').selectize();
+    //     var control = prod[0].selectize;
+    //     control.clear();
+    // }
 
     $('#factura_fecha').datepicker({
         todayBtn: "linked",

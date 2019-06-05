@@ -24,25 +24,25 @@
             <br />
     
     <table class="table table-bordered table-condensed " cellspacing="0" width="100%" id="clientes">
-                <thead>
-                    <tr>
+        <thead>
+            <tr>
 <!--                        <th></th>-->
-                        <th class="hidden-xs">Codigo</th>
-                        <th>Nombre</th>
-                        <th class="hidden-xs">Telefono</th>
-                        <th class="hidden-xs">Movil</th>
-                        <!-- <th>Mascota</th> -->
-                        <th class="hidden-xs">Documento</th>
-                        <th class="">Correo</th>
-                        <th class="hidden-xs">Tipo</th>
-                        <th class="hidden">Direccion</th>
-                        <th class="hidden">Localidad</th>
-                        <th class="hidden">Provincia</th>
-                        <th class="hidden">Desde</th>
-                        <th style="min-width: 90px">Action</th>
-                    </tr>
-                </thead>
-            </table>
+                <th class="hidden-xs">Codigo</th>
+                <th>Nombre</th>
+                <th class="hidden-xs">Telefono</th>
+                <th class="hidden-xs">Movil</th>
+                <!-- <th>Mascota</th> -->
+                <th class="hidden-xs">Cuit</th>
+                <th class="hidden-xs">Correo</th>
+                <th class="hidden-xs">Tipo</th>
+                <th class="hidden-xs">Provincia</th>
+                <!-- <th class="hidden">Direccion</th>
+                <th class="hidden">Localidad</th> -->
+                <!-- <th class="hidden-xs">Desde</th> -->
+                <th style="min-width: 80px">Action</th>
+            </tr>
+        </thead>
+    </table>
     
 </div>
 <script type="text/javascript">
@@ -62,9 +62,11 @@
                 {"data": "Telefono" , "className": "hidden-xs" },
                 {"data": "Movil" , "className": "hidden-xs" },
                 // {"data": "Mascota[]"},
-                {"data": "Documento", "className": "hidden-xs" },
+                {"data": "Cuit", "className": "hidden-xs" },
                 {"data": "Correo", "className": "hidden-xs" },
                 {"data": "Tipo", "className": "hidden-xs" },
+                {"data": "Provincia", "className": "hidden-xs" },
+                // {"data": "Desde", "className": "hidden-xs" },
                 {"data": "Acciones" }
 
         ]
@@ -121,49 +123,26 @@
 //            $('[data-toggle="tooltip"]').tooltip()
 //        });
 //
-        
-        
-        // Add event listener for opening and closing details
-        
+    
+        // Add event listener for opening and closing details    
    // });
-    
-    
-
-    
-    
-    
-
-    
-
-    
-
-    function reload_table() {
-        table.ajax.reload(null, false); //reload datatable ajax
-    }
-
-    
-    
-    
-
-   
+function reload_table() {
+    table.ajax.reload(null, false); //reload datatable ajax
+}
 </script>
 
 
 
 
-<?php 
-    
+<?php   
     require_once (APPPATH.'views/usuarios/form_cliente.php');
-    //require_once (APPPATH.'views/mascotas/form_mascotas.php');
-
 ?>
 
 <script type="text/javascript">
-    
+
     $.validate(
         { lang: 'es'}     
     );
-    
     $('#cli_fecha_nacimiento').datepicker({
         todayBtn: "linked"
         , clearBtn: true

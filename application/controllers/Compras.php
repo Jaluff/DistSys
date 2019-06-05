@@ -34,9 +34,12 @@ class Compras extends CI_Controller
 
     public function nueva()
     {
+        $this->data['marcas'] = $this->productos->get_marcas();
+        $this->data['categorias'] = $this->productos->get_categorias();
+        $this->data['medida'] = $this->productos->get_medidas();
         $this->output->set_template('default');
         $this->data['proveedores'] = $this->compras->get_proveedores();
-        $this->data['productos'] = $this->productos->get_productos();
+        // $this->data['productos'] = $this->productos->get_productos();
         $this->data['tpv'] = $this->tpvs->get_tpv();
         //var_dump($this->data);
         $this->load->view('compras/nueva_compra', $this->data);
@@ -128,6 +131,12 @@ class Compras extends CI_Controller
     //         // }
     //     // }     
     // }
+
+    public function get_producto_json($id){
+        header("Content-Type: application/json");
+        $productos = $this->productos->get_productos($id);
+        echo json_encode($productos);
+    }
 
     public function get_producto_stock(){
         $id = $this->input->post('id');
@@ -349,6 +358,7 @@ class Compras extends CI_Controller
         $this->data['detalles'] = $this->compras->get_compras_detalles($idcompra);
         $this->data['proveedor'] =  $this->compras->get_proveedores($compras->id_proveedor);
         $this->data['productos'] = $this->productos->get_productos();
+        // var_dump($this->data['productos']); exit(0);
         $this->load->view('compras/mostrarCompra_view',  $this->data);
 
     }

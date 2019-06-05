@@ -403,10 +403,10 @@
             if (isset($productos)) {
                 foreach ($productos as $prod) {
                     //echo $prov->id_proveedor;
-                    echo "{id:" . $prod->id_producto . ", producto: '" . $prod->producto . " - " . $prod->cantidad_medida . $prod->medida . "'},";
+                    echo '{ producto: "' . addslashes($prod->producto) . ' - ' . $prod->cantidad_medida . $prod->medida . '"},';
                 }
             } else {
-                echo "Ningun producto";
+                echo "{id: 0, nombre: 'Sin producto', contacto: 'Sin producto'},";
             }
             ?>
         ],
@@ -418,26 +418,26 @@
                 return '<div>' + '<span class=""> ' + escape(label) + '</span> ' + (caption ? ' <span>( Stock: ' + escape(caption) + ') </span>' : '') + '</div>';
             }
         },
-        onChange: function(value) {
+        // onChange: function(value) {
 
-            var tpv_sel = $('select#tpv').val();
-            if (value) {
-                $.ajax({
+        //     var tpv_sel = $('select#tpv').val();
+        //     if (value) {
+        //         $.ajax({
 
-                    url: "<?php echo base_url(); ?>producto/ajax_edit/" + value,
-                    type: "GET",
-                    dataType: "JSON",
-                    success: function(data) {
-                        //console.log(data);
-                        //$('#stock_act').val(data.stock_act);
-                        $('#producto_costo').val(data.producto_costo);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert('Error get data from ajax');
-                    }
-                });
-            }
-        },
+        //             url: "<?php echo base_url(); ?>producto/ajax_edit/" + value,
+        //             type: "GET",
+        //             dataType: "JSON",
+        //             success: function(data) {
+        //                 //console.log(data);
+        //                 //$('#stock_act').val(data.stock_act);
+        //                 $('#producto_costo').val(data.producto_costo);
+        //             },
+        //             error: function(jqXHR, textStatus, errorThrown) {
+        //                 alert('Error get data from ajax');
+        //             }
+        //         });
+        //     }
+        // },
         create: false,
     });
 

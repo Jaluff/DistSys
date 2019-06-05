@@ -4,10 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Cliente_model extends CI_Model {
 
     var $table_clientes = 'clientes';
-    var $table_contacto = 'contactos';
-    //var $table2 = 'mascotas';
-    var $column_order =  array('clientes.id_cliente','cli_nombre','cli_telefono','cli_movil',null); //set column field database for datatable orderable
-    var $column_search = array('clientes.id_cliente','cli_nombre','telefono1','movil1','cli_direccion', 'cli_doc', 'cli_created_on'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $table_provincias = 'provincias';
+    var $table_pais = 'pais';
+    var $column_order =  array('id_cliente','cli_nombre','cli_telefono','cli_movil','cli_cuit', 'cli_correo', 'cli_tipo','provincias.nombre',null); //set column field database for datatable orderable
+    var $column_search = array('id_cliente','cli_nombre','cli_telefono','cli_movil','cli_cuit', 'cli_correo', 'cli_tipo','provincias.nombre'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('clientes.id_cliente' => 'desc'); // default order
 
     public function __construct()
@@ -18,10 +18,10 @@ class Cliente_model extends CI_Model {
 
     private function _get_datatables_query()
     {
-        $this->db->select('clientes.*,clientes.id_cliente as idcliente, contactos.id_cliente as idc, contactos.*');
+        $this->db->select('clientes.*, provincias.nombre as cli_provincia');
         $this->db->from($this->table_clientes);
-        //$this->db->join($this->table2,"$this->table.id_cliente = $this->table2.id_cliente",'left');
-        $this->db->join($this->table_contacto,"$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
+        $this->db->join($this->table_provincias,"$this->table_clientes.id_provincia = $this->table_provincias.id_provincia",'left');
+        // $this->db->join($this->table_contacto,"$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
 
         $i = 0;
 
@@ -68,7 +68,7 @@ class Cliente_model extends CI_Model {
         $this->db->limit($_POST['length'], $_POST['start']);
         $this->db->group_by('clientes.id_cliente');
         $query = $this->db->get();
-         //echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
+// echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->result();
     }
 
@@ -90,18 +90,21 @@ class Cliente_model extends CI_Model {
     public function get_by_id($id)
     {
         $this->db->from($this->table_clientes);
-        $this->db->join($this->table_contacto, "$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
+        $this->db->join($this->table_provincias, "$this->table_clientes.id_provincia = $this->table_provincias.id_provincia",'left');
+        $this->db->join($this->table_pais, "$this->table_clientes.id_pais = $this->table_pais.id_pais",'left');
         $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
         $this->db->where('clientes.id_cliente',$id);
         $query = $this->db->get();
-        //echo $this->db->last_query();exit();
+        // echo $this->db->last_query();exit();
         return $query->row();
     }
 
     public function get_clientes()
     {
         $this->db->from($this->table_clientes);
-        $this->db->join($this->table_contacto, "$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
+        $this->db->join($this->table_provincias, "$this->table_clientes.id_provincia = $this->table_provincias.id_provincia",'left');
+        $this->db->join($this->table_pais, "$this->table_clientes.id_pais = $this->table_pais.id_pais",'left');
+        // $this->db->join($this->table_contacto, "$this->table_clientes.id_cliente = $this->table_contacto.id_cliente",'left');
         $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
         //this->db->where('clientes.id_cliente',$id);
         $query = $this->db->get();
@@ -116,19 +119,28 @@ class Cliente_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_provincias()
+    {
+        $this->db->from($this->table_provincias);
+        // $this->db->where('id_cliente',$id);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     public function save($data,$data_contacto)
     {
+        // var_dump($data);
         $this->db->insert($this->table_clientes, $data);
         $id_cliente = $this->db->insert_id();
         $this->db->set('id_cliente',$id_cliente);
-        $this->db->insert($this->table_contacto, $data_contacto);
+        // $this->db->insert($this->table_contacto, $data_contacto);
         return $this->db->insert_id();
     }
 
     public function update($where, $data, $data_contacto)
     {
         $this->db->update($this->table_clientes, $data, $where);
-        $this->db->update($this->table_contacto, $data_contacto, $where);
+        // $this->db->update($this->table_contacto, $data_contacto, $where);
         //echo $this->db->last_query();
         return $this->db->affected_rows();
     }

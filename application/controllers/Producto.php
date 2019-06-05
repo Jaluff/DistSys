@@ -37,6 +37,21 @@ class Producto extends CI_Controller
         $this->load->view('productos/producto_view', $this->data);
     }
 
+    public function productos_modica_precios()
+    {
+        $this->output->set_template('default');
+        // $this->load->helper('url');
+        $this->data['marcas'] = $this->productos->get_marcas();
+        $this->data['categorias'] = $this->productos->get_categorias();
+        $this->data['medida'] = $this->productos->get_medidas();
+        //$this->data['especie'] = $this->productos->get_especie(); 
+        $this->data['proveedores'] = $this->proveedores->get_proveedores();
+        //$this->data['productos'] = $this->productos->get_productos();
+        $this->data['tpv'] = $this->tpvs->get_tpv();
+        //$this->output->delete_cache();
+        $this->load->view('productos/producto_precio', $this->data);
+    }
+
     public function ajax_list()
     {
 
@@ -48,12 +63,14 @@ class Producto extends CI_Controller
             $no++;
             $row = array();
             $row[0] = null;
+            $row['id'] = $producto->id;
             $row['Codigo'] = $producto->codigo;
             $row['Producto'] = $producto->producto . " - <strong>(" . $producto->cantidad_medida . $producto->medida . ")</strong>";
             $row['Descripcion'] = $producto->descripcion;
             $row['Categoria'] = $producto->categoria_nombre;
             $row['marca'] = $producto->marca_nombre;
             $row['cod_barras'] = $producto->codigo_barras;
+            $row['proveedor'] = $producto->prov_nombre;
             //$row['especie'] = $producto->especie;
             if ($stock = $this->productos->get_stock($producto->id, $tpv)) {
                 //$row['Stock_minimo'] = $stock[0]->stock_min;
@@ -62,40 +79,44 @@ class Producto extends CI_Controller
                 //$row['Stock_minimo'] = 0;
                 $row['Stock_actual'] = 0;
             }
-            if ($precio = $this->productos->get_precio_by_id($producto->id)) {
-                $row['precio_compra'] = $precio->producto_costo;
+            
+            $row['precio_compra'] = $producto->producto_costo;
+            if ($precio = $this->productos->get_precio_by_id($producto->id_producto)) {
                 $row['precio_venta'] = $precio->producto_precio_venta;
+            } else {
+                $row['precio_venta'] = " - ";
             }
+            
             $foto = $this->productos->get_imagen_by_id($producto->id);
-            if($foto != '') {
+            if($foto != null) {
+                $row['foto_producto'] = array();
                 $upload_path = "images/uploads/";
-                for($i=0; $i <= count($foto['nombre']); $i++){
-                    if($i == 0){
-                        $row['foto_producto'][$i] = "<a href='#' style='display: none;' ><img  src='" . $upload_path . $foto['nombre'] . '?' . rand(1, 200) . "' width='60'></a>";    
-                    }else{
-                        $row['foto_producto'][$i] = "<a href='" .$upload_path . $foto['nombre']."' ><img  src='" . $upload_path . $foto['nombre'] . '?' . rand(1, 200) . "' width='60'></a>";
-                    }
+               
+               
+                    //   if($i == 0){
+                         $image = base_url() . $upload_path . $foto['nombre'] . '?' . rand(1, 200);
+                        // $row['foto_producto'][$i] = "<a href='#' style='display: none;' ><img  src='" . $upload_path . $foto['nombre'] . '?' . rand(1, 200) . "' width='60'></a>";   
+                        $row['foto_producto'] = '<center><a class="showGalleryFromArray" role="button" data-value="'.$producto->id.'" ><img class="img-responsive" src="'.$image.'" width="50px" ></a></center>';
+                    //   }
+                    // }else{
+                        // $row['foto_producto'][$i] = "<a href='" .$upload_path . $foto['nombre']."'><img  src='" . $upload_path . $foto['nombre'] . '?' . rand(1, 200) . "' width='60'></a>";
+                    //  }
                    
-                }
+              
             }else{
-                $row['foto_producto'] = "<img src='images/no_disponible.png' width='60'>";
+                $row['foto_producto'][0] = "<img src='images/no_disponible.png' width='40'>";
             }
+
             $row['estado'] = $producto->estado;
             $row['medida'] = $producto->medida;
             $row['cantidad_medida'] = $producto->cantidad_medida;
             $row['created_on'] = date("d-m-Y", strtotime($producto->created_on));
-            // if ($producto->foto_producto != '') {
-            //     $row['foto_producto'] = "<img  src='" . $producto->foto_producto . '?' . rand(1, 200) . "' width='70'>";
-            // } else {
-            //     $row['foto_producto'] = "<img src='images/no_disponible.png' width='70'>";
-            // }
-            //add html for action
             if ($this->ion_auth->is_admin()) {
                 $row['Acciones'] = '
                 <div class="btn-group btn-group-sm">
                 <a class="btn btn-md btn-warning" href="javascript:void(0)" title="Edit" onclick="editar_producto(' . "'" . $producto->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> </a>
                 <a class="btn btn-md btn-danger" href="javascript:void(0)" title="Eliminar" onclick="delete_producto(' . "'" . $producto->id . "'" . ')"><i class="glyphicon glyphicon-trash"></i> </a>
-                <button type="button" class="btn btn-info btn-view-imagen" data-toggle="modal" data-target="#modal-imagen" data-cache="false" value="' . $producto->id_producto . '" >
+                <button type="button" class="btn btn-info btn-view-imagen" data-toggle="modal" data-target="#modal-imagen" data-cache="false" value="' . $producto->id . '" >
                     <span class="glyphicon glyphicon-picture"></span>
                 </button>
                 <button type="button" class="btn btn-default btn-view-barcode" data-toggle="modal" data-target="#modal-default" value="' . $producto->codigo_barras . '" >
@@ -107,6 +128,81 @@ class Producto extends CI_Controller
                 $row['Acciones'] = '';
             }
             $data[] = $row;
+            // var_dump($data);
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->productos->count_all(),
+            "recordsFiltered" => $this->productos->count_filtered(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+    public function ajax_precios()
+    {
+        $list = $this->productos->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        
+        foreach ($list as $producto) {
+            
+            $no++;
+            $row = array();
+            $row[0] = null;
+            $row['sel'] = '<input type="checkbox" class="id_prod" value="'.$producto->id.'"><input type="hidden" name="id_prod[]" value='. $producto->id .'>';
+            $row['id'] = $producto->id;
+            $row['Codigo'] = $producto->codigo;
+            $row['Producto'] = $producto->producto . " - <strong>(" . $producto->cantidad_medida . $producto->medida . ")</strong>";
+            $row['Descripcion'] = $producto->descripcion;
+            $row['Categoria'] = $producto->categoria_nombre;
+            $row['marca'] = $producto->marca_nombre;
+            $row['cod_barras'] = $producto->codigo_barras;
+            $row['proveedor'] = $producto->prov_nombre;
+
+            // if ($precio = $this->productos->get_precio_by_id($producto->id)) {
+            
+            if ($producto->producto_costo) {
+                $row['precio_compra'] = "<input type='text' name='compra[]' id='compra_". $producto->id ."' onkeyup='cambiar_precios($producto->id)' value='". $producto->producto_costo ."' class='form-control input-sm'>";
+            // $row['precio_venta'] = $producto->producto_precio_venta;
+            }else{
+                $row['precio_compra'] = '0';
+            }
+            if ($precio = $this->productos->get_precio_by_id($producto->id)) {
+                $row['precio_venta'] = "<div id='venta_". $producto->id ."'>" . $precio->producto_precio_venta . "</div>";
+                $row['precio_porcentaje'] = $precio->producto_margen;
+            } else {
+                $row['precio_venta'] = "<div id='venta_". $producto->id ."'> - </div>";
+                $row['precio_porcentaje'] = '-';
+            }
+            // $row['precio_venta'] = "<div id='venta_". $producto->id_producto ."'>" . $producto->producto_precio_venta . "</div>";
+            // $row['precio_porcentaje'] = $precio->producto_margen;
+            //}
+            $row['precio_nuevo'] = "<input type='text' name='idPrecio[]' id='idPrecio_" . $producto->id . "' onkeyup='cambiar_precios($producto->id)' class='form-control input-sm' readonly>";
+            $row['porcentaje_nuevo'] = "<input type='text' name='idPorcentaje[]'  id='idPorcentaje_" . $producto->id . "' onkeyup='cambiar_precios($producto->id)' class=' form-control input-sm'>";
+            $row['estado'] = $producto->estado;
+            $row['medida'] = $producto->medida;
+            $row['cantidad_medida'] = $producto->cantidad_medida;
+            $row['created_on'] = date("d-m-Y", strtotime($producto->created_on));
+            
+            // if ($this->ion_auth->is_admin()) {
+            //     $row['Acciones'] = '
+            //     <div class="btn-group btn-group-sm">
+            //     <a class="btn btn-md btn-warning" href="javascript:void(0)" title="Edit" onclick="editar_producto(' . "'" . $producto->id . "'" . ')"><i class="glyphicon glyphicon-pencil"></i> </a>
+            //     <a class="btn btn-md btn-danger" href="javascript:void(0)" title="Eliminar" onclick="delete_producto(' . "'" . $producto->id . "'" . ')"><i class="glyphicon glyphicon-trash"></i> </a>
+            //     <button type="button" class="btn btn-info btn-view-imagen" data-toggle="modal" data-target="#modal-imagen" data-cache="false" value="' . $producto->id_producto . '" >
+            //         <span class="glyphicon glyphicon-picture"></span>
+            //     </button>
+            //     <button type="button" class="btn btn-default btn-view-barcode" data-toggle="modal" data-target="#modal-default" value="' . $producto->codigo_barras . '" >
+            //         <span class="glyphicon glyphicon-barcode"></span>
+            //     </button>
+            //     </div>
+            //     ';
+            // } else {
+            //     $row['Acciones'] = '';
+            // }
+            $data[] = $row;
+            
         }
         $output = array(
             "draw" => $_POST['draw'],
@@ -136,6 +232,7 @@ class Producto extends CI_Controller
         }
         $data_producto = array(
             'id_producto' => '',
+            'id_proveedor' => $this->input->post('id_proveedor'),
             'producto' => $this->input->post('producto'),
             'codigo' => $this->input->post('codigo'),
             'codigo_barras' => $codigo_barras,
@@ -148,7 +245,7 @@ class Producto extends CI_Controller
             'cantidad_medida' => $this->input->post('cantidad'),
             'id_empresa' => $this->session->userdata('id_empresa')
         );
-
+        
         $data_precio =  array(
             'producto_costo' => $this->input->post('costo'),
             'impuestos' => $this->input->post('impuesto'),
@@ -215,6 +312,7 @@ class Producto extends CI_Controller
         }
         $data_producto = array(
             'id_producto' => $this->input->post('id_producto'),
+            'id_proveedor' => $this->input->post('id_proveedor'),
             'producto' => $this->input->post('producto'),
             'codigo' => $this->input->post('codigo'),
             'codigo_barras' => $codigo_barras,
@@ -282,27 +380,45 @@ class Producto extends CI_Controller
         echo json_encode($data);
     }
 
-    public function ajax_update_precios()
-    {
-
-
-        $data_precio =  array(
-            'producto_costo' => $this->input->post('costo'),
-            'impuestos' => $this->input->post('impuesto'),
-            'producto_margen' => $this->input->post('margen_principal'),
-            //'producto_margen_tres' => $this->input->post('margen_descuento2'),
-            'producto_con_margen' => $this->input->post('pv_principal'),
-            'producto_precio_venta' => $this->input->post('pv_iva'),
-            //'producto_venta_tres' => $this->input->post('pv_descuento2'),
-            'precio_created_on' => date("Y-m-d", now()),
-        );
-
-
-        if ($data = $this->productos->update_precios(array('id_producto' => $id),  $data_precio)) {
-            echo json_encode(array("status" => true));
-        } else {
-            echo json_encode(array("status" => false));
+    public function ajax_update_precios(){
+        $precios = $this->input->post('precios');
+        if($precios){
+            $row = array();
+            parse_str($precios,$arrPrecios);
+            // print_r($arrPrecios); //return $precios;
+            // echo count($arrPrecios). " <-count <br>"; 
+            for($i=0; $i < count($arrPrecios); $i++){
+                if(!empty($arrPrecios['compra'][$i]) && !empty($arrPrecios['idPorcentaje'][$i]) && !empty($arrPrecios['idPrecio'][$i]) ){
+                    $row['id_producto'] = $arrPrecios['id_prod'][$i];
+                    $row['producto_costo'] = $arrPrecios['compra'][$i];
+                    $row['producto_margen'] = $arrPrecios['idPorcentaje'][$i];
+                    $row['producto_precio_venta'] = $arrPrecios['idPrecio'][$i];
+                    $row['precio_created_on'] = date("Y-m-d", now());
+                    $this->productos->update_precios(array('id_producto' => $arrPrecios['id_prod'][$i]) ,  $row);
+                }
+               
+            } echo json_encode( true);
+        }else{
+            $data_precio =  array(
+                'producto_costo' => $this->input->post('costo'),
+                'impuestos' => $this->input->post('impuesto'),
+                'producto_margen' => $this->input->post('margen_principal'),
+                //'producto_margen_tres' => $this->input->post('margen_descuento2'),
+                'producto_con_margen' => $this->input->post('pv_principal'),
+                'producto_precio_venta' => $this->input->post('pv_iva'),
+                //'producto_venta_tres' => $this->input->post('pv_descuento2'),
+                'precio_created_on' => date("Y-m-d H:i:s", now()),
+            );
+            if ($this->productos->update_precios(array('id_producto' => $id),  $data_precio)) {
+                echo json_encode(array("status" => true));
+            } else {
+                echo json_encode(array("status" => false));
+            }    
         }
+        
+
+
+        
     }
 
     public function ajax_update_stock()
@@ -346,6 +462,17 @@ class Producto extends CI_Controller
         $data_datos =  $this->productos->get_by_id($id);
         $data =  (object)$data_datos;
         //var_dump($data);
+        echo json_encode($data);
+    }
+
+    public function ajax_get_imagenes_producto()
+    {
+        $data = [];
+        $id =$this->input->post('id');
+        $data_datos =  $this->productos->get_image_by_id($id);
+        $data = $data_datos;
+        //var_dump($data);
+        
         echo json_encode($data);
     }
 

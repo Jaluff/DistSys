@@ -107,7 +107,7 @@ class Proveedor_model extends CI_Model {
         $this->db->select("nombre");
         $this->db->where("provincia_id", $provinciaId);
         $result = $this->db->get("departamentos")->result();
-        //echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
+        // echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $result;
     }
     

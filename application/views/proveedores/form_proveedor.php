@@ -28,11 +28,7 @@
                                             <label class="col-md-4 control-label" for="prov_provincia">Provincia</label>
                                             <div class="col-md-8 ">
                                                 <select id="prov_provincia" name="prov_provincia" class="form-control input-sm ">
-                                                    <option value="0">Provincia</option>
-                                                    <?php 
-                                                    foreach ($provincias as $key => $value) { ?>
-                                                        <option value="<?=$value->id?>"><?= $value->nombre?></option>
-                                                    <?php }?>
+                                                  
                                                 </select>  
                                             </div>
                                         </div>
@@ -155,19 +151,14 @@
                  //alert ($('#prov_provincia').prop('value'));
                 $('#prov_provincia option:selected').each(function(){
                 var provincia = $('#prov_provincia').prop('value'); 
-                //console.log(value_select_seleccionado);
-                
                 $.post("<?=base_url()?>proveedor/getDepartamento",{ provinciaId : provincia},
                     function(data) {
-                        $('#prov_localidad').html(data);
-                    
+                        $('#prov_localidad').html(data).selectize(); 
                 });     
             });         
         });
     });
             
-                
-        
 
     
 
@@ -192,36 +183,38 @@
             $('#proveedor')[0].reset(); // reset form on modals
             //$('.form-group').removeClass('has-error'); // clear error class
             $('.help-block').empty(); // clear error string
-            //Ajax Load data from ajax
-
-             // alert ($('#prov_provincia').prop('value'));
-             //    var provincia = $('#prov_provincia ').prop('value');
-             //    console.log(provincia);
-                
-                     
-                   
-
+            
             $.ajax({
                 url: "<?php echo base_url();?>proveedor/ajax_edit/" + id
                 , type: "GET"
                 , dataType: "JSON"
                 , success: function (data) {
-                    $('#id_proveedor').val(data.id_proveedor);
-                    $('#prov_nombre').val(data.prov_nombre);
-                    $('#prov_contacto').val(data.prov_contacto);
+                    $('#id_proveedor').val(data.datos.id_proveedor);
+                    $('#prov_nombre').val(data.datos.prov_nombre);
+                    $('#prov_contacto').val(data.datos.prov_contacto);
                     //$('#prov_localidad').val(data.prov_localidad);
-                    $('#prov_cuit').val(data.prov_cuit);
+                    $('#prov_cuit').val(data.datos.prov_cuit);
                     //$('#prov_provincia').val(data.prov_provincia);
-                    $('#prov_telefono').val(data.prov_telefono);
-                    $('#prov_movil').val(data.prov_movil);
-                    $('#prov_direccion').val(data.prov_direccion);
-                    $('#prov_correo').val(data.prov_correo);
-                    $('#prov_web').val(data.prov_web);
-                    $('#prov_observaciones').val(data.prov_observaciones);
-                    $('#prov_estado').val(data.prov_estado);
-                    $('#prov_provincia').val(data.prov_provincia);
-                    var provincia = (data.prov_provincia);
-                    var dep = (data.prov_localidad);
+                    $('#prov_telefono').val(data.datos.prov_telefono);
+                    $('#prov_movil').val(data.datos.prov_movil);
+                    $('#prov_direccion').val(data.datos.prov_direccion);
+                    $('#prov_correo').val(data.datos.prov_correo);
+                    $('#prov_web').val(data.datos.prov_web);
+                    $('#prov_observaciones').val(data.datos.prov_observaciones);
+                    $('#prov_estado').val(data.datos.prov_estado);
+                    // $('#prov_provincia').val(data.prov_provincia);
+                    // console.log(data);
+                    for( var j  in data.provincias){   //console.log(data.provincias[j].id_provincia);
+                        if(typeof(data.provincias[j].id_provincia) != 'undefined' && data.provincias[j].id_provincia != null){
+                            if(data.datos.vendedor_id_provincia !== data.provincias[j].id_provincia ){
+                                $("#prov_provincia").append("<option value='"+data.provincias[j].id_provincia+"'>"+data.provincias[j].nombre+"</option>"); 
+                            }else{
+                                $("#prov_provincia").append("<option value='"+data.provincias[j].id_provincia+"' selected='selected'>"+data.provincias[j].nombre+"</option>"); 
+                            }
+                        }
+                    }
+                    var provincia = (data.datos.prov_provincia);
+                    var dep = (data.datos.prov_localidad);
                     
                     $.post("<?=base_url()?>proveedor/getDepartamento",{ provinciaId : provincia, dep: dep },
                         function(data) {
