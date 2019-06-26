@@ -8,12 +8,12 @@ class Producto_model extends CI_Model {
     var $table_precios = 'precios';
     var $table_stock ="stock";
     var $table_imagenes = 'imagenes';
-    var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta`, producto_margen FROM `precios`  ORDER BY `id_precios`   ) AS `precios`';
+    var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta`, producto_margen FROM `precios` GROUP BY id_precios  ORDER BY `id_precios` DESC  ) AS `precios`';
     //var $table_estimacion = 'estimacion';
     var $table_marcas = 'marca';
     var $table_categorias = 'categorias';
     var $column_order =  array( null, 'productos.id_producto','codigo', 'producto','prov_nombre','categoria_nombre', 'marca_nombre','producto_costo', 'precios.producto_precio_venta', 'producto_margen'); //set column field database for datatable orderable
-    var $column_search = array('productos.id_producto','codigo', 'producto','prov_nombre', 'categoria_nombre', 'marca_nombre', null, null); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_search = array('productos.id_producto','codigo', 'producto','prov_nombre', 'categoria_nombre', 'marca.marca_nombre'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('id_precios' => 'asc' ); // default order
 
     public function __construct()
@@ -35,28 +35,51 @@ class Producto_model extends CI_Model {
         
         foreach ($this->column_search as $item) // loop column
         {
-             if($_POST['columns'][$i]['search']['value'] != ''  ) // if datatable send POST for search
+            if($_POST['search']['value'] ) // if datatable send POST for search
             {
 
-                if($i===0) // first loop
+                if($i==0) // first loop
                 {
                     $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
-                    $this->db->like($item, $_POST['columns'][$i]['search']['value']);
+                    $this->db->like($item, $_POST['search']['value']);
+                    // $this->db->like($item, $_POST['columns'][$i]['search']['value']);
                 }
                 else
                 {
-                    $this->db->like($item, $_POST['columns'][$i]['search']['value']);
+                    // $this->db->or_like($item, $_POST['search']['value']);
+                    $this->db->or_like($item, $_POST['search']['value']);
                 }
 
-                if(count($this->column_search) == $i) //last loop
+                if(count($this->column_search) - 2 == $i) //last loop
                     $this->db->group_end(); //close bracket
-           
             }
-
-
-
             $i++;
         }
+        
+        $j=1;
+        foreach ($this->column_search as $item) // loop column
+        {
+            if($_POST['columns'][$j]['search']['value'] != '') // if datatable send POST for search
+            {
+
+                if($j===1) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['columns'][$j]['search']['value']);
+                    // $this->db->like($item, $_POST['columns'][$i]['search']['value']);
+                }
+                else
+                {//echo $item ." -> ".$_POST['columns'][$i]['search']['value'];
+                    // $this->db->or_like($item, $_POST['search']['value']);
+                    $this->db->like($item, $_POST['columns'][$j]['search']['value']);
+                }
+
+                if(count($this->column_search)  == $j) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $j++;
+        }
+
         $this->db->where('productos.id_empresa', $this->session->userdata('id_empresa'));
         if(isset($_POST['order'])) // here order processing
         {
@@ -77,7 +100,7 @@ class Producto_model extends CI_Model {
         $this->db->group_by('productos.id_producto');
        // $this->db->order_by('id_precios', 'asc');
         $query = $this->db->get();
-            //  echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
+                // echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->result();
     }
 
@@ -86,7 +109,9 @@ class Producto_model extends CI_Model {
         $this->_get_datatables_query();
         $this->db->group_by('productos.id_producto');
         $query = $this->db->get();
+        // echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->num_rows();
+        
     }
 
     public function count_all()

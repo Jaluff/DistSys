@@ -12,7 +12,7 @@ class Stock_model extends CI_Model {
     //var $table_marcas = 'marca';
     //var $table_tipo = 'tipo';
     var $column_order =  array('productos.codigo','productos.producto', 'productos.tipo','productos.marca','cast(stock_min as unsigned) ', 'cast(stock_act as unsigned) ',null); //set column field database for datatable orderable
-    var $column_search = array('stock.id_stock','producto','tpv.tpv_nombre', 'stock.created_on'); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_search = array('stock.id_stock','producto','categoria_nombre','marca_nombre', 'codigo',' codigo_barras'); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('productos.producto' => 'asc'); // default order
 
     public function __construct()
