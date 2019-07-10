@@ -35,10 +35,10 @@ class Ventas extends CI_Controller
     public function nueva()
     {
         $this->output->set_template('default');
-        $this->data['clientes'] = $this->ventas->get_clientes();
+        $this->data['clientes'] = $this->clientes->get_clientes();
         $this->data['productos'] = $this->productos->get_productos();
         $this->data['tpv'] = $this->tpvs->get_tpv();
-        //var_dump($this->data);
+        // var_dump($this->data);
         $this->load->view('ventas/nueva_venta', $this->data);
     }
     
@@ -263,6 +263,7 @@ class Ventas extends CI_Controller
         $this->data['detalles'] = $this->ventas->get_ventas_detalles($idventa);
         $this->data['cliente'] =  $this->ventas->get_clientes($ventas->cliente);
         $this->data['productos'] = $this->productos->get_productos();
+        // var_dump($this->data); 
         $this->load->view('ventas/mostrarVenta_view',  $this->data);
 
     }

@@ -54,15 +54,15 @@
 
                     <div class="col-md-2">
                         <label class="control-label" for="telefono_cliente">Telefono:</label>
-                        <input type="text" name="telefono_cliente" id="telefono_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->telefono1; ?>">
+                        <input type="text" name="telefono_cliente" id="telefono_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->cli_telefono; ?>">
                     </div>
                     <div class="col-md-4">
                         <label class="control-label" for="direccion">Direccion:</label>
-                        <input type="text" name="direccion" id="direccion" class="form-control input-sm" value="<?php echo $cliente[0]->domicilio1 . " - " . $cliente[0]->localidad1 ; ?>">
+                        <input type="text" name="direccion" id="direccion" class="form-control input-sm" value="<?php echo $cliente[0]->cli_direccion . " - " . $cliente[0]->cli_localidad ; ?>">
                     </div>
                     <div class="col-md-3">
                         <label class="control-label" for="correo_cliente">Correo Electronico:</label>
-                        <input type="text" name="correo_cliente" id="correo_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->correo1; ?>">
+                        <input type="text" name="correo_cliente" id="correo_cliente" class="form-control input-sm" value="<?php echo $cliente[0]->cli_correo; ?>">
                     </div>
                     <div class="row">
                     <div class="col-md-12">

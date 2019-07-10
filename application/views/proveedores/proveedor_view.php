@@ -34,6 +34,7 @@
                         <th class="hidden-xs">Movil</th>
                         <th class="hidden-xs">Cuit</th>
                         <th class="hidden-xs">Estado</th>
+                        <th>Balance</th>
                         <th class="hidden">Correo</th>
                         <th class="hidden">Web</th>
                         <th class="hidden">Direccion</th>
@@ -61,6 +62,7 @@ table = $('#clientes').DataTable({
          {"data": "prov_movil" , "className": "hidden-xs" },
          {"data": "prov_cuit", "className": "hidden-xs" },
          {"data": "prov_estado" },
+         {"data": "balance"},
 	     {"data": "Acciones" }
 
     ]

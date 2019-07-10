@@ -73,9 +73,12 @@ class Compras extends CI_Controller
 
             //add html for action
             $row['Acciones'] = '
-            <div class="btn-group btn-group-sm">
-            <a class="btn btn-md btn-info" href="'.base_url().'compras/ver_compra/'. $compra->id_compra .'" title="Ver compras" >
+            <div class="btn-group">
+            <a class="btn  btn-info" href="'.base_url().'compras/ver_compra/'. $compra->id_compra .'" title="Ver compras" >
                 <i class="glyphicon glyphicon-eye-open"></i> 
+            </a>
+            <a class="btn   btn-warning " href="'.base_url().'compras/descargar_compra/'. $compra->id_compra .'" title="Descargar compra compras" >
+                <i class="glyphicon glyphicon-download"></i> 
             </a>
             </div>
             ';
@@ -88,9 +91,7 @@ class Compras extends CI_Controller
             "recordsTotal" => $this->compras->count_all($tpv, $fecha, $fecha_fin),
             "recordsFiltered" => $this->compras->count_filtered($tpv, $fecha, $fecha_fin),
             "data" => $data,
-
         );
-
         echo json_encode($output);
     }
 
@@ -108,29 +109,6 @@ class Compras extends CI_Controller
     return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     }
     
-    // public function actualizar_estado(){
-    //     $estado = $this->input->post('estado');
-    //     $id_compra = $this->input->post('id');
-    //     $total_importe = $this->input->post('total');
-    //     $items = $this->input->post('detalles');
-    //     parse_str($items, $detalles);
-    //     //var_dump($detalles);
-    //     // if($estado == 'Aprobada'){
-    //         if($this->compras->update_stock_compra($id_compra, $detalles,$total_importe, $estado)){
-    //             echo json_encode(true);
-    //         }else{
-    //             echo json_encode(false);
-    //         }
-    //     // }elseif($estado == 'Arribada'){
-    //         // $where = array('id_compra' => $id_compra );
-    //         // $data = array('estado' => $estado, 'importe_total' => $total_importe);
-    //         // if ($this->compras->update_estado_compra($where, $data)){
-    //         //     echo json_encode(true);
-    //         // }else{
-    //         //     echo json_encode(false);
-    //         // }
-    //     // }     
-    // }
 
     public function get_producto_json($id){
         header("Content-Type: application/json");
@@ -208,26 +186,7 @@ class Compras extends CI_Controller
             $id_tpv = $compra['tpv'];
         }
         $compra_numero = strval($this->compras->numero_compra($compra['numero_compra']));
-        // echo "detalles: ".$detalles['nombre'];
-        //  var_dump($detalles);//exit();
-        // if($pago){
-        //     parse_str($pago, $pago);
-        //     $recibido = floatval(($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo'])) ;
-        //     $saldo = $recibido  - $importe;
-        //     $datos_pago = array(
-        //         'metodoPago'            => $pago['metodo_pago'],
-        //         'pago_efectivo'         => $pago['recibido_efectivo'], //- $vuelto,
-        //         'pago_tarjeta'          => $pago['recibido_tarjeta'],
-        //         'pago_cheque'           => $pago['recibido_cheque'],
-        //         'pago_cheque_banco'     => $pago['cheque_banco'],
-        //         'pago_cheque_cuenta'    => $pago['cheque_cuenta'],
-        //         'pago_cheque_numero'    => $pago['cheque_numero'],
-        //         'importe_total'         => $importe,
-        //         'importe_recibido'      => $recibido,
-        //         'importe_saldo'         => $saldo,
-        //         'tarjeta'               => $pago['tarjeta'],
-        //     );
-        // }
+        
         $user = $this->ion_auth->user()->row();    
         
         $factura_fecha = ($compra['factura_fecha']) ? date("Y-m-d", strtotime($compra['factura_fecha'])) : '';
@@ -253,19 +212,8 @@ class Compras extends CI_Controller
             if( $this->compras->save_compra($datos_compra, $detalles, $id_compra, $estado, $id_tpv, $compra_numero)){
             echo 'true';
         }else{
-            
             echo 'false';
-            // $this->compras->update_stock_compra($id_compra, $detalles,$total_importe, $estado)
-            // $this->compras->update_compra($where);
-        }
-        // if ($numero_compra = ){
-        //     $where = array('id_compra' => $numero_compra);
-             
-        //     if(){
-                
-            // }
-            
-        // }     
+        }     
     }
 
     public function ajax_edit($id, $tpv)
@@ -300,56 +248,6 @@ class Compras extends CI_Controller
             echo json_encode($articulo); // 'true'; // If javascript is enabled, return true, so the cart gets updated
         }
     }
-    // function add_cart_item(){
-    //     if($this->compras->validate_add_cart_item() == TRUE){
-    //       // Check if user has javascript enabled
-    //       if($this->input->post('ajax') != '1'){
-    //           redirect('compras'); // If javascript is not enabled, reload the page with new data
-    //       }else{
-    //           echo 'true'; // If javascript is enabled, return true, so the cart gets updated
-    //       }
-    //     }
-    // }
-
-    // function update_cart(){
-    //     if($this->compras->validate_update_cart() == TRUE){
-    //       if($this->input->post('ajax') != '1'){
-    //         //redirect('tpv'); // If javascript is not enabled, reload the page with new data
-    //         echo 'truee';
-    //         //echo 'true';
-    //       }else{
-    //           echo 'true'; // If javascript is enabled, return true, so the cart gets updated
-    //       }
-    //     }
-    //     //redirect('tpv');
-    // }
-
-    // function delete_item_cart(){
-
-    //     if($this->compras->validate_delete_item() == TRUE){
-          
-    //       if($this->input->post('ajax') != '1'){
-    //         //redirect('tpv'); // If javascript is not enabled, reload the page with new data
-    //         echo 'truee';
-    //         //echo 'true';
-    //       }else{
-    //           echo 'true'; // If javascript is enabled, return true, so the cart gets updated
-    //       }
-    //     }else{
-    //         echo "no valido";
-    //     }
-    //     //redirect('tpv');
-    // }
-
-    // function show_cart(){
-    //     $this->load->view('administracion/cart');
-    // }
-
-    // function empty_cart(){
-    //     $this->cart->destroy();
-    //     // $this->load->helper('url');
-    //     // redirect('administracion/compras'); // Refresh te page
-    // }
 
     function ver_compra($idcompra){
         $this->output->set_template('default');

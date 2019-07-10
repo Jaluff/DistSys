@@ -75,6 +75,7 @@ class Proveedor extends CI_Controller {
             $row['prov_observaciones'] = $proveedor->prov_observaciones;
             $row['prov_correo'] = $proveedor->prov_correo;
             $row['prov_web'] = $proveedor->prov_web;
+            $row['balance'] = "balance";
             $row['prov_estado'] = $proveedor->prov_estado;
             $row['prov_created_on'] = date("d-m-Y", strtotime($proveedor->prov_created_on));
             //var_dump($marcas); 

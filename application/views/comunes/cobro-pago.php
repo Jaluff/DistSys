@@ -209,13 +209,14 @@ $(document).ready(function() {
         var link = '<?= base_url() ?>ventas/';
         $.post(link + "pago_venta", {id: idVenta, importe: total_importe, pago: pago},
             function(data) {
-                alert(data); 
-                return false;
+                // alert(data); 
+                // 
                 if (data) {
-                    alert('Pago realizado');
+                    alert('Pago actualizado');
+                    
                     //location.href = link ;
                 } else {
-                   alert("El pago no se pudo actualizar!");
+                   alert("El pago no actualizado!");
                  }
             });
         return false;

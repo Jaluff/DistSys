@@ -220,7 +220,7 @@ class Ventas_model extends CI_Model {
     public function get_clientes($id = null)
     {
         $this->db->from('clientes');
-        $this->db->join('contactos', 'contactos.id_cliente = clientes.id_cliente');
+        // $this->db->join('contactos', 'contactos.id_cliente = clientes.id_cliente');
         if($id){
             $this->db->where('clientes.id_cliente',$id);
         }

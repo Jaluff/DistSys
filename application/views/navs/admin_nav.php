@@ -61,6 +61,16 @@
                     <li><a href="<?= base_url() ?>stock">Devoluciones Clientes</a></li>
                 </ul>
             </li>
+
+            <li class="dropdown show-on-hover"> 
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CUENTAS
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="<?= base_url(); ?>cuentas">Proveedores</a></li>
+                    <li><a href="<?= base_url() ?>cuentas/clientes">Clientes</a></li>
+                </ul>
+            </li>
             <!-- <li class="dropdown show-on-hover"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">STOCK<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 

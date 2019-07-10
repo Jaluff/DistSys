@@ -5,10 +5,6 @@ class Compras_model extends CI_Model
 {
 
     var $table_compras = 'compras';
-    //var $table_precios = 'precios';
-    //var $table_compras_query = '(SELECT * FROM `compras`  ORDER BY `fecha_compra` DESC  ) AS `compras`';
-    //var $table_estimacion = 'estimacion';
-    //var $table_marcas = 'marca';
     var $table_proveedores = 'proveedores';
     var $column_order =  array('id_compra', 'compras.id_proveedor', 'fecha_compra', 'usuario', 'estado', null); //set column field database for datatable orderable
     var $column_search = array('compras.estado', 'compras.usuario', 'compras.fecha_compra'); //set column field database for datatable searchable just firstname , lastname , address are searchable
@@ -127,14 +123,6 @@ class Compras_model extends CI_Model
         }
     }
 
-    // public function get_compra($id)
-    // {
-    //     $this->db->from($this->table_compras);
-    //     $this->db->where('id_compra',$id);
-    //     $query = $this->db->get();
-    //     return $query->row_object();
-    // }
-
     public function get_compras_detalles($id){
 
         $this->db->select('compras_detalle.*, productos.producto, medida, cantidad_medida, codigo');
@@ -144,7 +132,6 @@ class Compras_model extends CI_Model
         $query = $this->db->get();
         //echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->result();
-
     }
 
     public function get_proveedores($id = null)
@@ -159,19 +146,6 @@ class Compras_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-
-    // public function save($id_producto, $data_precio, $data_stock)
-    // {
-
-    //     $this->db->set('id_producto', $id_producto);
-    //     $this->db->insert($this->table_precios, $data_precio);
-    //     //echo $this->db->last_query();
-    //     $this->db->set('id_producto', $id_producto);
-    //     $this->db->insert('stock', $data_stock);
-    //     //echo $this->db->last_query();       
-    //     return $this->db->insert_id();
-    // }
-
 
     public function save_compra($datos_compra ,  $detalles, $id_compra = null, $estado, $tpv, $numero_compra)
     {

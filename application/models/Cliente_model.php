@@ -108,6 +108,7 @@ class Cliente_model extends CI_Model {
         $this->db->where('id_empresa', $this->session->userdata('id_empresa'));
         //this->db->where('clientes.id_cliente',$id);
         $query = $this->db->get();
+        // echo $this->db->last_query();exit();
         return $query->result();
     }
 

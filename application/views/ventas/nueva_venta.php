@@ -139,7 +139,7 @@
             </div>
         </div>
     </div>
-
+<?php //print_r($clientes);?>
     <div class="row" id="prod" style="display:none;">
         <div class="col-md-9">
             <div class="well">
@@ -418,10 +418,10 @@
 
 
     var formatName = function(item) {
-        return $.trim((item.nombre));
+        return $.trim(item.nombre);
     };
     var formatProducto = function(item) {
-        return $.trim((item.producto));
+        return $.trim(item.producto);
     };
 
     var select = $('#cli_nombre').selectize({
@@ -435,7 +435,7 @@
             <?php
             /* traer datos por json... sino no funciona */
             foreach ($clientes as $ent) {
-                echo "{id:" . $ent->id_cliente . ", nombre: '" . $ent->cli_nombre . "', domicilio: '" . $ent->cli_direccion . "', documento: '" . $ent->cli_doc . "'},";
+                echo "{id:" . $ent->id_cliente . ", nombre: '" . addslashes($ent->cli_nombre) . "', domicilio: '" . addslashes($ent->cli_direccion) . "', documento: '" . $ent->cli_doc . "'},";
             }
             ?>
         ],
@@ -488,8 +488,8 @@
             //  var_dump($productos);
             if (isset($productos)) {
                 foreach ($productos as $prod) {
-                    //echo $prov->id_proveedor;
-                    echo "{id:" . $prod->id_producto . ",  producto: '" . addslashes($prod->producto) . " - " . addslashes($prod->cantidad_medida) . $prod->medida . "'},";
+                    // echo $prod->stock_act;
+                    echo "{id:" . $prod->id_producto . ",  producto: '" . addslashes($prod->producto) . " - " . addslashes($prod->cantidad_medida) . $prod->medida . " '},";
                 }
             } else {
                 echo "{ producto: 'Ningun producto'},";
@@ -499,9 +499,11 @@
         render: {
             option: function(item, escape) {
                 var producto = formatProducto(item);
+                console.log(producto);
                 var label = producto || item.stock_act;
-                var caption = producto ? item.stock_act : null;
-                return '<div>' + '<span class="text-left"> ' + escape(label) + '</span> ' + (caption ? ' <span class="text-success h5">(Stock: ' + escape(caption) + ') </span>' : ' <span class="text-danger h5">(Stock: 0) </span>') + '</div>';
+                var caption =  item.stock_act;
+               
+                return '<div>' + '<span class="text-left"> ' + escape(label) + '</span> ' + (caption ? ' <span class="text-success h5">(Stock: ' + caption + ') </span>' : ' ') + '</div>';
             }
         },
         onChange: function(value) {
@@ -528,11 +530,11 @@
         create: false,
     });
 
-    // function clear_selectize_prod() {
-    //     var prod = $('#sel_producto').selectize();
-    //     var control = prod[0].selectize;
-    //     control.clear();
-    // }
+    function clear_selectize_prod() {
+        var prod = $('#sel_producto').selectize();
+        var control = prod[0].selectize;
+        control.clear();
+    }
 
     $('#factura_fecha').datepicker({
         todayBtn: "linked",
