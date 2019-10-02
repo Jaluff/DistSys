@@ -1,6 +1,7 @@
 Options -Indexes
 Options +FollowSymLinks
 RewriteEngine On
+AddHandler application/x-httpd-php56 .php
 RewriteBase /ankiweb/
 
 #Removes access to the system folder by users.

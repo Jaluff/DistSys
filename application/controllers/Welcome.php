@@ -13,11 +13,11 @@ class Welcome extends CI_Controller {
 
 	private function _init()
 	{
-		/* if (!$this->ion_auth->logged_in())
+		if (!$this->ion_auth->logged_in())
 		{
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
-		} */
+		}
 		$this->output->set_template('dashboardPanel');
 
 		$this->load->js('assets/themes/default/js/jquery-1.11.3.min.js');
