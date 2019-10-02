@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //$config['base_url'] = 'http://localhost/veterinaria/';
 define('SERVER_NAME_DEV', 'localhost');
-define('SERVER_NAME_EMPRESA', '192.168.1.39/distribuidora/');
+define('SERVER_NAME_EMPRESA', '192.168.1.39/ankiweb/');
 
 
 //Obtenemos el nombre actual para el servidor donde nos encontramos
@@ -34,7 +34,7 @@ $nombreServerActual = $_SERVER['SERVER_NAME'];
 switch($nombreServerActual)
 {
     case SERVER_NAME_DEV:
-            $config['base_url']    = 'http://localhost/distribuidora/';
+            $config['base_url']    = 'http://localhost/ankiweb/';
             break;
     case SERVER_NAME_EMPRESA:
             $config['base_url']    = "http://192.168.1.39/distribuidora/";
@@ -233,7 +233,7 @@ $config['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
