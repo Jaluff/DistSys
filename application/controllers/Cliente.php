@@ -6,7 +6,7 @@ class Cliente extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('cliente_model','clientes');
+        $this->load->model('Cliente_model','clientes');
         // $this->load->model('mascotas_model','mascota');
         $this->load->library(array('form_validation', 'email'));
         $this->_init();

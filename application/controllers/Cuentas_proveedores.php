@@ -1,12 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Cuentas extends CI_Controller {
+class Cuentas_proveedores extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('cuentas_model','cuentas');
+        $this->load->model('cuentas_proveedor_model','cuentas_proveedor');
+        $this->load->model('proveedor_model','proveedores');
         //$this->load->library(array('form_validation', 'email'));
         $this->_init();
     }
@@ -21,8 +22,8 @@ class Cuentas extends CI_Controller {
     public function index()
     {
         $this->output->set_template('default');
-        // $this->data['cuentas'] = $this->cuentas->get_cuentas();
-        $this->load->view('cuentas/cuentas_view');//, $this->data);
+        $this->data['proveedores'] = $this->proveedores->get_proveedores();
+        $this->load->view('cuentas/cuentas_proveedor_view', $this->data);
     }
 
     //  public function ajax_update()
@@ -38,8 +39,12 @@ class Cuentas extends CI_Controller {
 
     public function ajax_list()
     {
-        $list = $this->cuentas->get_datatables();
-        var_dump($list);
+        $entidad = $this->input->post('proveedor');
+        $fecha = $this->input->post('fecha') ;//== '') ? $this->_data_first_month_day() : date('Y-m-d', strtotime($this->input->post('fecha')));
+        $fecha_fin = $this->input->post('fecha_fin'); // == '') ? $this->_data_last_month_day() : date('Y-m-d', strtotime($this->input->post('fecha_fin')));
+        $list = $this->cuentas_proveedor->get_datatables($entidad, $fecha, $fecha_fin);
+        
+        // var_dump($list);
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $cuenta) {
@@ -47,15 +52,18 @@ class Cuentas extends CI_Controller {
             $row = array();
             $row[0] = NULL;
             //$row['id_producto'] = $producto->id;
-            $row['id'] = $cuenta->id;
-            $row['documento_asociado'] = $cuenta->documento_asociado;
+            $row['id'] = $cuenta->id_compra;
+            $row['documento_asociado'] = $cuenta->factura_numero;
             $row['entidad'] = $cuenta->entidad_nombre;
-            $row['importe'] = $cuenta->importe;
-            $row['saldo'] = $cuenta->saldo_total;
-            $row['created_on'] = $cuenta->created_on;
+            $row['importe'] = $cuenta->importe_total;
+            $row['importe_recibido'] = $cuenta->importe_recibido;
+            $row['saldo'] = $cuenta->importe_saldo;
+            $row['created_on'] = $cuenta->compra_created_on;
             $row['Acciones'] = '
             <div class="btn-group btn-group-sm">
-            <a class="btn btn-md btn-info" href="javascript:void(0)" title="Editar categoria" onclick="editar_categoria('."'".$cuenta->id."'".')"><i class="glyphicon glyphicon-eye-open"></i> </a>
+            <a class="btn  btn-info" href="'.base_url().'compras/ver_compra/'. $cuenta->id_compra .'" title="Ver compras" >
+                <i class="glyphicon glyphicon-eye-open"></i> 
+            </a>
             
             </div>
             ';
@@ -63,8 +71,8 @@ class Cuentas extends CI_Controller {
         }
         $output = array(
                         "draw" => $_POST['draw'],
-                        "recordsTotal" => $this->cuentas->count_all(),
-                        "recordsFiltered" => $this->cuentas->count_filtered(),
+                        "recordsTotal" => $this->cuentas_proveedor->count_all(),
+                        "recordsFiltered" => $this->cuentas_proveedor->count_filtered(),
                         "data" => $data,
                 );
         echo json_encode($output);
@@ -107,6 +115,20 @@ class Cuentas extends CI_Controller {
     {
         $this->categorias->delete_by_id($id);
         echo json_encode(array("status" => TRUE));
+    }
+
+    private function _data_last_month_day() { 
+        $month = date('m');
+        $year = date('Y');
+        $day = date("d", mktime(0,0,0, $month+1, 0, $year));
+        return date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+    }
+
+    /** Actual month first day **/
+    private function _data_first_month_day() {
+        $month = date('m');
+        $year = date('Y');
+        return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
     }
 
 }

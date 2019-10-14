@@ -1,23 +1,21 @@
 <div class="row">
     <!-- <div class="panel panel-success"> -->
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <h3>Cuentas Corrientes</h3>
     </div>
     <div class="col-md-2 col-xs-4">
         <button class="btn btn-default" onclick="reload_table();"><i class="glyphicon glyphicon-refresh"></i> Actualizar</button>
     </div>
     <form name="frm_tpv" id="tpv" class="form-inline">
-        <div class="col-md-3 ">
-            <!-- <label for="tpv" class="control-label">Seleccione TPV: </label>
-
-            <select id="tpv" name="tpv" class="form-control ">
+        <div class="col-md-4 ">
+            <label for="proveedor" class="control-label">Seleccione Proveedor: </label>
+            <select id="proveedor" name="proveedor" class="form-control ">
                 <option value="4">Seleccione</option>
-                <?php foreach ($tpv as $t) : ?>
-                <option value="<?php echo $t->id_tpv; ?>"><?= $t->tpv_nombre ?></option>
-
+                <?php foreach ($proveedores as $p) : ?>
+                <option value="<?php echo $p->id_proveedor; ?>"><?= $p->prov_nombre ?></option>
                 <?php endforeach; ?>
-            </select> -->
+            </select>
         </div>
         <div class="col-md-4 ">
             <div id="event_period">
@@ -53,11 +51,20 @@
                 <th>Documento</th>
                 <th>Entidad</th>
                 <th>Importe</th>
+                <th>Importe recibido</th>
                 <th>Saldo</th>
                 <th>Fecha</th>
                 <th style="min-width: 90px">Action</th>
             </tr>
         </thead>
+        <tfoot>
+            <tr>
+                <th colspan="5" style="text-align:right">Total:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -67,7 +74,7 @@
         "processing": true, //Feature control the processing indicator.
         "serverSide": true, //Feature control DataTables' server-side processing mode.
         "createdRow": function ( row, data, index ) {
-                console.log(data['importe']);
+                // console.log(data['importe']);
                 if( data['importe'] < 0) {
                     $(row).addClass('text-danger');
                     // $('td', row).eq(3).html('<span class="text-danger"> ' + data['importe'] + '</span>');
@@ -77,20 +84,27 @@
                 // }
             },
         "columns": [{
-                "data": "id",
-                "className": "hidden-xs"
+                data: "id",
+                className: "hidden-xs"
             },
             {
-                "data": "documento_asociado"
+                data: "documento_asociado"
             },
             {
-                "data": "entidad"
+                data: "entidad"
             },
             {
-                "data": "importe"
+                data: "importe"
             },
             {
-                "data": "saldo"
+                data: "importe_recibido"
+            },
+            {
+                data: "saldo",
+                "render": function (data, type, row){
+                    return (data >= 0) ? '<span class="text-success">' + data + '</span>' : '<span class="text-danger">' + data + '</span>';
+                }
+                
             },
             {
                 "data": "created_on"
@@ -102,16 +116,52 @@
         "order": [], //Initial no order.
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo base_url() ?>cuentas/ajax_list",
-            "type": "POST"
+            url: "<?php echo base_url() ?>cuentas_proveedores/ajax_list",
+            type: "POST",
+            data: function ( d ) {
+                    d.proveedor = $('#proveedor').val();  
+                    d.fecha = $('#fecha_mov').val(); 
+                    d.fecha_fin = $('#fecha_mov_fin').val();  
+                }
         }, //Set column definition initialisation properties.
         "columnDefs": [{
 
             "targets": [-1], //last column
             "orderable": false, //set not orderable
 
-        }]
+        }],
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            // Total over all pages
+            total = api
+                .column( 5 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+            var clase = (total >= 0) ? 'text-success' : 'text-danger';
+            
+            // Update footer
+            $( api.column( 5 ).footer() ).html(
+                '<span class="' + clase + '">( $'+ total +' total)</span>'
+            );
+        }
     });
+
+    $('#proveedor').change( function() {
+            table.draw();
+        } );
+
+    $('#fecha_mov, #fecha_mov_fin').change( function() {
+        table.draw();
+    } );
 
     function reload_table() {
         table.ajax.reload(null, false); //reload datatable ajax
@@ -121,5 +171,16 @@
 <script type="text/javascript">
     $.validate({
         lang: 'es'
+    });
+
+    $('#event_period').datepicker({
+    inputs: $('.actual_range'),
+        todayBtn: "linked"
+        , clearBtn: true
+        , language: "es"
+        , orientation: "bottom right"
+        , autoclose: true
+        , todayHighlight: true
+        , format: 'dd-mm-yyyy'
     });
 </script> 
