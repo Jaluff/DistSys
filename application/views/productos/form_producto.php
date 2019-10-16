@@ -249,17 +249,20 @@
 </div>
 
 <script>
-    $("#costo").on("keyup", calcular_precio());
-    $("#pv_iva").on("keyup", calcular_precio());
 
-    function calcular_precio() {
+
+    $("#costo, #pv_iva").keyup(function(){
         var valor = 0;
         var costo = parseFloat($('#costo').val());
         var venta = parseFloat($('#pv_iva').val());
         margen = [(venta - costo) / venta] * 100;
-        if (!isNaN(costo && costo > 0)) {
+        if (!isNaN(costo && costo > 0) && !isNaN(margen && margen > 0)) {
             $('#margen_principal').val(margen.toFixed(2));
         }
+    }); 
+
+    function calcular_precio() {
+        
     }
     /*
      *   funciones para la gestion de productos
@@ -358,7 +361,7 @@
             processData: false,
             contentType: false,
             cache: false,
-            async: false,
+            // async: false,
             success: function(datos) {
                 reload_table();
                 alert('se guardo');
@@ -407,4 +410,5 @@
         d = ('0' + (d.getDate() + 1)).slice(-2) + "-" + ('0' + (d.getMonth() + 1)).slice(-2) + "-" + d.getFullYear(); //d.getHours()).slice(-2) + ":" + ('0' + d.getMinutes()).slice(-2) + ":" + ('0' + d.getSeconds()).slice(-2);
         return d;
     }
+
 </script> 

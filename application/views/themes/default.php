@@ -126,7 +126,7 @@ echo "\n\t";
         body {
             background-color: #fff;
             /*margin: 10px;*/
-            font: 12px/20px normal Helvetica, Arial, sans-serif;
+            font: 14px/20px normal Helvetica, Arial, sans-serif;
             color: #4F5155;
         }
 

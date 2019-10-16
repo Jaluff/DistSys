@@ -155,17 +155,17 @@
                             <label class="control-label" for="venta_cantidad">Cantidad</label>
                             <input id="venta_cant" name="venta_cant" type="text" placeholder="Cant." class="form-control input-sm">
                         </div>
-                        <div class="col-md-2">
-                            <label class="control-label" for="prod_costo">Costo</label>
+                        <!-- <div class="col-md-2">
+                            <label class="control-label" for="prod_costo">Venta</label>
                             <input id="prod_costo" name="prod_costo" type="text" placeholder="Costo" class="form-control input-sm " required>
-                        </div>
+                        </div> -->
                         <div class="col-md-1">
                             <label class="control-label" for="stock_actual">Stock act.</label>
                             <input id="stock_actual" name="stock_actual" type="text" class="form-control input-sm " readonly="readonly">
                         </div>
                         <div class="col-md-2">
-                            <label class="control-label" for="producto_costo">Costo act.</label>
-                            <input id="producto_costo" name="producto_costo" type="text" class="form-control input-sm " readonly="readonly">
+                            <label class="control-label" for="prod_precio_venta">Precio Venta</label>
+                            <input id="prod_precio_venta" name="prod_precio_venta" type="text" class="form-control input-sm " readonly="readonly">
                         </div>
                         <div class="col-md-1">
 
@@ -226,7 +226,7 @@
 
         var id = $('#sel_producto').val();
         var cantidad = $('#venta_cant').val();
-        var precio = $('#prod_costo').val();
+        var precio = $('#prod_precio_venta').val();
         var link = '<?= base_url() ?>ventas/';
         $.post(link + "add_item", { //add_cart_item
                 product_id: id,
@@ -251,7 +251,7 @@
                     html += "</tr>";
                     $('#items tbody').append(html);
                     clear_selectize_prod();
-                    $('#prod_costo').val('');
+                    $('#prod_precio_venta').val('');
                     $('#compra_cant').val('');
                     calcula_total();
                     //con cart library 
@@ -364,9 +364,9 @@
             function(data) {
                 var json = $.parseJSON(data);
                 if (json != null) {
-                    $('#producto_costo').val(json.producto_costo);
+                    $('#prod_precio_venta').val(json.producto_precio_venta);
                 } else {
-                    $('#producto_costo').val('');
+                    $('#prod_precio_venta').val('');
                 }
                 $.post("<?= base_url() ?>ventas/get_producto_stock", {
                         id: id_prod
@@ -519,7 +519,7 @@
                     success: function(data) {
                         console.log(data);
                         $('#stock_act').val(data.stock_act);
-                        $('#producto_costo').val(data.producto_costo);
+                        $('#prod_precio_venta').val(data.producto_precio_venta);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Error get data from ajax');

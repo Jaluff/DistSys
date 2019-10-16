@@ -8,13 +8,13 @@ class Producto_model extends CI_Model {
     var $table_precios = 'precios';
     var $table_stock ="stock";
     var $table_imagenes = 'imagenes';
-    var $table_precios_query = '(SELECT producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta`, producto_margen FROM `precios` GROUP BY id_precios  ORDER BY `id_precios` DESC  ) AS `precios`';
+    // var $table_precios_query = '(SELECT precios.producto_costo, precios.id_precios, precios.`id_producto`, precios.`producto_precio_venta`, producto_margen FROM `precios` GROUP BY precios.id_precios  ORDER BY `id_precios` DESC  limit 1) AS precios ';
     //var $table_estimacion = 'estimacion';
     var $table_marcas = 'marca';
     var $table_categorias = 'categorias';
-    var $column_order =  array( null, 'productos.id_producto','codigo', 'producto','prov_nombre','categoria_nombre', 'marca_nombre','producto_costo', 'precios.producto_precio_venta', 'producto_margen'); //set column field database for datatable orderable
+    var $column_order =  array( null, 'productos.id_producto','codigo', 'producto','prov_nombre','categoria_nombre', 'marca_nombre','precios.producto_costo', 'precios.producto_precio_venta', 'producto_margen'); //set column field database for datatable orderable
     var $column_search = array('productos.id_producto','codigo', 'producto','prov_nombre', 'categoria_nombre', 'marca.marca_nombre'); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('id_precios' => 'asc' ); // default order
+    var $order = array('productos.producto' => 'asc' ); // default order
 
     public function __construct()
     {
@@ -24,12 +24,12 @@ class Producto_model extends CI_Model {
 
     private function _get_datatables_query()
     {
-        $this->db->select('productos.id_producto as id,productos.*, precios.*, categoria_nombre, marca_nombre, productos.id_proveedor, prov_nombre');
+        $this->db->select('productos.id_producto AS id, productos.*,  productos.producto AS nombre, precios.producto_costo AS costo, categoria_nombre, marca_nombre, productos.id_proveedor, prov_nombre');
         $this->db->from($this->table_productos);
-        $this->db->join($this->table_precios_query,"$this->table_precios.id_producto = $this->table_productos.id_producto",'left');
-        $this->db->join($this->table_categorias,"$this->table_categorias.id_categoria = $this->table_productos.id_categoria",'left');
-        $this->db->join($this->table_marcas,"$this->table_marcas.id_marca = $this->table_productos.id_marca",'left');
-        $this->db->join($this->table_proveedores,"$this->table_proveedores.id_proveedor = $this->table_productos.id_proveedor",'left');
+        $this->db->join($this->table_precios , "$this->table_precios.id_producto = $this->table_productos.id_producto" , 'left');
+        $this->db->join($this->table_categorias , "$this->table_categorias.id_categoria = $this->table_productos.id_categoria" , 'left');
+        $this->db->join($this->table_marcas , "$this->table_marcas.id_marca = $this->table_productos.id_marca" , 'left');
+        $this->db->join($this->table_proveedores , "$this->table_proveedores.id_proveedor = $this->table_productos.id_proveedor" , 'left');
 
         $i = 0;
         
@@ -81,6 +81,7 @@ class Producto_model extends CI_Model {
         }
 
         $this->db->where('productos.id_empresa', $this->session->userdata('id_empresa'));
+        
         if(isset($_POST['order'])) // here order processing
         {
             $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
@@ -97,17 +98,17 @@ class Producto_model extends CI_Model {
         $this->_get_datatables_query();
         if($_POST['length'] != -1)
         $this->db->limit($_POST['length'], $_POST['start']);
-        $this->db->group_by('productos.id_producto');
-       // $this->db->order_by('id_precios', 'asc');
+        $this->db->group_by('id, costo');
+        // $this->db->order_by('id_precios', 'asc');
         $query = $this->db->get();
-                // echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
+        // echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->result();
     }
 
     function count_filtered()
     {
         $this->_get_datatables_query();
-        $this->db->group_by('productos.id_producto');
+        $this->db->group_by('id, costo');
         $query = $this->db->get();
         // echo "<pre>"; print_r($this->db->last_query()); echo "</pre>";
         return $query->num_rows();

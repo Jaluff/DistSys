@@ -76,7 +76,7 @@ class Producto extends CI_Controller
             } else {
                 $row['Stock_actual'] = 0;
             }
-            $row['precio_compra'] = $producto->producto_costo;
+            $row['precio_compra'] = $producto->costo;
             if ($precio = $this->productos->get_precio_by_id($producto->id_producto)) {
                 $row['precio_venta'] = $precio->producto_precio_venta;
             } else {
@@ -143,8 +143,8 @@ class Producto extends CI_Controller
             $row['marca'] = $producto->marca_nombre;
             $row['cod_barras'] = $producto->codigo_barras;
             $row['proveedor'] = $producto->prov_nombre;
-            if ($producto->producto_costo) {
-                $row['precio_compra'] = "<input type='text' name='compra[]' id='compra_". $producto->id ."' onkeyup='cambiar_precios($producto->id)' value='". $producto->producto_costo ."' class='form-control input-sm'>";
+            if ($producto->costo) {
+                $row['precio_compra'] = "<input type='text' name='compra[]' id='compra_". $producto->id ."' onkeyup='cambiar_precios($producto->id)' value='". $producto->costo ."' class='form-control input-sm'>";
          
             }else{
                 $row['precio_compra'] = '0';
