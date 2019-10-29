@@ -36,9 +36,6 @@
                     <div id="div_tarjeta" style="display:none">
                         <div class="form-group">
                             <label for="tarjeta">Tarjeta</label>
-                                <?php //if ((isset($compras) && $compras->estado == 'Aprobada')){?>    
-                                <!-- <input type="text" name="tarjeta" id="tarjeta" value="<?php //echo (isset($compras) ) ? strtoupper($compras->tarjeta):'';?>"  class="form-control " readonly="readonly"> -->
-                                <?php//}else{ ?>
                                     <select name="tarjeta" id="tarjeta" class="form-control " >
                                         <option value="">Seleccione tarjeta</option>
                                         <option value="Visa" <?php echo ( $compras->tarjeta == 'Visa') ? "Selected": '';?>>Visa</option>
@@ -47,7 +44,7 @@
                                         <option value="Nevada" <?php echo ( $compras->tarjeta == 'Nevada') ? "Selected": '';?>>Nevada</option>
                                         <option value="Cabal" <?php echo ( $compras->tarjeta == 'Cabal') ? "Selected": '';?>>Cabal</option>
                                     </select>
-                                <?php //}?>
+                                
                         </div>
                         <div class="form-group" id="tarjeta"  >
                             <div class="input-group" >
