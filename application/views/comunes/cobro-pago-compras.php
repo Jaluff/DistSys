@@ -107,44 +107,41 @@
 
         <script type="text/javascript">
 $(document).ready(function() {
-        var mp = $('#metodo_pago').val().toLowerCase(); 
-        // alert (mp);
-    	if(mp == 'efectivo'){
-            $("#div_tarjeta").hide();
-            $("#div_cheque").hide();
-            $("#tarjeta").hide();
-            $("#div_efectivo").show();    
-        }
-        if(mp == 'tarjeta'){
-            $("#div_efectivo").hide();
-            $("#div_cheque").hide();
-            $("#div_tarjeta").show();
-            $("#tarjeta").show();
-        }
-        if(mp == 'cheque'){
-            $("#div_efectivo").hide();
-            $("#div_tarjeta").hide();
-            $("#div_cheque").show();
-        }
+    var mp = $('#metodo_pago').val().toLowerCase(); 
+    // alert (mp);
+    if(mp == 'efectivo'){
+        $("#div_tarjeta").hide();
+        $("#div_cheque").hide();
+        $("#tarjeta").hide();
+        $("#div_efectivo").show();    
+    }
+    if(mp == 'tarjeta'){
+        $("#div_efectivo").hide();
+        $("#div_cheque").hide();
+        $("#div_tarjeta").show();
+        $("#tarjeta").show();
+    }
+    if(mp == 'cheque'){
+        $("#div_efectivo").hide();
+        $("#div_tarjeta").hide();
+        $("#div_cheque").show();
+    }
 
-        if (mp == 'efectivo-tarjeta'){
-            $("#div_efectivo").show();
-            $("#div_tarjeta").show();
-            $("#tarjeta").show();
-            $("#div_cheque").hide();
-        }
+    if (mp == 'efectivo-tarjeta'){
+        $("#div_efectivo").show();
+        $("#div_tarjeta").show();
+        $("#tarjeta").show();
+        $("#div_cheque").hide();
+    }
 
-        if ( mp == 'efectivo-cheque'){
-            $("#div_efectivo").show();
-            $("#div_cheque").show();
-            $("#tarjeta").hide();
-            // $("#tarjeta").show();
-            //$("#tarjeta").prop('disabled', true);
-        }
-
-        
-        
-    });
+    if ( mp == 'efectivo-cheque'){
+        $("#div_efectivo").show();
+        $("#div_cheque").show();
+        $("#tarjeta").hide();
+        // $("#tarjeta").show();
+        //$("#tarjeta").prop('disabled', true);
+    }
+});
 
     $('#metodo_pago').on('change', function(){
         event.preventDefault();

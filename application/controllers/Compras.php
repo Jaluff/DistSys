@@ -137,6 +137,7 @@ class Compras extends CI_Controller
 
         if($pago){
             parse_str($pago, $pago);
+            
             $recibido = floatval(($pago['recibido_cheque'] + $pago['recibido_tarjeta'] + $pago['recibido_efectivo'])) ;
             $saldo = $recibido  - $importe;
             $datos_pago = array(
